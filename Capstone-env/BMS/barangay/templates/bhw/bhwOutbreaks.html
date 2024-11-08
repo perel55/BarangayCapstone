@@ -1,0 +1,179 @@
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static './css/bhw.css' %}">
+<link rel="stylesheet" href="{% static 'css/bhwOutbreak.css' %}">
+{% endblock %}
+
+
+{% block content %}  
+    {% include 'bhw/bhwTopnav.html' %} 
+    <div class="adminContainer">
+        <div class="MC-Bottom"> 
+            {% include './bhwNav.html' %} 
+        <div class="contents">
+            <section id="content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Outbreak Name</th>
+                            <th>Outbreak Type</th>
+                            <th>Purok</th>
+                            <th>Severity</th>
+                            <th>Number of Cases</th>
+                            <th>Update</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for outbreak in outbreaks %}
+                        <tr>
+                            <td>{{ outbreak.outbreak_name }}</td>
+                            <td>{{ outbreak.outbreak_type }}</td>
+                            <td>{{ outbreak.purok }}</td>
+                            <td>{{ outbreak.severity }}</td>
+                            <td>{{ outbreak.total_cases }}</td>
+                            <td>
+                                <button class="update-btn" data-id="{{ outbreak.id }}" data-outbreak_name="{{ outbreak.outbreak_name }}" data-outbreak_type="{{ outbreak.outbreak_type }}" data-total_cases="{{ outbreak.total_cases }}" data-purok="{{ outbreak.purok }}" data-severity="{{ outbreak.severity }}">Update</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button class="add" id="openModalButton">+</button>
+            </section>  
+        
+        </div>
+        </div>
+    </div>
+
+    <!-- Add Outbreak Modal form structure -->
+    <div id="Modal-Category-Overlay">
+        <div id="CO-Container">
+            <div class="CO-Top">
+                <h3>Add Outbreak</h3>
+            </div>
+            <form method="POST" action="{% url 'addOutbreak' %}">
+                {% csrf_token %}
+                <div class="CO-Bottom">
+                    <div class="input-group">
+                        <label for="outbreak_name">Outbreak Name:</label>
+                        <input type="text" id="outbreak_name" name="outbreak_name" placeholder="Enter outbreak name" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="outbreak_type">Outbreak Description:</label>
+                        <input type="text" id="outbreak_type" name="outbreak_type" placeholder="Enter outbreak type" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="total_cases">Number of Cases:</label>
+                        <input type="number" id="total_cases" name="total_cases" placeholder="Enter number cases" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="purok">Purok:</label>
+                        <select id="purok" name="purok" required>
+                            <option value="1A">1A</option>
+                            <option value="1B">1B</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="severity">Severity:</label>
+                        <select id="severity" name="severity" required>
+                            <option value="mild">Mild</option>
+                            <option value="moderate">Moderate</option>
+                            <option value="severe">Severe</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="CO-Bottom2">
+                    <button type="button" id="cancel-category">Cancel</button>
+                    <button type="submit" id="add-category">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Update Outbreak Modal form structure -->
+    <div id="Update-Modal-Overlay">
+        <div id="CO-Container">
+            <div class="CO-Top">
+                <h3>Update Outbreak</h3>
+            </div>
+            <form method="POST" action="{% url 'updateOutbreak' %}">
+                {% csrf_token %}
+                <input type="hidden" id="update_outbreak_id" name="outbreak_id">
+                <div class="CO-Bottom">
+                    <div class="input-group">
+                        <label for="update_outbreak_name">Outbreak Name:</label>
+                        <input type="text" id="update_outbreak_name" name="outbreak_name" placeholder="Enter outbreak name" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="update_outbreak_type">Outbreak Description:</label>
+                        <input type="text" id="update_outbreak_type" name="outbreak_type" placeholder="Enter outbreak type" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="update_total_cases">Number of Cases:</label>
+                        <input type="number" id="update_total_cases" name="total_cases" placeholder="Enter number cases" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="purok">Purok:</label>
+                        <select id="purok" name="purok" required>
+                            <option value="1A">1A</option>
+                            <option value="1B">1B</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                        </select>
+                    <div class="input-group">
+                        <label for="update_severity">Severity:</label>
+                        <select id="update_severity" name="severity" required>
+                            <option value="mild">Mild</option>
+                            <option value="moderate">Moderate</option>
+                            <option value="severe">Severe</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="CO-Bottom2">
+                    <button type="button" id="cancel-update">Cancel</button>
+                    <button type="submit" id="update-category">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<script>
+    // JavaScript to open and close the modal for Add Outbreak
+    document.getElementById('openModalButton').onclick = function() {
+        document.getElementById('Modal-Category-Overlay').style.display = 'flex';
+    };
+    document.getElementById('cancel-category').onclick = function() {
+        document.getElementById('Modal-Category-Overlay').style.display = 'none';
+    };
+
+    // JavaScript to open and close the modal for Update Outbreak
+    document.querySelectorAll('.update-btn').forEach(button => {
+        button.onclick = function() {
+            // Populate the update modal with existing data
+            document.getElementById('Update-Modal-Overlay').style.display = 'flex';
+            document.getElementById('update_outbreak_id').value = this.getAttribute('data-id');
+            document.getElementById('update_outbreak_name').value = this.getAttribute('data-outbreak_name');
+            document.getElementById('update_outbreak_type').value = this.getAttribute('data-outbreak_type');
+            document.getElementById('update_total_cases').value = this.getAttribute('data-total_cases');
+            document.getElementById('update_purok').value = this.getAttribute('data-purok');
+            document.getElementById('update_severity').value = this.getAttribute('data-severity');
+        };
+    });
+
+    document.getElementById('cancel-update').onclick = function() {
+        document.getElementById('Update-Modal-Overlay').style.display = 'none';
+    };
+</script>
+{% endblock %}

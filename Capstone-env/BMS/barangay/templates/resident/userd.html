@@ -1,0 +1,26 @@
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/residentHS.css' %}">
+{% endblock %}
+<body>
+    {% load account %}
+    {% load account %}
+    {% block content %}
+ 
+    <div class="adminContainer">
+        {% include 'resident/residentTopnav.html' %} 
+        <div class="MC-Bottom"> 
+            {% include 'resident/residentNav.html' %} 
+        </div>
+    </div>
+    {% endblock %}
+
+
+
+
+
+
+
+
+
+</body>

@@ -1,0 +1,43 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/services.css' %}">
+{% endblock %}
+
+{% block content %}
+<body>
+  <div class="main-div">
+    <h2>Administrative Services</h2>
+    
+    <br>
+    <br>
+    
+    <div class="grid-container"> <!-- Grid container for the cards -->
+      {% for service in services %}
+      <div class="grid-item"> <!-- Individual card item -->
+        <div class="card h-100"> <!-- Full height card -->
+          {% if service.image %}
+          <img src="{{ service.image.url }}" class="card-img-top" alt="{{ service.service_name }}">
+          {% else %}
+          <img src="{% static 'images/default-image.jpg' %}" class="card-img-top" alt="Default Image"> <!-- Default image if none is provided -->
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ service.service_name }}</h5>
+            <p class="card-text">{{ service.service_description }}</p>
+            <p><strong>Price:</strong> ₱{{ service.service_price }}</p>
+
+            <!-- Redirect to login if user is not authenticated -->
+            {% if user.is_authenticated %}
+            <a href="#" class="btn btn-primary">Avail Service</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn-primary">Login to Avail</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+{% endblock %}

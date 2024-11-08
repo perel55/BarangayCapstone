@@ -1,0 +1,59 @@
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/residentHS.css' %}">
+{% endblock %}
+<body>
+    {% load account %}
+    {% load account %}
+    {% block content %}
+ 
+    <div class="adminContainer">
+        {% include 'resident/residentTopnav.html' %} 
+        <div class="MC-Bottom"> 
+            {% include 'resident/residentNav.html' %} 
+
+
+
+            <div class="contents">
+                <section id="content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Full Name</th>
+                                <th>Purok</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Phone Number</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for schedule in schedules %}
+                            <tr>
+                                <td>{{ schedule.user.username }}</td>
+                                <td>{{ schedule.fname }} {{ schedule.lname }}</td>
+                                <td>{{ schedule.purok }}</td>
+                                <td>{{ schedule.date }}</td>
+                                <td>{{ schedule.time }}</td>
+                                <td>{{ schedule.phonenum }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    </table>
+                </section>  
+            
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+
+
+
+
+
+
+
+
+</body>

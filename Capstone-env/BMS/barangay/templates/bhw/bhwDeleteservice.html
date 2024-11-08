@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Deletion</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-box {
+            width: 400px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .form-box h1 {
+            margin-bottom: 20px;
+        }
+        .form-box p {
+            margin-bottom: 30px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #f82601;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #58ff20;
+        }       
+    </style>
+</head>
+<body>
+    <div class="form-box">
+        <h1>Confirm Deletion</h1>
+        <p>Are you sure you want to delete {{ service.service_name }}?</p>
+
+        <form method="post">    
+            {% csrf_token %}
+            <button type="submit">Confirm Delete</button>
+            <a href="{% url 'bhwService'%}"><button type="button">Cancel</button></a>
+        </form>
+    </div>
+</body>
+</html>
+

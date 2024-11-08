@@ -1,0 +1,86 @@
+<nav>
+  
+    <div class="nav-content">
+      <ul>
+        <a href="{% url 'admindashboard' %}">
+          <li class="{% if request.path == '/admindashboard/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/dash2.png" alt="">
+            </div>
+            <p>Home</p>
+          </li>
+        </a>
+  
+        <a href="{% url 'adminAccounts' %}">
+          <li class="{% if request.path == '/admin/accounts/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/accounts.png" alt="">
+            </div>
+            <p>Accounts</p>
+          </li>
+        </a>
+
+        <a href="{% url 'adminService' %}">
+          <li class="{% if request.path == '/admin/service/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/services.png" alt="">
+            </div>
+            <p>Services</p>
+          </li>
+        </a>
+  
+        <a href="{% url 'adminCertificates' %}">
+          <li class="{% if request.path == '/admin/certificates/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/certificates.png" alt="">
+            </div>
+            <p>Certificates</p>
+          </li>
+        </a>
+  
+        <a href="{% url 'adminEvent' %}">
+          <li class="{% if request.path == '/admin/event/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/calendar.png" alt="">
+            </div>
+            <p>Events</p>
+          </li>
+        </a>
+  
+        <a href="{% url 'adminPayment' %}">
+          <li class="{% if request.path == '/admin/payment/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/payment.png" alt="">
+            </div>
+            <p>Payments</p>
+          </li>
+        </a>
+
+        <a href="{% url 'adminResident' %}">
+          <li class="{% if request.path == '/admin/resident/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/residents.png" alt="">
+            </div>
+            <p>Residents</p>
+          </li>
+        </a>
+
+        <a href="{% url 'addAdmin' %}">
+          <li class="{% if request.path == '/admin/addAdmin/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/accounts.png" alt="">
+            </div>
+            <p>Add Admin</p>
+          </li>
+        </a>
+        <a href="{% url 'logout' %}">
+          <li>
+            <div class="NavContainer">
+              <img src="../../static/images/signout.png" alt="">
+            </div>
+            <p>Logout</p>
+          </li>
+        </a>
+      </ul>
+    </div>
+</nav>

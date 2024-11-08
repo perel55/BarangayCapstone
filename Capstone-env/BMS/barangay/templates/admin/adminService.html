@@ -1,0 +1,45 @@
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static './css/admin.css' %}">
+{% endblock %}
+
+
+ 
+{% block content %}  
+    {% include './adminheader.html' %}  
+
+    {% include './adminNav.html' %}  
+    
+    <div class="contents">
+        <section id="content">
+            <table>
+                <thead>
+                    <tr>  cd 
+                        <th>ID</th>
+                        <th>Service Name</th>  
+                        <th>Price</th>
+                        <th>Descriptions</th>
+                        <th>Requirements</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>    
+                <tbody>
+                    {% for payment in payments %}
+                    <tr>    
+                        <td></td>
+                        <td></td>        
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>  
+       
+    </div>
+
+   
+</div>
+{% endblock %}

@@ -1,0 +1,329 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa; 
+    color: #343a40; 
+    margin: 0;
+    padding: 0;
+}
+
+.services-container {
+    width: 80%;
+    max-width: 1200px; 
+    margin: auto; 
+    background-color: #ffffff; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.services-title {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #007bff; 
+}
+
+.services-list {
+    list-style-type: none; 
+    padding: 0;
+    margin: 0;
+}
+
+.service-item {
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #e0e0e0; 
+    border-radius: 5px; 
+    background-color: #fdfdfd; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+
+.service-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); 
+}
+
+
+.service-name {
+    font-size: 1.5em;
+    color: #007bff; 
+    margin: 0;
+}
+
+.service-requirements,
+.service-description,
+.service-price {
+    margin: 5px 0;
+    font-size: 0.95em; /
+}
+
+.service-image img {
+    max-width: 40%; 
+    height: auto; 
+    border-radius: 5px; 
+}
+
+.button-group {
+    margin-top: 10px;
+}
+
+.btn {
+    background-color: #007bff; 
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none; 
+    cursor: pointer;
+    transition: background 0.3s ease; 
+}
+
+.update-btn {
+    margin-right: 10px; 
+}
+
+.btn:hover {
+    background-color: #0056b3; 
+}
+
+
+.delete-btn {
+    background-color: #dc3545; 
+}
+
+.delete-btn:hover {
+    background-color: #c82333; 
+}
+
+
+
+
+/* ------------------- add services ------------------------- */
+
+/* Form Container Styling */
+.form-container {
+    background-color: #f9f9f9;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-title {
+    font-size: 24px;
+    color: #34495e;
+    text-align: center;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Form Styles */
+.add-service-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 5px;
+    display: block;
+}
+
+input[type="text"],
+input[type="number"],
+textarea,
+input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #dfe6e9;
+    font-size: 16px;
+    transition: border 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+/* Textarea Customization */
+textarea {
+    min-height: 100px;
+}
+
+/* Button Styles */
+.btn-submit {
+    padding: 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #2980b9;
+}
+
+/* Adjust form fields for smaller screens */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 20px;
+    }
+}
+
+
+/* Container for main content */
+.main-div {
+    margin: 20px;
+    padding: 20px;
+    text-align: center;
+}
+
+.main-div h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+
+/* -------------------------- CARD ---------------------------- */
+
+.content-container {
+    display: flex;
+}
+
+.add-service {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.add-service .Add-Service {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Modal styling */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    max-width: 500px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.add-service {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+
+
+.services-container .row {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .custom-card {
+    position: relative;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    overflow: hidden;
+  }
+  
+  .custom-card:hover {
+    transform: translateY(-10px);
+  }
+  
+  .icon-section {
+    height: 120px;
+    background: linear-gradient(135deg, #f857a6, #ff5858); /* Placeholder gradient */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .admin-icon {
+    background: linear-gradient(135deg, #FF512F, #DD2476);
+  }
+  
+  .health-icon {
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+  }
+  
+  .icon-section img {
+    height: 60px;
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+  
+  .card-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .card-text {
+    font-size: 14px;
+    margin-bottom: 20px;
+    color: #666;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border-radius: 20px;
+  }
+  
+  .btn-primary {
+    background-color: #FF512F;
+    border: none;
+  }
+  
+  .btn-success {
+    background-color: #00c6ff;
+    border: none;
+  }
