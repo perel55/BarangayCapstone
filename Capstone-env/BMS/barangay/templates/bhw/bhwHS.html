@@ -1,0 +1,68 @@
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static './css/bhw.css' %}">
+{% endblock %}
+
+
+ 
+{% block content %}  
+
+<div class="adminContainer">
+    <div class="ac-top">
+        <div class="ac-Left">
+            <img src="../../static/images/lala-logo.jpg" alt="">
+            <h3>Barangay Health Worker</h3>
+        </div>
+
+        <div class="ac-middle">
+        
+        </div>
+
+        <div class="ac-right">
+            <input type="" name="" id="HomeSearch" placeholder="Search"> 
+        </div>
+    </div>
+    <div class="MC-Bottom"> 
+        {% include './bhwNav.html' %} 
+        
+        <div class="contents">
+            <div class="CC-Top">
+                <div class="CCT-Left">
+                      <button id="ListOfColleges">Colleges</button>
+                </div> 
+                  <div class="CCT-Right">
+                      <button id="AddCollege-btn">Add Service</button> 
+                  </div> 
+                </div>
+            <section id="content">
+                <table>
+                    <thead>
+                        <tr>  
+                            <th>ID</th>
+                            <th>Image</th>
+                            <th>Service Name</th>  
+                            <th>Service Description</th> 
+                            <th>Requirements</th>
+                        </tr>
+                    </thead>    
+                    <tbody>
+                        {% for service in healthservice %} 
+                        <tr>    
+                            <td>{{ service.id }}</td>
+                            <td>{% if service.picture %}<img src="{{ service.picture.url }}" width = '150'/> {% endif %}</td>
+                            <td>{{ service.service_name }}</td>             
+                            <td>{{ service.service_description }}</td>
+                            <td>{{ service.service_requirements }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <a href="{% url 'addHealthservice' %}" class="add">+</a>
+            </section>  
+           
+        </div>
+    </div>
+</div>
+    
+    
+{% endblock %}

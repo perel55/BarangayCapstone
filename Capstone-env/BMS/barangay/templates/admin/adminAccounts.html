@@ -1,0 +1,66 @@
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static './css/admin.css' %}">
+<link rel="stylesheet" href="{% static './css/accounts.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="adminContainer">
+    <div class="ac-top">
+        <div class="ac-Left">
+            <img src="{% static 'images/lala-logo.jpg' %}" alt="">
+            <h3>Barangay Management System</h3>
+        </div>
+
+        <div class="ac-middle">
+            <div class="button-group">
+                <!-- Buttons to filter by account type -->
+                <a href="?type=Residents" class="filter-btn">Residents</a>
+                <a href="?type=Bhw" class="filter-btn">Bhw</a>
+                <a href="?type=Personnel" class="filter-btn">Personnel</a>
+                <a href="?type=all" class="filter-btn">All</a>
+            </div>
+
+            <div class="accounts-list">
+                <h2>Accounts - {{ account_type|title }}</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Zone</th>
+                            <th>Occupation</th>
+                            <th>Position</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for account in accounts %}
+                            <tr>
+                                <td>{{ account.resident_id }} {{ account.mname }} {{ account.lname }}</td>
+                                <td>{{ account.zone }}</td>
+                                <td>{{ account.occupation }}</td>
+                                <td>{{ account.position }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="4">No {{ account_type|lower }} accounts available.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="ac-right">
+            <input type="text" id="HomeSearch" placeholder="Search">
+            <div class="NotifAdmin">
+                <img src="{% static 'images/Bell-Notification--Streamline-Flex.png' %}" alt="">
+            </div>
+        </div>
+    </div>
+    <div class="MC-Bottom">
+        {% include './adminNav.html' %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Service</title>
+    {% block css %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    {% endblock %}
+</head>
+<body>
+    <h1>Update Service: {{ service.service_name }}</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div>
+            <label for="service_name">Service Name:</label>
+            <input type="text" id="service_name" name="service_name" value="{{ service.service_name }}" required>
+        </div>
+        <div>
+            <label for="requirements">Requirements:</label>
+            <input type="text" id="requirements" name="requirements" value="{{ service.requirements }}" required>
+        </div>
+        <div>
+            <label for="service_description">Description:</label>
+            <textarea id="service_description" name="service_description" required>{{ service.service_description }}</textarea>
+        </div>
+        <div>
+            <label for="service_price">Price:</label>
+            <input type="number" id="service_price" name="service_price" value="{{ service.service_price }}" required>
+        </div>
+        <div>
+            <label for="image">Service Image:</label>
+            <input type="file" id="image" name="image">
+            {% if service.image %}
+                <p>Current Image:</p>
+                <img src="{{ service.image.url }}" alt="{{ service.service_name }}" width="200">
+            {% endif %}
+        </div>
+        <button type="submit">Update Service</button>
+    </form>
+    <a href="{% url 'service_list' %}">Cancel</a>
+</body>
+</html>

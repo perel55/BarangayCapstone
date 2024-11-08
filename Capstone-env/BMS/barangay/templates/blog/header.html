@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header</title> 
+</head> 
+<body>
+    {% load account %}
+    <header>  
+        <nav>
+            <div class="navbar">
+                <div class="title"><p>Barangay Lala Proper</p></div>	
+
+                <div class="icon">
+                    <input type="" name="" id="HomeSearch" placeholder="Search"> 
+                    <div class="dropdown">
+                        <div class="user" alt="Menu">Welcome, {% user_display user %}</div>
+                        <div class="dropdown-content">
+                            <a href="">Update Profile</a>
+                            <a href="">Settings</a>
+                            <a href="">Events</a>
+                            <a href="">Administrative Service</a>
+                            <a href="{% url 'bhwServices' %}">Health Service</a>
+                            <a href="{% url 'logout' %}">Signout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>	
+      </header>
+    
+</body>
+</html>
+

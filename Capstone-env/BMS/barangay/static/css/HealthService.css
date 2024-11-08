@@ -1,0 +1,125 @@
+ /* Modal overlay style */
+ #Modal-Category-Overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+/* Modal content container */
+#CO-Container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+/* Close button and submit styling */
+#cancel-category, #add-category {
+    margin: 10px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+
+/* Title styling */
+.CO-Top h3 {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: 600;
+}
+
+/* Input fields and labels */
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 6px;
+    display: inline-block;
+}
+
+input[type="text"],
+textarea,
+input[type="file"] {
+    background-color: #f9fafc;
+    color: #333;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    padding: 10px 12px;
+    width: 100%;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #1e88e5;
+    box-shadow: 0 0 5px rgba(30, 136, 229, 0.3);
+}
+
+/* Button styling */
+#cancel-category,
+#add-category {
+    margin: 12px 8px;
+    padding: 10px 18px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+#cancel-category {
+    background-color: #f44336;
+    color: white;
+}
+
+#cancel-category:hover {
+    background-color: #d7372e;
+    transform: scale(1.05);
+}
+
+#add-category {
+    background-color: #071aac;
+    color: white;
+}
+
+#add-category:hover {
+    background-color: #071aac;
+    transform: scale(1.05);
+}
+
+/* Adjustments for dark theme */
+[data-theme="dark"] #CO-Container {
+    background-color: #2d2d2d;
+    color: #f0f0f0;
+}
+
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] input[type="file"] {
+    background-color: #3d3d3d;
+    color: #e0e0e0;
+    border-color: #555;
+}
+
+[data-theme="dark"] #cancel-category {
+    background-color: #d32f2f;
+}
+
+[data-theme="dark"] #add-category {
+    background-color: #388e3c;
+}

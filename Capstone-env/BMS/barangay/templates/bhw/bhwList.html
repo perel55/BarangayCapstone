@@ -1,0 +1,97 @@
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static './css/bhwlist.css' %}">
+<script type="module" src="{% static 'js/bhw.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="adminContainer">
+        {% include 'bhw/bhwTopnav.html' %}
+        
+        <div class="Left">
+            <button id="Bhw-Accounts">Bhw</button>
+            <button id="Officials-Accounts">Officials</button>
+            <button id="Residents-Accounts">Residents</button> 
+        </div>
+
+        <div class="MC-Bottom">
+            {% include './bhwNav.html' %}
+            
+            <div class="contents">
+                <div class="content">
+                    <!-- Bhw Accounts -->
+                    <div id="BhwAcc-Area">
+                        <table>
+                            <thead>
+                                <tr>  
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>First Name</th>  
+                                    <th>Last Name</th>      
+                                </tr>
+                            </thead>    
+                            <tbody>
+                                {% for bhw in bhws %}
+                                    <tr>    
+                                        <td>{{ bhw.auth_user.username }}</td>
+                                        <td>{{ bhw.auth_user.email }}</td>        
+                                        <td>{{ bhw.fname }}</td>
+                                        <td>{{ bhw.lname }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>  
+
+                    <!-- Officials Accounts -->
+                    <div id="OfficialsAcc-Area" style="display: none;">
+                        <table>
+                            <thead>
+                                <tr>  
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>First Name</th>  
+                                    <th>Last Name</th>      
+                                </tr>
+                            </thead>    
+                            <tbody>
+                                {% for official in officials %}
+                                    <tr>    
+                                        <td>{{ official.auth_user.username }}</td>
+                                        <td>{{ official.auth_user.email }}</td>        
+                                        <td>{{ official.fname }}</td>
+                                        <td>{{ official.lname }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div> 
+
+                    <!-- Residents Accounts -->
+                    <div id="ResidentsAcc-Area" style="display: none;">
+                        <table>
+                            <thead>
+                                <tr>  
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>First Name</th>  
+                                    <th>Last Name</th>      
+                                </tr>
+                            </thead>    
+                            <tbody>
+                                {% for resident in residents %}
+                                    <tr>    
+                                        <td>{{ resident.auth_user.username }}</td>
+                                        <td>{{ resident.auth_user.email }}</td>        
+                                        <td>{{ resident.fname }}</td>
+                                        <td>{{ resident.lname }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div> 
+                </div>         
+            </div>
+        </div>
+    </div>
+{% endblock %}

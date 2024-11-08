@@ -1,0 +1,265 @@
+*{
+    margin:0;
+    padding:0;
+}
+
+html {
+	scroll-behavior: smooth;
+  }
+  
+body{
+	background: #fff;
+}
+nav {
+    width: 15%;
+    height: 100%;
+    position: fixed;
+    border-right: 1px solid #d7dde0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .nav-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+  
+  nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  nav ul li {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    font-size: 0.85rem;
+  }
+  
+  .NavContainer {
+    padding: 0.6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #d7dde0;
+    border-radius: 5px;
+    margin-right: 0.8rem;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+  }
+  
+  nav ul li img {
+    width: 1.5rem;
+    height: 1.5rem;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  }
+  
+  nav ul li p {
+    font-weight: 560;
+    color:#0a0a0a;
+  }
+  
+  nav ul li:hover {
+    cursor: pointer;
+    background-color: #f3f3f3;
+    color: black;
+  }
+  
+  .active {
+    background-color: #92d5f1;
+    color: #fffeff;
+  }
+  
+  nav ul a {
+    text-decoration: none;
+  }
+  
+  
+.ac-top {
+    border-top: 1px solid #857b7b;
+    border-bottom: 1px solid#857b7b;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem;
+}
+
+.ac-Bottom {
+    height: 100%;
+    padding: 0.5rem;
+  }
+  
+.ac-Left {
+    width: 20%;
+    display: flex;
+    align-items: center;
+  }
+  
+  
+.ac-Middle {
+    width: 85%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ac-Right {
+    width: 20%;
+    display: flex;
+    justify-content: space-evenly;
+  }
+.ac-Left img {
+    width: 2.6rem;
+    height: 2.6rem;
+    margin-right: 1rem;
+}
+  
+.ac-Left h3 {
+    color: #07192a;
+    font-size: 0.9rem;
+}
+
+
+ /*------------------------content------------------------*/
+ .wrapper{
+    background-color: #ffffff;
+ }
+ #content {
+    padding: 5px;
+  
+}  
+.contents{
+    background-color: #ffff;
+    box-shadow: 0 0 10px rgba(134, 134, 134, 0.5);
+    border-radius: 10px;
+    width: 85%;
+    margin-left: 15%;  
+    margin-right: auto;   
+    margin-bottom: 1%;  
+    
+}
+table {
+    width: 100%;
+    border-collapse: collapse;  
+    margin-left: auto;        
+    margin-right: auto;
+    margin-top: 20px;
+}
+
+thead {
+    background: linear-gradient(#7BC9FF,#7EA1FF);
+}
+
+th, td {
+    padding: 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid #9e9c9c;
+    
+}
+
+
+#delete-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+
+#update-btn {
+    background-color: rgb(17, 190, 17);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;    
+}
+
+.add {
+	background-color: #000000;
+	color: white;
+	border-radius: 50%;
+	font-size: 46px;
+	text-align: center;
+	width: 50px;
+	height: 50px;
+	line-height: 50px;
+	display: block;
+	position: fixed;
+	right: 20px;
+	bottom: 20px;
+	text-decoration: none;
+  }
+  
+  .add:hover {
+	background-color: #0400eb;
+  }
+  
+  /*approved status form*/
+
+
+/* Style for select element */
+select {
+    width: 50%;
+    padding: 2px;
+    margin-bottom: 15px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    font-size: 13px;
+}
+
+/* Style for submit button */
+input[type="submit"] {
+    width: 50%;
+    padding: 5px;
+    background-color: #0014f3;
+    color: white;
+    border: none;   
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+}
+.booking-status {
+    color: blue;
+}
+/*Total Price*/
+.total-price-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.input-group {
+    margin-bottom: 10px;
+}
+
+.input-group label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.input-group input[type="number"] {
+    padding: 5px;
+    border: 1px solid #000000;
+    border-radius: 3px;
+    width: 90px;
+}
+
+.input-group input[type="submit"] {
+    padding: 8px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 100px;
+}
+
+.input-group input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+    
+ 
