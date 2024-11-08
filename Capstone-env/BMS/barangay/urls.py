@@ -1,5 +1,6 @@
 from django.urls import path, re_path
 from .import views
+from barangay import views
 from django.views.generic import TemplateView
 from django.urls import path, include  # new
 from django.conf.urls.static import static
@@ -78,6 +79,26 @@ urlpatterns = [
     re_path(r'^service/delete/<int:service_id>/$', views.delete_service, name='delete_service'),
     re_path(r'^administrative-services/$', views.administrative_services_list, name='administrative_services_list'),
     re_path(r'^health-services/$', views.health_services_list, name='health_services_list'),
+
+    re_path(r'^service/update/(?P<service_id>\d+)/$', views.update_service, name='update_service'),
+    re_path(r'^service/delete/(?P<service_id>\d+)/$', views.delete_service, name='delete_service'),
+    re_path(r'^administrative-services/$', views.administrative_services_list, name='administrative_services_list'),
+    re_path(r'^health-services/$', views.health_services_list, name='health_services_list'),
+
+    
+    path('calendar/', views.calendar_view, name='calendar'),  # Calendar view for residents
+    path('calendar/events/', views.get_events, name='calendar_events'),  # API to fetch events
+    path('calendar/create/', views.create_event, name='create_event'),  # API to create an event
+    path('api/get_services/', views.get_services, name='get_services'),
+
+
+
+# -------------> TRY <------------
+    # re_path(r'^ScheduleView/$', views.ScheduleView.as_view(), name='ScheduleView'),
+    path('resident/schedule/', views.residentSchedule, name='residentSchedule'),
+
+    path('schedule/', views.ScheduleView, name='ScheduleView'),
+    path('api/schedules/', views.get_events, name='GetEvents'),
 
 
 

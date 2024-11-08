@@ -5,6 +5,10 @@
 {% endblock %}
 
 
+{% endblock %}
+
+
+ 
 {% block content %}  
     {% include 'bhw/bhwTopnav.html' %} 
     <div class="adminContainer">
@@ -34,6 +38,20 @@
                             <td>
                                 <button class="update-btn" data-id="{{ outbreak.id }}" data-outbreak_name="{{ outbreak.outbreak_name }}" data-outbreak_type="{{ outbreak.outbreak_type }}" data-total_cases="{{ outbreak.total_cases }}" data-purok="{{ outbreak.purok }}" data-severity="{{ outbreak.severity }}">Update</button>
                             </td>
+                        <tr>  
+                            <th>ID</th>
+                            <th>Disease Name</th>  
+                            <th>Disease Type</th>
+                            <th>Total Affected</th>
+                        </tr>
+                    </thead>    
+                    <tbody>
+                        {% for payment in payments %}
+                        <tr>    
+                            <td></td>
+                            <td></td>        
+                            <td></td>
+                            <td></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -176,4 +194,6 @@
         document.getElementById('Update-Modal-Overlay').style.display = 'none';
     };
 </script>
+{% endblock %}
+
 {% endblock %}

@@ -77,3 +77,20 @@ def health_services_list(request):
     return render(request, 'admin/health_services_list.html', {'health_services': health_services})
 
 
+def account_list(request):
+    account_type = request.GET.get('type', 'all')  # Default to 'all'
+    
+    if account_type == 'Residents':
+        accounts = Residents.objects.all()
+    elif account_type == 'Bhw':
+        accounts = Bhw.objects.all()
+    elif account_type == 'Personnel':
+        accounts = Personnel.objects.all()
+    else:
+        accounts = Accounts.objects.all()  # Shows all accounts if 'all' is selected
+
+    context = {
+        'accounts': accounts,
+        'account_type': account_type,
+    }
+    return render(request, 'admin/adminAccounts.html', context)

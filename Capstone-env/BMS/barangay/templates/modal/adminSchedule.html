@@ -1,0 +1,34 @@
+<form method="POST" action="{% url 'ScheduleView' %}">
+    {% csrf_token %}
+    <div id="Modal-Schedule-Overlay">
+        <div id="MS-Container">
+            <div class="MSC-Top">
+                <h3>Add Schedule</h3>
+            </div>
+            <div class="MSC-Bottom">
+                <label for="service-id">Service</label>
+                <input type="service-id" id="service-id" name="service-id" required>
+
+                <label for="schedule-date">Date</label>
+                <input type="date" id="schedule-date" name="schedule-date" required>
+
+                <label for="schedule-start-time">Start Time</label>
+                <input type="time" id="schedule-start-time" name="schedule-start-time" required>
+
+                <label for="schedule-end-time">End Time</label>
+                <input type="time" id="schedule-end-time" name="schedule-end-time" required>
+
+                <label for="reason">Reason</label>
+                <input type="text" id="reason" name="reason" required placeholder="Enter reason">
+
+                <label for="total-price">Total Price</label>
+                <input type="number" id="total-price" name="total-price" required placeholder="Enter total price">
+            </div>
+
+            <div class="MSC-Bottom2">
+                <button type="button" id="cancel-sched">Cancel</button>
+                <button type="submit" id="add-sched">Submit</button>
+            </div>
+        </div>
+    </div>
+</form>

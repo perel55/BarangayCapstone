@@ -1,5 +1,7 @@
 /* Modal overlay style */
 #Modal-Category-Overlay {
+ /* Modal overlay style */
+ #Modal-Category-Overlay {
     display: none;
     position: fixed;
     top: 0;
@@ -28,6 +30,7 @@
     padding: 8px 16px;
     cursor: pointer;
 }
+
 
 /* Title styling */
 .CO-Top h3 {
@@ -58,6 +61,7 @@ input[type="file"] {
     border: 1px solid #ced4da;
     border-radius: 8px;
     padding: 12px 14px; /* Increased padding for a larger height */
+    padding: 10px 12px;
     width: 100%;
     font-size: 1rem;
     outline: none;
@@ -130,4 +134,5 @@ textarea:focus {
 
 [data-theme="dark"] #add-category {
     background-color: #388e3c;
+}
 }

@@ -24,3 +24,106 @@
 
 
 </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+  <link rel="stylesheet" href="{% static 'css/residentHS.css' %}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  {% block content %}
+
+  <div class="adminContainer">
+    <!-- {% include 'resident/residentTopnav.html' %}  -->
+    <div class="MC-Bottom"> 
+    {% include 'resident/residentNav.html' %} 
+    </div>
+  </div>
+
+  {% if show_modal %}
+    <div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="profileModalLabel">Complete Your Profile</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <label for="fname">First Name:</label>
+              <input type="text" id="fname" name="fname" value="{{ resident.fname }}" required>
+
+              <label for="mname">Middle Name:</label>
+              <input type="text" id="mname" name="mname" value="{{ resident.mname }}" required>
+
+              <label for="lname">Last Name:</label>
+              <input type="text" id="lname" name="lname" value="{{ resident.lname }}" required>
+
+              <label for="zone">Zone:</label>
+              <input type="text" id="zone" name="zone" value="{{ resident.zone }}" required>
+
+              <label for="civil_status">Civil Status:</label>
+              <input type="text" id="civil_status" name="civil_status" value="{{ resident.civil_status }}" required>
+
+              <label for="occupation">Occupation:</label>
+              <input type="text" id="occupation" name="occupation" value="{{ resident.occupation }}" required>
+
+              <label for="age">Age:</label>
+              <input type="number" id="age" name="age" value="{{ resident.age }}" min="0">
+
+              <label for="birthdate">Birthdate:</label>
+              <input type="date" id="birthdate" name="birthdate" value="{{ resident.birthdate }}" required>
+
+              <label for="phone_number">Phone Number:</label>
+              <input type="text" id="phone_number" name="phone_number" value="{{ resident.phone_number }}" required>
+
+              <label for="picture">Profile Picture:</label>
+              <input type="file" id="picture" name="picture" accept="image/*" onchange="previewImage(event)">
+              <div class="image-preview">
+                <img id="imagePreview" src="#" alt="Image Preview" style="display: none; max-width: 100%; height: auto; border-radius: 5px; margin-top: 10px;">
+              </div>
+
+              <label for="position">Position:</label>
+              <input type="text" id="position" name="position" value="{{ resident.position }}" required>
+
+              <button type="submit" class="btn btn-primary">Save Profile</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  {% endblock %}
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const modalElement = document.getElementById("profileModal");
+      if (modalElement) {
+        $('#profileModal').modal('show');
+      }
+    });
+
+    function previewImage(event) {
+    const imagePreview = document.getElementById('imagePreview');
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        imagePreview.src = e.target.result;
+        imagePreview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  </script>
+</body>
+</html>
