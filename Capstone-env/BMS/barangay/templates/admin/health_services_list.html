@@ -1,0 +1,28 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block content %}
+<body>
+  <div class="main-div">
+    <h2>Health Services</h2>
+    
+    <div class="row">
+      {% for health_service in health_services %}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          {% if health_service.hs_image %}
+          <img src="{{ health_service.hs_image.url }}" class="card-img-top" alt="{{ health_service.hs_name }}">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ health_service.hs_name }}</h5>
+            <p class="card-text">{{ health_service.hs_requirements }}</p>
+            <p><strong>Proof Required:</strong> {{ health_service.hs_proof }}</p>
+            <a href="#" class="btn btn-success">Avail Health Service</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+{% endblock %}

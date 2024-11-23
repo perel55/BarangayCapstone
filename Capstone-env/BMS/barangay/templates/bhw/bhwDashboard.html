@@ -1,0 +1,15 @@
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static './css/bhw.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="adminContainer">
+        {% include 'bhw/bhwTopnav.html' %}
+        <div class="MC-Bottom"> 
+            {% include './bhwNav.html' %} 
+        </div>
+    </div>
+{% endblock %}

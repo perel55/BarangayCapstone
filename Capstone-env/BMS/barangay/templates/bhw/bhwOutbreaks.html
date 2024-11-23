@@ -1,0 +1,42 @@
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static './css/bhw.css' %}">
+{% endblock %}
+
+
+ 
+{% block content %}  
+    {% include 'bhw/bhwTopnav.html' %} 
+    <div class="adminContainer">
+        <div class="MC-Bottom"> 
+            {% include './bhwNav.html' %} 
+        <div class="contents">
+            <section id="content">
+                <table>
+                    <thead>
+                        <tr>  
+                            <th>ID</th>
+                            <th>Disease Name</th>  
+                            <th>Disease Type</th>
+                            <th>Total Affected</th>
+                        </tr>
+                    </thead>    
+                    <tbody>
+                        {% for payment in payments %}
+                        <tr>    
+                            <td></td>
+                            <td></td>        
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>  
+        
+        </div>
+        </div>
+    </div>
+
+
+{% endblock %}

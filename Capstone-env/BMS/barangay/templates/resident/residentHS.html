@@ -1,0 +1,35 @@
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/residentHS.css' %}">
+{% endblock %}
+
+<body>
+    {% block content %}
+
+    <div class="adminContainer">
+        {% include 'resident/residentTopnav.html' %} 
+        <div class="MC-Bottom"> 
+            {% include 'resident/residentNav1.html' %} 
+
+            <div class="contents">
+                <section id="img">
+                    {% for x in bhwServices %} 
+            
+                    <div class="p-box" id="1">  
+                        <div class="prod-card"> 
+                            <p>{% if x.picture %}<img src="{{ x.picture.url }}" width = '200'/> {% endif %}</p>
+                            <h3>{{ x.service_name }} </h3>
+                            <p>Description: {{ x.service_description }}</p>
+                            <p>Requirements:{{ x.service_requirements }}</p>
+                            <a href="{% url 'book_healthServiceform' x.id %}" class="btn">Avail</a>
+                        </div> 
+                    </div>  
+                    
+                    {% endfor %}   
+                </section>  
+            </div>
+        </div>
+    </div>
+    
+</body>
+{% endblock %}
