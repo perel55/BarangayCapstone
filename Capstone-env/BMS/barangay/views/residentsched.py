@@ -6,7 +6,7 @@ from .models import Request, Services, Residents
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-
+from django.shortcuts import render, redirect, get_object_or_404
 
 
 def residentSchedule(request):
@@ -21,8 +21,10 @@ def residentSchedule(request):
 
 @login_required
 def ScheduleView(request):
-    services = Services.objects.all()  # Fetch all services
+    services = Services.objects.all()  # Get all services
+
     if request.method == "POST":
+        # Fetch form data
         service_id = request.POST.get('service-id')
         reason = request.POST.get('reason')
         total_price = request.POST.get('total-price')
@@ -30,18 +32,21 @@ def ScheduleView(request):
         schedule_start_time = request.POST.get('schedule-start-time')
         schedule_end_time = request.POST.get('schedule-end-time')
 
-        # Ensure the service exists before creating the request
-        service = Services.objects.get(service_id=service_id)
+        # Ensure valid data before proceeding
+        if not (service_id and reason and total_price and schedule_date and schedule_start_time and schedule_end_time):
+            messages.error(request, "Please fill all required fields.")
+            return redirect('ScheduleView')
 
-        # Check if the user has a related resident profile
-        try:
-            resident = request.user.residents
-        except Residents.DoesNotExist:
+        service = get_object_or_404(Services, pk=service_id)
+
+        # Check if user has a resident profile
+        resident = Residents.objects.filter(user=request.user).first()
+        if not resident:
             messages.error(request, "You must complete your profile before making a request.")
             return redirect('ScheduleView')
 
         new_request = Request(
-            Resident_id=resident,  # Use the correct resident object
+            Resident_id=resident,
             service_id=service,
             reason=reason,
             total_price=total_price,
@@ -51,11 +56,11 @@ def ScheduleView(request):
         )
         new_request.save()
 
-        return redirect('ScheduleView')  # Redirect to the same view after saving
+        messages.success(request, "Your schedule has been successfully created.")
+        return redirect('ScheduleView')
 
-    return render(request, 'resident/userd.html', {
-        'services': services
-    })
+    # Pass services to the template
+    return render(request, 'resident/userd.html', {'services': services})
 
 
 

@@ -7,7 +7,11 @@
             </div>
             <div class="MSC-Bottom">
                 <label for="service-id">Service</label>
-                <input type="service-id" id="service-id" name="service-id" required>
+                <select id="service-id" name="service-id" required>
+                    {% for service in services %}
+                        <option value="{{ service.id }}">{{ service.service_name }}</option>
+                    {% endfor %}
+                </select>
 
                 <label for="schedule-date">Date</label>
                 <input type="date" id="schedule-date" name="schedule-date" required>

@@ -76,7 +76,6 @@ def health_services_list(request):
     health_services = HealthService.objects.all()
     return render(request, 'admin/health_services_list.html', {'health_services': health_services})
 
-
 def account_list(request):
     account_type = request.GET.get('type', 'all')  # Default to 'all'
     

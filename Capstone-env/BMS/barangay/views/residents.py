@@ -74,3 +74,6 @@ def get_services(request):
     services_list = [{'service_id': service.service_id, 'service_name': service.service_name} for service in services]
     
     return JsonResponse(services_list, safe=False)
+
+def view_events(request):
+    return render(request, 'resident/residentEvents.html')

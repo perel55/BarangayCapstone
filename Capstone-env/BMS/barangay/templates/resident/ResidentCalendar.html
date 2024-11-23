@@ -1,8 +1,7 @@
-{% extends "master.html" %}
 
 {% load static %}
 {% block css %}
-<link rel="stylesheet" href="{% static './css/adminDashboard.css' %}">
+<link rel="stylesheet" href="{% static './css/residentHS.css' %}">
 <link rel="stylesheet" href="{% static './css/residentSchedule.css' %}">
 <script type="module" src="{% static 'js/residentSchedule.js' %}"></script>
 <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/common@6.1.15/main.min.css" rel="stylesheet" />
@@ -16,9 +15,9 @@
 {% include 'modal/editAdminSchedule.html' %}
 
 <div class="MainContainer">
-        {% include 'resident/residentTopnav.html' %} 
+   {% include 'resident/residentTopnav.html' %} 
     <div class="MC-Bottom">
-        {% include './residentNav.html' %}      
+        {% include './residentNav1.html' %}      
         <div id="Schedule-Content">
             <div class="SC-Top">
               <div class="SCT-Left">
