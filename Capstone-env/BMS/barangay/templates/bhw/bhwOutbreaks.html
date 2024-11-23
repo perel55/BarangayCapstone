@@ -1,65 +1,89 @@
 {% load static %}
 {% block css %}
-<link rel="stylesheet" href="{% static './css/bhw.css' %}">
 <link rel="stylesheet" href="{% static 'css/bhwOutbreak.css' %}">
+<script type="module" src="{% static 'js/outbreak.js' %}"></script>
 {% endblock %}
 
 
-{% endblock %}
-
-
- 
 {% block content %}  
-    {% include 'bhw/bhwTopnav.html' %} 
+        {% include 'bhw/bhwTopnav.html' %} 
     <div class="adminContainer">
+
+        <div class="MC-Top">
+            <div class="TopContainer">
+                <div class="Right">
+                    <button id="Outbreak-btn">Outbreak</button>
+                    <button id="totalCases-btn">Total Cases</button>
+                </div>
+        
+                <div class="Left">
+                    <button id="openModalButton">Add Outbreak</button>
+                </div>
+            </div>
+        </div>
+        
+
+        
         <div class="MC-Bottom"> 
             {% include './bhwNav.html' %} 
-        <div class="contents">
-            <section id="content">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Outbreak Name</th>
-                            <th>Outbreak Type</th>
-                            <th>Purok</th>
-                            <th>Severity</th>
-                            <th>Number of Cases</th>
-                            <th>Update</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for outbreak in outbreaks %}
-                        <tr>
-                            <td>{{ outbreak.outbreak_name }}</td>
-                            <td>{{ outbreak.outbreak_type }}</td>
-                            <td>{{ outbreak.purok }}</td>
-                            <td>{{ outbreak.severity }}</td>
-                            <td>{{ outbreak.total_cases }}</td>
-                            <td>
-                                <button class="update-btn" data-id="{{ outbreak.id }}" data-outbreak_name="{{ outbreak.outbreak_name }}" data-outbreak_type="{{ outbreak.outbreak_type }}" data-total_cases="{{ outbreak.total_cases }}" data-purok="{{ outbreak.purok }}" data-severity="{{ outbreak.severity }}">Update</button>
-                            </td>
-                        <tr>  
-                            <th>ID</th>
-                            <th>Disease Name</th>  
-                            <th>Disease Type</th>
-                            <th>Total Affected</th>
-                        </tr>
-                    </thead>    
-                    <tbody>
-                        {% for payment in payments %}
-                        <tr>    
-                            <td></td>
-                            <td></td>        
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                <button class="add" id="openModalButton">+</button>
-            </section>  
-        
-        </div>
+            <div class="contents">
+                <section id="content">
+                    <div class="Outbreak" id="Outbreak-area">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Outbreak Name</th>
+                                    <th>Resident Name</th>
+                                    <th>Purok</th>
+                                    <th>Severity</th>
+                                    <th>Date</th>
+                                    <th>Update</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for outbreak in outbreaks %}
+                                <tr>
+                                    <td>{{ outbreak.outbreak_name }}</td>
+                                    <td>{{ outbreak.fname }} {{ outbreak.lname }}</td>
+                                    <td>{{ outbreak.purok }}</td>
+                                    <td>{{ outbreak.severity }}</td>
+                                    <td>{{ outbreak.date }}</td>
+                                    <td>
+                                        <button class="update-btn" data-date="{{ outbreak.date }}"data-id="{{ outbreak.id }}" data-outbreak_name="{{ outbreak.outbreak_name }}" data-fname="{{ outbreak.fname }}"data-lname="{{ outbreak.lname }}"  data-purok="{{ outbreak.purok }}" data-severity="{{ outbreak.severity }}">Update</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div class="Total Cases" id="Cases-area" style="display: none;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Outbreak Name</th>
+                                    <th>Purok</th>
+                                    <th>Total Cases</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for outbreak in outbreaks %} 
+                                <tr>
+                                    <td>{{ outbreak.outbreak_name }}</td>
+                                    <td>{{ outbreak.purok }}</td>
+                                    <td>{{ outbreak.total_cases_sum }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                        
+                </section>  
+            
+            </div>
         </div>
     </div>
 
@@ -77,12 +101,12 @@
                         <input type="text" id="outbreak_name" name="outbreak_name" placeholder="Enter outbreak name" required>
                     </div>
                     <div class="input-group">
-                        <label for="outbreak_type">Outbreak Description:</label>
-                        <input type="text" id="outbreak_type" name="outbreak_type" placeholder="Enter outbreak type" required>
+                        <label for="fname">First Name:</label>
+                        <input type="text" id="fname" name="fname" placeholder="Enter first name" required>
                     </div>
                     <div class="input-group">
-                        <label for="total_cases">Number of Cases:</label>
-                        <input type="number" id="total_cases" name="total_cases" placeholder="Enter number cases" required>
+                        <label for="lname">Last  Name:</label>
+                        <input type="text" id="lname" name="lname" placeholder="Enter last name" required>
                     </div>
                     <div class="input-group">
                         <label for="purok">Purok:</label>
@@ -97,6 +121,10 @@
                             <option value="7">7</option>
                             <option value="8">8</option>
                         </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="date">Date:</label>
+                        <input type="date" id="date" name="date" required>
                     </div>
                     <div class="input-group">
                         <label for="severity">Severity:</label>
@@ -130,13 +158,14 @@
                         <input type="text" id="update_outbreak_name" name="outbreak_name" placeholder="Enter outbreak name" required>
                     </div>
                     <div class="input-group">
-                        <label for="update_outbreak_type">Outbreak Description:</label>
-                        <input type="text" id="update_outbreak_type" name="outbreak_type" placeholder="Enter outbreak type" required>
+                        <label for="update_fname">First Name:</label>
+                        <input type="text" id="update_fname" name="update_fname" placeholder="Enter first name" required>
                     </div>
                     <div class="input-group">
-                        <label for="update_total_cases">Number of Cases:</label>
-                        <input type="number" id="update_total_cases" name="total_cases" placeholder="Enter number cases" required>
+                        <label for="update_lname">Last  Name:</label>
+                        <input type="text" id="update_lname" name="update_lname" placeholder="Enter last name" required>
                     </div>
+                    
                     <div class="input-group">
                         <label for="purok">Purok:</label>
                         <select id="purok" name="purok" required>
@@ -150,6 +179,10 @@
                             <option value="7">7</option>
                             <option value="8">8</option>
                         </select>
+                        <div class="input-group">
+                            <label for="date">Date:</label>
+                            <input type="date" id="date" name="date" required>
+                        </div>
                     <div class="input-group">
                         <label for="update_severity">Severity:</label>
                         <select id="update_severity" name="severity" required>
@@ -168,7 +201,7 @@
     </div>
 
 <script>
-    // JavaScript to open and close the modal for Add Outbreak
+    // Add Outbreak Modal
     document.getElementById('openModalButton').onclick = function() {
         document.getElementById('Modal-Category-Overlay').style.display = 'flex';
     };
@@ -176,16 +209,17 @@
         document.getElementById('Modal-Category-Overlay').style.display = 'none';
     };
 
-    // JavaScript to open and close the modal for Update Outbreak
+    // Update Modal
     document.querySelectorAll('.update-btn').forEach(button => {
         button.onclick = function() {
-            // Populate the update modal with existing data
+   
             document.getElementById('Update-Modal-Overlay').style.display = 'flex';
             document.getElementById('update_outbreak_id').value = this.getAttribute('data-id');
             document.getElementById('update_outbreak_name').value = this.getAttribute('data-outbreak_name');
-            document.getElementById('update_outbreak_type').value = this.getAttribute('data-outbreak_type');
-            document.getElementById('update_total_cases').value = this.getAttribute('data-total_cases');
+            document.getElementById('update_fname').value = this.getAttribute('data-fname');
+            document.getElementById('update_lname').value = this.getAttribute('data-lname');
             document.getElementById('update_purok').value = this.getAttribute('data-purok');
+            document.getElementById('update_date').value = this.getAttribute('data-date');
             document.getElementById('update_severity').value = this.getAttribute('data-severity');
         };
     });
@@ -193,7 +227,14 @@
     document.getElementById('cancel-update').onclick = function() {
         document.getElementById('Update-Modal-Overlay').style.display = 'none';
     };
-</script>
-{% endblock %}
 
+
+    // Total Cases Modal
+    document.getElementById('totalCasesBtn').onclick = function() {
+        document.getElementById('Modal-Category-Overlay').style.display = 'flex';
+    };
+    document.getElementById('cancel-category').onclick = function() {
+        document.getElementById('Modal-Category-Overlay').style.display = 'none';
+    };
+</script>
 {% endblock %}

@@ -1,0 +1,156 @@
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static './css/bhw.css' %}">
+<link rel="stylesheet" href="{% static './css/verificationBtn.css' %}">
+{% endblock %}
+
+{% block content %}
+    {% include 'healthAdmin/healthTopnav.html' %}
+
+    <div class="MC-Bottom">
+        {% include './healthNav.html' %}
+        <div class="contents">
+            <section id="content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Full Name</th>
+                            <th>Service</th>
+                            <th>Purok</th>
+                            <th>Date</th>
+                            <th>Phone Number</th>
+                            <th>Status</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for schedule in schedules %}
+                        <tr>
+                            <td>{{ schedule.user.username }}</td>
+                            <td>{{ schedule.fname }} {{ schedule.lname }}</td>
+                            <td>{{ schedule.bhwService.service_name }}</td>
+                            <td>{{ schedule.purok }}</td>
+                            <td>{{ schedule.date }}</td>
+                            <td>{{ schedule.phonenum }}</td>
+                            <td class="status-verified">{{ schedule.status }}</td>
+                            <td>
+                                <button type="button" id="maintenance-btn" 
+                                    data-username="{{ schedule.user.username }}" 
+                                    data-fullname="{{ schedule.fname }} {{ schedule.lname }}"
+                                    data-service="{{ schedule.bhwService.service_name }}"
+                                    data-purok="{{ schedule.purok }}"
+                                    data-date="{{ schedule.date }}">
+                                    View More
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+
+    <!-- Modal structure -->
+    <div id="maintenanceModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h3>Maintenance Details</h3>
+            <form method="POST" action="">
+                {% csrf_token %}
+                <table border="1" style="width: 100%; text-align: left;">
+                    <div>
+                        <button type="button" onclick="showMonth(1)">Month 1</button>
+                        <button type="button" onclick="showMonth(2)">Month 2</button>
+                        <button type="button" onclick="showMonth(3)">Month 3</button>
+                        <button type="button" onclick="showMonth(4)">Month 4</button>
+                        <button type="button" onclick="showMonth(5)">Month 5</button>
+                        <button type="button" onclick="showMonth(6)">Month 6</button>
+                    </div>
+
+                    <!-- Month Sections -->
+                    <tbody id="month1" class="month-section">
+                        <tr>
+                            <td>
+                                <button type="button" onclick="showWeekDetails('week1_1')">Week 1</button>
+                                <div id="week1_1" class="week-details" style="display: none;">
+                                    <label for="bp_week1_1">Blood Pressure:</label>
+                                    <input type="text" id="bp_week1_1" name="bp_week1_1">
+                                    <label for="weight_week1_1">Weight:</label>
+                                    <input type="text" id="weight_week1_1" name="weight_week1_1">
+                                </div>
+                            </td>
+                            <td>
+                                <button type="button" onclick="showWeekDetails('week1_2')">Week 2</button>
+                                <div id="week1_2" class="week-details" style="display: none;">
+                                    <label for="bp_week1_2">Blood Pressure:</label>
+                                    <input type="text" id="bp_week1_2" name="bp_week1_2">
+                                    <label for="weight_week1_2">Weight:</label>
+                                    <input type="text" id="weight_week1_2" name="weight_week1_2">
+                                </div>
+                            </td>
+                            <td>
+                                <button type="button" onclick="showWeekDetails('week1_3')">Week 3</button>
+                                <div id="week1_3" class="week-details" style="display: none;">
+                                    <label for="bp_week1_3">Blood Pressure:</label>
+                                    <input type="text" id="bp_week1_3" name="bp_week1_3">
+                                    <label for="weight_week1_3">Weight:</label>
+                                    <input type="text" id="weight_week1_3" name="weight_week1_3">
+                                </div>
+                            </td>
+                            <td>
+                                <button type="button" onclick="showWeekDetails('week1_4')">Week 4</button>
+                                <div id="week1_4" class="week-details" style="display: none;">
+                                    <label for="bp_week1_4">Blood Pressure:</label>
+                                    <input type="text" id="bp_week1_4" name="bp_week1_4">
+                                    <label for="weight_week1_4">Weight:</label>
+                                    <input type="text" id="weight_week1_4" name="weight_week1_4">
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody id="month2" class="month-section" style="display: none;">
+                        <tr><th colspan="4">Month 2</th></tr>
+                    </tbody>
+                </table>
+
+                <div class="modal-footer">
+                    <button type="button" id="closeModalButton" class="btn-close">Close</button>
+                    <button type="submit" class="btn-submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Show modal on button click and populate modal with data
+        document.querySelectorAll('#maintenance-btn').forEach(button => {
+            button.onclick = function() {
+                document.getElementById('maintenanceModal').style.display = 'flex';
+            };
+        });
+
+        // Close modal
+        document.getElementById('closeModalButton').onclick = function() {
+            document.getElementById('maintenanceModal').style.display = 'none';
+        };
+
+        // Function to show week details
+        function showWeekDetails(id) {
+            const element = document.getElementById(id);
+            if (element.style.display === 'none') {
+                element.style.display = 'block';
+            } else {
+                element.style.display = 'none';
+            }
+        }
+
+        // Placeholder for showMonth function
+        function showMonth(monthId) {
+            document.querySelectorAll('.month-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById('month' + monthId).style.display = 'block';
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,90 @@
+
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static './css/bhw.css' %}">
+<link rel="stylesheet" href="{% static './css/bhwEvents.css' %}">
+<script type="module" src="{% static 'js/bhwEvents.js' %}"></script>
+
+
+
+
+<link href="https://cdn.jsdelivr.net/npm/@fullcalendar/common@6.1.15/main.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.15/main.min.css" rel="stylesheet" />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script> 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+
+{% block content %}
+    
+    <div class="adminContainer">
+      {% include 'healthAdmin/healthTopnav.html' %}
+        <div class="MC-Bottom"> 
+          {% include './healthNav.html' %}
+
+            <div id="Schedule-Content">
+                <div class="SC-Top">
+                  <div class="SCT-Left">
+                   <select id="monthSelect">
+                        <option value="0">January</option>
+                        <option value="1">February</option>
+                        <option value="2">March</option>
+                        <option value="3">April</option>
+                        <option value="4">May</option>
+                        <option value="5">June</option>
+                        <option value="6">July</option>
+                        <option value="7">August</option>
+                        <option value="8">September</option>
+                        <option value="9">October</option>
+                        <option value="10">November</option>
+                        <option value="11">December</option>
+                    </select>
+    
+
+                  </div>
+                    <div class="SCT-Right">
+                      <button id="prevSchedule"></button>
+                       <button id="nextSchedule">></button>
+                    </div>
+                </div>
+                <div id='calendar'></div>
+            </div>
+            <div id="Reviewer-Schedule">
+              <div class="SC-Top">
+                  <div class="SCT-Left">
+                   <select id="monthSelect2">
+                        <option value="0">January</option>
+                        <option value="1">February</option>
+                        <option value="2">March</option>
+                        <option value="3">April</option>
+                        <option value="4">May</option>
+                        <option value="5">June</option>
+                        <option value="6">July</option>
+                        <option value="7">August</option>
+                        <option value="8">September</option>
+                        <option value="9">October</option>
+                        <option value="10">November</option>
+                        <option value="11">December</option>
+                    </select>
+    
+                    <select id="yearSelect2"></select>
+                      <div class="RSC-CalendarView">
+                        <button id="dayView2">D</button>
+                        <button id="weekView2">W</button>
+                        <button id="monthView2">M</button> 
+                      </div> 
+                  </div>
+                    <div class="SCT-Right">
+                      <button id="prevSchedule2"><</button>
+                       <button id="nextSchedule2">></button>
+                    </div>
+                </div>
+    
+                <div id='calendar2'></div>
+                <div id='calendar3'></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

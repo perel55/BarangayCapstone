@@ -1,0 +1,241 @@
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/bhwHS.css' %}">
+<link rel="stylesheet" href="{% static 'css/HealthService.css' %}">
+<style>
+ 
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="adminContainer">
+    {% include 'healthAdmin/healthTopnav.html' %}
+
+    <div class="Left">
+        <button id="openModalButton">Add Service</button>
+    </div>
+
+    <div class="MC-Bottom"> 
+        {% include './healthNav.html' %}
+        <section id="content">
+            <table>
+                <thead>
+                    <tr>  
+                        <th>ID</th>
+                        <th>Image</th>
+                        <th>Service Name</th>  
+                        <th>Service Description</th> 
+                        <th>Requirements</th>
+                        <th>Service Type</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>    
+                <tbody>
+                    {% for bhwService in bhwServices %}
+                    <tr>    
+                        <td>{{ bhwService.id }}</td>
+                        <td>{% if bhwService.picture %}<img src="{{ bhwService.picture.url }}" width='150'/> {% endif %}</td>
+                        <td>{{ bhwService.service_name }}</td>             
+                        <td>{{ bhwService.service_description }}</td>
+                        <td>{{ bhwService.service_requirements }}</td>   
+                        <td>{{ bhwService.service_type }}</td>  
+                        <td>
+                            <button class="update-btn" 
+                                    data-id="{{ bhwService.id }}" 
+                                    data-service_name="{{ bhwService.service_name }}" 
+                                    data-service_description="{{ bhwService.service_description }}" 
+                                    data-service_requirements="{{ bhwService.service_requirements }}" 
+                                    data-service_type="{{ bhwService.service_type }}" 
+                                    data-picture="{% if bhwService.picture %}{{ bhwService.picture.url }}{% endif %}">
+                                Update
+                            </button>
+                            <button class="delete-btn" data-id="{{ bhwService.id }}" data-service_name="{{ bhwService.service_name }}">Delete</button>    
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </section>  
+    </div>
+</div>
+
+<!-- ADD Modal -->
+<div id="Modal-Category-Overlay">
+    <div id="CO-Container">
+        <div class="CO-Top">
+            <h3>Add New Service</h3>
+        </div>
+        <form method="POST" action="{% url 'addHealthservice' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="CO-Bottom">
+             
+                <div class="input-group">
+                    <label for="service_name">Service Name:</label>
+                    <input type="text" id="service_name" name="service_name" placeholder="Enter service name" required>
+                </div>
+    
+               
+                <div class="input-group">
+                    <label for="service_description">Service Description:</label>
+                    <textarea id="service_description" name="service_description" placeholder="Enter service description" rows="4" required></textarea>
+                </div>
+    
+
+                <div class="input-group">
+                    <label for="service_requirements">Service Requirements:</label>
+                    <textarea id="service_requirements" name="service_requirements" placeholder="Enter service requirements" rows="4" required></textarea>
+                </div>
+    
+                <div class="input-group">
+                    <label for="service_type">Service Type:</label>
+                    <select id="service_type" name="service_type" required>
+                        <option value="none">None</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="sanitary">Sanitary</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="picture">Service Picture:</label>
+                    <input type="file" id="picture" name="picture" accept="image/*" required>
+                </div>
+            </div>
+            
+          
+            <div class="CO-Bottom2">
+                <button type="button" id="cancel-category">Cancel</button>
+                <button type="submit" id="add-category">Add</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Update Modal  -->
+<div id="Modal-Update-Overlay">
+    <div id="CO-Container">
+        <div class="CO-Top">
+            <h3>Update Service</h3>
+        </div>
+        <form method="POST" action="{% url 'updateHealthservice' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" id="update_service_id" name="healthservice_id" value="{{ bhwService.id }}">
+        
+            <p>
+                <label for="update_service_name">Service name:</label>
+                <input type="text" id="update_service_name" name="service_name" placeholder="Enter Service Name" value="{{ bhwService.service_name }}" required>
+            </p>
+        
+            <p>
+                <label for="update_service_description">Service description:</label>
+                <input type="text" id="update_service_description" name="service_description" placeholder="Enter Service Description" value="{{ bhwService.service_description }}" required>
+            </p>
+        
+            <p>
+                <label for="update_service_requirements">Service requirements:</label>
+                <input type="text" id="update_service_requirements" name="service_requirements" placeholder="Enter Service Requirements" value="{{ bhwService.service_requirements }}" required>
+            </p>
+        
+            <p>
+                <label for="update_service_type">Service Type:</label>
+                <select id="update_service_type" name="service_type" required>
+                    <option value="none">None</option>
+                    <option value="maintenance">Maintenance</option>
+                    <option value="sanitary">Sanitary</option>
+                </select>
+            </p>
+
+            <p>
+                <label for="update_picture">Picture:</label>
+                <input type="file" name="picture" class="form-control" id="update_picture">
+                {% if bhwService.picture %}
+                    <img src="{{ bhwService.picture.url }}" alt="Current picture" id="current_picture" width="150">
+                {% else %}
+                    <img src="" alt="Current picture" id="current_picture" width="150" style="display: none;">
+                {% endif %}
+            </p>
+            
+        
+            <button type="button" id="cancel-btn">Cancel</button>
+            <button type="submit" id="update-btn">Update</button>
+        </form>
+        
+    </div>
+</div>
+    
+
+<!-- Delete Modal  -->
+<div id="Modal-Delete-Overlay">
+    <div id="CO-Container">
+        <div class="CO-Top">
+            <h3>Confirm Delete</h3>
+        </div>
+        <div class="CO-Bottom2">
+            <p>Are you sure you want to delete <span id="service-name"></span>?</p>
+            <form id="delete-form" method="POST" action="{% url 'deleteHealthservice' 0 %}">
+                {% csrf_token %}
+                <button type="button" id="cancel-delete">Cancel</button>
+                <button type="submit" id="confirm-delete">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // JavaScript to open and close the modal
+    document.getElementById('openModalButton').onclick = function() {
+        document.getElementById('Modal-Category-Overlay').style.display = 'flex';
+    };
+    document.getElementById('cancel-category').onclick = function() {
+        document.getElementById('Modal-Category-Overlay').style.display = 'none';
+    };
+
+    //Update Modal
+    document.querySelectorAll('.update-btn').forEach(button => {
+    button.onclick = function() {
+        document.getElementById('Modal-Update-Overlay').style.display = 'flex';
+
+       
+        document.getElementById('update_service_id').value = this.getAttribute('data-id');
+        document.getElementById('update_service_name').value = this.getAttribute('data-service_name');
+        document.getElementById('update_service_description').value = this.getAttribute('data-service_description');
+        document.getElementById('update_service_requirements').value = this.getAttribute('data-service_requirements');
+        document.getElementById('update_service_type').value = this.getAttribute('data-service_type');
+        
+        const pictureUrl = this.getAttribute('data-picture');
+        const currentPicture = document.getElementById('current_picture');
+        if (pictureUrl) {
+            currentPicture.src = pictureUrl;
+            currentPicture.style.display = 'block';
+        } else {
+            currentPicture.style.display = 'none';
+        }
+    };
+});
+    document.getElementById('cancel-btn').onclick = function() {
+        document.getElementById('Modal-Update-Overlay').style.display = 'none';
+    };
+
+    // Delete modal
+    document.querySelectorAll('.delete-btn').forEach(button => {
+    button.onclick = function() {
+        document.getElementById('Modal-Delete-Overlay').style.display = 'flex';
+
+      
+        const serviceId = this.getAttribute('data-id');
+        const deleteForm = document.getElementById('delete-form');
+        deleteForm.action = deleteForm.action.replace('/0/', '/' + serviceId + '/');
+
+        
+        document.getElementById('service-name').textContent = this.getAttribute('data-service_name');
+    };
+});
+
+
+document.getElementById('cancel-delete').onclick = function() {
+    document.getElementById('Modal-Delete-Overlay').style.display = 'none';
+};
+
+
+</script>
+{% endblock %}

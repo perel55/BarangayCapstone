@@ -1,7 +1,5 @@
 /* Modal overlay style */
-#Modal-Category-Overlay {
- /* Modal overlay style */
- #Modal-Category-Overlay {
+#Modal-Category-Overlay, #Modal-Update-Overlay, #Modal-Delete-Overlay {
     display: none;
     position: fixed;
     top: 0;
@@ -13,6 +11,7 @@
     align-items: center;
     z-index: 10;
 }
+
 
 /* Modal content container */
 #CO-Container {
@@ -38,6 +37,8 @@
     margin-bottom: 20px;
     color: #333;
     font-weight: 600;
+    display: flex;
+    justify-content: center;
 }
 
 /* Input fields and labels */
@@ -60,14 +61,13 @@ input[type="file"] {
     color: #333;
     border: 1px solid #ced4da;
     border-radius: 8px;
-    padding: 12px 14px; /* Increased padding for a larger height */
-    padding: 10px 12px;
+    padding: 12px 14px;
     width: 100%;
     font-size: 1rem;
     outline: none;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    height: 48px; /* Adjust height for uniform input fields */
-    box-sizing: border-box; /* Ensures padding doesn't affect width */
+    height: 48px; 
+    box-sizing: border-box; 
 }
 
 textarea {
@@ -81,11 +81,10 @@ textarea:focus {
     box-shadow: 0 0 5px rgba(30, 136, 229, 0.3);
 }
 
-/* Button styling */
-#cancel-category,
-#add-category {
+/* Button styling cancel*/
+#cancel-category,#add-category, #cancel-btn, #cancel-delete{
     margin: 12px 8px;
-    padding: 10px 18px;
+    padding: 0.5rem;
     font-size: 0.9rem;
     font-weight: bold;
     border-radius: 8px;
@@ -94,13 +93,13 @@ textarea:focus {
     transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-#cancel-category {
-    background-color: #f44336;
+#cancel-category, #cancel-btn, #cancel-delete{
+    background-color: #201f1f;
     color: white;
 }
 
-#cancel-category:hover {
-    background-color: #d7372e;
+#cancel-category:hover, #cancel-btn:hover, #cancel-delete:hover{
+    background-color: #2b2a2a;
     transform: scale(1.05);
 }
 
@@ -114,25 +113,42 @@ textarea:focus {
     transform: scale(1.05);
 }
 
-/* Adjustments for dark theme */
-[data-theme="dark"] #CO-Container {
-    background-color: #2d2d2d;
-    color: #f0f0f0;
+
+ 
+.update-btn, #update-btn {
+    background-color: rgb(17, 190, 17);
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-[data-theme="dark"] input,
-[data-theme="dark"] textarea,
-[data-theme="dark"] input[type="file"] {
-    background-color: #3d3d3d;
-    color: #e0e0e0;
-    border-color: #555;
+
+.update-btn:hover, #update-btn:hover {
+    background-color: rgb(10, 150, 10);
+    transform: scale(1.05);
 }
 
-[data-theme="dark"] #cancel-category {
-    background-color: #d32f2f;
+.delete-btn, #confirm-delete{
+    background-color: rgb(198, 60, 22);
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-[data-theme="dark"] #add-category {
-    background-color: #388e3c;
+.delete-btn:hover, #confirm-delete:hover {
+    background-color: rgb(139, 41, 13); 
+    transform: scale(1.05);
 }
-}
+
+
+

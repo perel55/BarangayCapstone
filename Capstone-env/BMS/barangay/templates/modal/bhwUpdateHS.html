@@ -1,0 +1,38 @@
+<div id="Modal-Update-Overlay">
+    <div id="CO-Container">
+        <div class="CO-Top">
+            <h3>Update Service</h3>
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h1>Update Health Service</h1>
+        
+            <p>
+                <label for="id_service_name">Service name:</label>
+                <input type="text" name="service_name" maxlength="255" class="form-control" required placeholder="Enter service name" value="{{ bhwService.service_name }}">
+            </p>
+        
+            <p>
+                <label for="id_service_description">Service description:</label>
+                <input type="text" name="service_description" maxlength="255" class="form-control" required  placeholder="Enter service description" value="{{ bhwService.service_description }}">
+            </p>
+        
+            <p>
+                <label for="id_service_requirements">Service requirements:</label>
+                <input type="text" name="service_requirements" maxlength="255" class="form-control" required placeholder="Enter service requirements" value="{{ bhwService.service_requirements }}">
+            </p>
+        
+            <p>
+                <label for="id_picture">Picture:</label>
+                <input type="file" name="picture" class="form-control" id="id_picture">
+    
+                {% if bhwService.picture %}
+                <img src="{{ bhwService.picture.url }}" alt="Current picture" width="150">
+                {% endif %}
+            </p>
+        
+            <button type="buttond" id="cancel-btn">Cancel</button>
+            <button type="submit" id="update-btn">Update</button>
+        </form>
+    </div>
+</div>

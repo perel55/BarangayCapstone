@@ -1,4 +1,5 @@
 {% load static %}
+
 {% block css %}
 <link rel="stylesheet" href="{% static './css/bhwlist.css' %}">
 <script type="module" src="{% static 'js/bhw.js' %}"></script>
@@ -6,16 +7,17 @@
 
 {% block content %}
     <div class="adminContainer">
-        {% include 'bhw/bhwTopnav.html' %}
+        {% include 'healthAdmin/healthTopnav.html' %}
         
         <div class="Left">
             <button id="Bhw-Accounts">Bhw</button>
+            <button id="BhwAdmin-Accounts">Admin</button> 
             <button id="Officials-Accounts">Officials</button>
             <button id="Residents-Accounts">Residents</button> 
         </div>
 
         <div class="MC-Bottom">
-            {% include './bhwNav.html' %}
+            {% include 'healthAdmin/healthNav.html' %}
             
             <div class="contents">
                 <div class="content">
@@ -42,6 +44,31 @@
                             </tbody>
                         </table>
                     </div>  
+
+                    <!-- BHW Admin Accounts -->
+                    <div id="BhwAdminAcc-Area" style="display: none;">
+                        <table>
+                            <thead>
+                                <tr>  
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>First Name</th>  
+                                    <th>Last Name</th>      
+                                </tr>
+                            </thead>    
+                            <tbody>
+                                {% for healthAdmin in healthAdmins %}
+                                <tr>
+                                    <td>{{ healthadmin.fname }}</td>
+                                    <td>{{ healthadmin.mname }}</td>
+                                    <td>{{ healthadmin.lname }}</td>
+                                    <td>{{ healthadmin.phone_number }}</td>
+                                    <td>{{ healthadmin.position }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
 
                     <!-- Officials Accounts -->
                     <div id="OfficialsAcc-Area" style="display: none;">
@@ -90,6 +117,7 @@
                             </tbody>
                         </table>
                     </div> 
+
                 </div>         
             </div>
         </div>

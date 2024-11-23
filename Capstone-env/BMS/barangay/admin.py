@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .views.models import Accounts, Residents, Bhw, Account_Type, Personnel, HealthService, Schedule, Services, Outbreaks, Request
+from .views.models import Accounts, Residents, Bhw, Account_Type, Personnel, HealthService, Schedule, Services, Outbreaks, Request, Bsi,HealthAdmin
 
 
 
@@ -14,4 +14,5 @@ admin.site.register(Schedule)
 admin.site.register(Outbreaks)
 admin.site.register(Request)
 admin.site.register(Services)
-
+admin.site.register(Bsi)
+admin.site.register(HealthAdmin)

@@ -21,6 +21,7 @@
                             <tr>
                                 <th>Username</th>
                                 <th>Full Name</th>
+                                <th>Service</th>
                                 <th>Purok</th>
                                 <th>Date</th>
                                 <th>Time</th>
@@ -32,9 +33,10 @@
                             <tr>
                                 <td>{{ schedule.user.username }}</td>
                                 <td>{{ schedule.fname }} {{ schedule.lname }}</td>
+                                <td>{{ schedule.bhwService.service_name }}</td>
                                 <td>{{ schedule.purok }}</td>
                                 <td>{{ schedule.date }}</td>
-                                <td>{{ schedule.time }}</td>
+                                <td></td>
                                 <td>{{ schedule.phonenum }}</td>
                             </tr>
                             {% endfor %}

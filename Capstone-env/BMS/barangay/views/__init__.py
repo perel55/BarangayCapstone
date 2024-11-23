@@ -5,3 +5,7 @@ from .residents import *
 from .residentsched import *
 from .models import *
 from .views import *
+from .Maintenance import *
+from .approvedStatus import *
+from .bsiSide import *
+from .HealthAdminSide import *

@@ -147,18 +147,19 @@
   
   
   /*---------------------Content---------------------*/
-  
-  .left{
-    display: flex;
-    align-items: start;
+  .left {
+    display: flex; 
+    align-items: center; 
+    justify-content: flex-end; 
     gap: 1rem;
-    top: 5rem;
     margin-top: 5rem;
-    margin-left: 13%;
     background-color: #f3f4f7;
     height: 3rem;
     width: 86%;
-  }
+    margin-left: 13%;
+    padding-left: 1rem; 
+}
+
   
   .Left button {
     width: 100px;

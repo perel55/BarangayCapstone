@@ -1,0 +1,105 @@
+
+<nav> 
+    <div class="nav-content">
+      <ul>
+        <a href="{% url 'healthDashboard'   %}">
+          <li class="{% if request.path == '/healthDashboard/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/dash2.png" alt="">
+            </div>
+            <p>Home</p>
+          </li>
+        </a>  
+  
+        <a href="{% url 'bhwList' %}">
+          <li class="{% if request.path == 'healthADmin/bhwList/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/hworker.png" alt="">
+            </div>
+            <p>Health Worker</p> 
+          </li> 
+        </a>
+
+        <a href="{% url 'bhwService'   %}">
+          <li class="{% if request.path == 'healthADmin/bhwService/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/hservice.png" alt="">
+            </div>
+            <p>Health Services</p>    
+          </li>
+        </a>
+  
+    
+        <a href="{% url 'bhwEvents' %}">
+          <li class="{% if request.path == 'healthADmin/bhwEvents/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/calendar.png" alt="">
+            </div>
+            <p>Events</p>
+          </li>
+        </a>
+
+        <a href="">
+          <li class="{% if request.path == '/bhwOutbreak/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/health.png" alt="">
+            </div>
+            <p>Outbreaks</p>
+          </li>
+        </a>
+
+        <a href="{% url 'bhwMaintenance' %}">
+          <li class="{% if request.path == 'healthADmin/bhwMaintenance/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/health.png" alt="">
+            </div>
+            <p>Maintenance</p>
+          </li>
+        </a>
+        <a href="{% url 'bhwRecord'   %}">
+          <li class="{% if request.path == 'healthADmin/bhwRecord/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/medic.png" alt="">
+            </div>
+            <p>Health Record</p>
+          </li>
+        </a>
+
+        <a href="{% url 'bhwMedic'   %}">
+            <li class="{% if request.path == 'healthADmin/bhwMedic/' %}active{% endif %}">
+              <div class="NavContainer">
+                <img src="../../static/images/inventory.png" alt="">
+              </div>
+              <p>Medical Inventory</p>
+            </li>
+          </a>
+
+        <a href="{% url 'addHA' %}">
+          <li class="{% if request.path == 'healthADmin/addHA' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/hworker.png" alt="">
+            </div>
+            <p>Add HA</p>
+          </li>
+        </a>
+
+        <a href="{% url 'addBhw' %}">
+          <li class="{% if request.path == 'healthADmin/addBhw' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/hworker.png" alt="">
+            </div>
+            <p>Add BHW</p>
+          </li>
+        </a>
+
+        <a href="{% url 'logout' %}">
+          <li>
+            <div class="NavContainer">
+              <img src="../../static/images/signout.png" alt="">
+            </div>
+            <p>Logout</p>
+          </li>
+        </a>
+      </ul>
+    </div>
+</nav>

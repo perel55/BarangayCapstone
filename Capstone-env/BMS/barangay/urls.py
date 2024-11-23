@@ -1,6 +1,5 @@
 from django.urls import path, re_path
 from .import views
-from barangay import views
 from django.views.generic import TemplateView
 from django.urls import path, include  # new
 from django.conf.urls.static import static
@@ -25,30 +24,40 @@ urlpatterns = [
 
 
 
-
-
-
-
-
-    #----------------------------------------Bhw------------------------------------------------
-    re_path(r'^bhwDashboard/$', views.bhwDashboard, name='bhwDashboard'),
+#----------------------------------------Health Admin------------------------------------------------
     re_path(r'^addBhw/$', views.addBhw, name='addBhw'),
     re_path(r'^bhwregister$', views.bhwregister, name='bhwregister'),
+    re_path(r'^healthAdminreg/$', views.healthAdminreg, name='healthAdminreg'),  # Add trailing slash here
+    re_path(r'^healthDashboard/$', views.healthDashboard, name='healthDashboard'),
+    re_path(r'^addHA/$', views.addHA, name='addHA'),
+    re_path('bhwList/', views.bhwList, name = 'bhwList'),
     re_path(r'^bhwService/$', views.bhwService, name='bhwService'),
-    re_path(r'^bhwOutbreak/$', views.bhwOutbreak, name='bhwOutbreak'),
     re_path(r'^bhwRecord/$', views.bhwRecord, name='bhwRecord'),
     re_path(r'^bhwMedic/$', views.bhwMedic, name='bhwMedic'),
     re_path('bhw/addservice/', views.addHealthservice, name = 'addHealthservice'),
-    re_path('bhw/addOutbreak/', views.addOutbreak, name = 'addOutbreak'),
     re_path('bhwEvents/', views.bhwEvents, name = 'bhwEvents'),
-    re_path('bhwList/', views.bhwList, name = 'bhwList'),
     re_path(r'^resident/service/$', views.bhwServices, name='bhwServices'),
-    re_path(r'^bhw/deleteService/(?P<HealthService_id>\d+)/$', views.delete_healthservice, name='delete_healthservice'),
-    re_path(r'^bhw/UpdateService/(?P<HealthService_id>\d+)/$', views.update_healthservice, name='update_healthservice'),
-      re_path(r'^update-outbreak/$', views.update_outbreak, name='updateOutbreak'),
+    re_path(r'^delete_healthservice/(?P<HealthService_id>\d+)/$', views.delete_healthservice, name='deleteHealthservice'),
+    re_path(r'^bhw/UpdateService/$', views.updateHealthservice, name='updateHealthservice'),
+    re_path('bhwMaintenance/', views.bhwMaintenance, name = 'bhwMaintenance'),
+    re_path(r'^approve-schedule/(?P<schedule_id>\d+)/$', views.approve_schedule, name='approve_schedule'),
+
+    #----------------------------------------Bhw Admin------------------------------------------------
+    re_path(r'^bhwDashboard/$', views.bhwDashboard, name='bhwDashboard'),
+    re_path(r'^bhwOutbreak/$', views.bhwOutbreak, name='bhwOutbreak'),
+    re_path('bhw/addOutbreak/', views.addOutbreak, name = 'addOutbreak'),
+    re_path(r'^update-outbreak/$', views.update_outbreak, name='updateOutbreak'),
 
 
-   
+
+
+
+ #----------------------------------------BIS------------------------------------------------
+     re_path(r'^addBSI/$', views.addBSI, name='addBSI'),
+     re_path(r'^bsiDashboard/$', views.bsiDashboard, name='bsiDashboard'),
+     re_path(r'^bsiregister/$', views.bsiregister, name='bsiregister'),
+     re_path(r'^bsiSanitary/$', views.bsiSanitary, name='bsiSanitary'),
+     re_path(r'^approve_sanitary/(?P<schedule_id>\d+)/$', views.approve_sanitary, name='approve_sanitary'),
     
     
     
