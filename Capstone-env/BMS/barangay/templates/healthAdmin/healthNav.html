@@ -12,7 +12,7 @@
         </a>  
   
         <a href="{% url 'bhwList' %}">
-          <li class="{% if request.path == 'healthADmin/bhwList/' %}active{% endif %}">
+          <li class="{% if request.path == '/bhwList/' %}active{% endif %}">
             <div class="NavContainer">
               <img src="../../static/images/hworker.png" alt="">
             </div>
@@ -21,7 +21,7 @@
         </a>
 
         <a href="{% url 'bhwService'   %}">
-          <li class="{% if request.path == 'healthADmin/bhwService/' %}active{% endif %}">
+          <li class="{% if request.path == '/bhwService/' %}active{% endif %}">
             <div class="NavContainer">
               <img src="../../static/images/hservice.png" alt="">
             </div>
@@ -31,7 +31,7 @@
   
     
         <a href="{% url 'bhwEvents' %}">
-          <li class="{% if request.path == 'healthADmin/bhwEvents/' %}active{% endif %}">
+          <li class="{% if request.path == '/bhwEvents/' %}active{% endif %}">
             <div class="NavContainer">
               <img src="../../static/images/calendar.png" alt="">
             </div>
@@ -49,7 +49,7 @@
         </a>
 
         <a href="{% url 'bhwMaintenance' %}">
-          <li class="{% if request.path == 'healthADmin/bhwMaintenance/' %}active{% endif %}">
+          <li class="{% if request.path == '/bhwMaintenance/' %}active{% endif %}">
             <div class="NavContainer">
               <img src="../../static/images/health.png" alt="">
             </div>
@@ -57,7 +57,7 @@
           </li>
         </a>
         <a href="{% url 'bhwRecord'   %}">
-          <li class="{% if request.path == 'healthADmin/bhwRecord/' %}active{% endif %}">
+          <li class="{% if request.path == '/bhwRecord/' %}active{% endif %}">
             <div class="NavContainer">
               <img src="../../static/images/medic.png" alt="">
             </div>
@@ -66,7 +66,7 @@
         </a>
 
         <a href="{% url 'bhwMedic'   %}">
-            <li class="{% if request.path == 'healthADmin/bhwMedic/' %}active{% endif %}">
+            <li class="{% if request.path == '/bhwMedic/' %}active{% endif %}">
               <div class="NavContainer">
                 <img src="../../static/images/inventory.png" alt="">
               </div>
@@ -75,7 +75,7 @@
           </a>
 
         <a href="{% url 'addHA' %}">
-          <li class="{% if request.path == 'healthADmin/addHA' %}active{% endif %}">
+          <li class="{% if request.path == '/addHA' %}active{% endif %}">
             <div class="NavContainer">
               <img src="../../static/images/hworker.png" alt="">
             </div>

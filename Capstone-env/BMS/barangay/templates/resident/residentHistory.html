@@ -24,7 +24,6 @@
                                 <th>Service</th>
                                 <th>Purok</th>
                                 <th>Date</th>
-                                <th>Time</th>
                                 <th>Phone Number</th>
                             </tr>
                         </thead>
@@ -32,12 +31,11 @@
                             {% for schedule in schedules %}
                             <tr>
                                 <td>{{ schedule.user.username }}</td>
-                                <td>{{ schedule.fname }} {{ schedule.lname }}</td>
+                                <td>{{ schedule.resident.fname }} {{ scheduleresident..lname }}</td>
                                 <td>{{ schedule.bhwService.service_name }}</td>
-                                <td>{{ schedule.purok }}</td>
+                                <td>{{ schedule.resident.zone }}</td>
                                 <td>{{ schedule.date }}</td>
-                                <td></td>
-                                <td>{{ schedule.phonenum }}</td>
+                                <td>{{ schedule.resident.phone_number }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>

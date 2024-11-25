@@ -28,12 +28,12 @@
                         {% for schedule in schedules %}
                         <tr>
                             <td>{{ schedule.user.username }}</td>
-                            <td>{{ schedule.fname }} {{ schedule.lname }}</td>
+                            <td>{{ schedule.resident.fname }} {{ schedule.resident.lname }}</td>
                             <td>{{ schedule.bhwService.service_name }}</td>
-                            <td>{{ schedule.purok }}</td>
+                            <td>{{ schedule.resident.zone }}</td>
                             <td>{{ schedule.date }}</td>
-                            <td>{{ schedule.phonenum }}</td>
-                            <td class="status-verified">{{ schedule.status }}</td>
+                            <td>{{ schedule.resident.phone_number }}</td>
+                            <td class="verified-status">{{ schedule.status }}</td>
                             <td>
                                 <button type="button" id="maintenance-btn" 
                                     data-username="{{ schedule.user.username }}" 

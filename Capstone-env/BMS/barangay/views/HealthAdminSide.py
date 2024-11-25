@@ -73,6 +73,15 @@ def bhwList(request):
         )
     )
 
+    bsi = Bsi.objects.filter(
+        auth_user__isnull=False,
+    ).prefetch_related(
+        Prefetch(
+            'accounts_set', 
+            queryset=Accounts.objects.filter(account_typeid__Account_type='BSI')
+        )
+    )
+
     healthadmin = HealthAdmin.objects.filter(
         auth_user__isnull=False,
     ).prefetch_related(
@@ -105,7 +114,8 @@ def bhwList(request):
     context = {
         'account_type': account_type,
         'bhws': bhws,
-        'healthadmin': healthadmin,
+        'bsis': bsi,
+        'healthadmins': healthadmin,
         'residents': residents,
         'officials': officials,
     }

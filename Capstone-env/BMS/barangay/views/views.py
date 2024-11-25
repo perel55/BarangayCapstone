@@ -291,58 +291,108 @@ def update_outbreak(request):
 
     return HttpResponse("Invalid method", status=405)  
 
-
-
-
-
-
-
-#service display for resident side 
+@login_required
 def bhwServices(request):
-    bhwServices = HealthService.objects.all()
+    try:
+        resident = Residents.objects.get(auth_user=request.user)
+        if resident.status == "Verified":
+            bhwServices = HealthService.objects.all()
+        else:
+            bhwServices = HealthService.objects.none()
+    
+    except Residents.DoesNotExist:
+        bhwServices = HealthService.objects.none()
+
+    # Load the template
     template = loader.get_template('resident/residentHS.html')
     context = {
         'bhwServices': bhwServices,
     }
     return HttpResponse(template.render(context, request))
 
-# Book service  
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+from .models import HealthService, Schedule, Residents
+
+
 @login_required
-def book_healthService(request, HealthService_id):
+def book_healthService(request, HealthService_id, resident_id):
+    # Get the `HealthService` instance
+    bhwService = get_object_or_404(HealthService, id=HealthService_id)
+
+    # Get the `Resident` instance
+    resident = get_object_or_404(Residents, id=resident_id)
+
     if request.method == 'POST':
-        fname = request.POST.get('fname')
-        lname = request.POST.get('lname')
-        age = request.POST.get('age')
-        purok = request.POST.get('purok')
         date = request.POST.get('date')
-        phonenum = request.POST.get('phone')
-        user_id = request.user.id  # Get the user ID
-        bhwService = HealthService.objects.get(id=HealthService_id)  
-   
-        # Create a new booking object and save it to the database
-        schedule = Schedule.objects.create(
-            user_id=user_id, 
-            bhwService=bhwService, 
-            fname=fname, 
-            lname=lname, 
-            age=age, 
-            purok=purok, 
-            date=date, 
-            phonenum=phonenum
-        )
     
+
+        # Create a new Schedule object and save it to the database
+        Schedule.objects.create(
+            user=request.user, 
+            resident=resident, 
+            bhwService=bhwService,
+            date=date,
+        )
+
+        # Redirect to the 'bhwServices' page after successful booking
         return redirect(reverse('bhwServices'))
 
+    return render(request, 'your_template.html', {
+        'bhwService': bhwService,
+        'resident': resident,
+    })
 
-#display service
+
+
+
 def book_healthServiceform(request, HealthService_id):
     bhwService = HealthService.objects.get(pk=HealthService_id)
-    return render(request, 'resident/Hsapplication.html', {'bhwService': bhwService})
+    
+    try:
+        # Query the Residents model to get the associated resident for the logged-in user
+        resident = Residents.objects.get(auth_user=request.user)
+    except Residents.DoesNotExist:
+        # Handle the case where no resident is found for the user
+        resident = None
+    
+    return render(request, 'resident/Hsapplication.html', {'bhwService': bhwService, 'resident': resident})
+
 
 #display the recent avail service to the resident sidecd 
 def residentHistory(request):
     user = request.user
-    
     schedules = Schedule.objects.filter(user__username=user.username)
-    return render(request, 'resident/residentHistory.html', {'schedules': schedules})
+    resident = Residents.objects.get(auth_user=request.user)
+    return render(request, 'resident/residentHistory.html', {'schedules': schedules, 'resident': resident})
 
+@login_required
+def residentdashboard(request):
+    resident = Residents.objects.filter(auth_user=request.user).first()
+
+    # Check if profile is incomplete
+    if resident and not resident.is_profile_complete:
+        if request.method == 'POST':
+            resident.fname = request.POST.get('fname')
+            resident.mname = request.POST.get('mname')
+            resident.lname = request.POST.get('lname')
+            resident.zone = request.POST.get('zone')
+            resident.civil_status = request.POST.get('civil_status')
+            resident.occupation = request.POST.get('occupation')
+            resident.age = request.POST.get('age') or None  # Handle null values
+            resident.birthdate = request.POST.get('birthdate')
+            resident.phone_number = request.POST.get('phone_number')
+            resident.position = request.POST.get('position')
+            
+            if 'picture' in request.FILES:
+                resident.picture = request.FILES['picture']
+            
+            resident.is_profile_complete = True
+            resident.save()
+            return redirect('residentdashboard')  # Reload dashboard after saving
+
+        return render(request, 'resident/userd.html', {'resident': resident, 'show_modal': True})
+
+    # Render dashboard normally if profile is complete
+    return render(request, 'resident/userd.html', {'show_modal': False})

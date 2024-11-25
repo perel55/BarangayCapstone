@@ -41,8 +41,11 @@ urlpatterns = [
     re_path(r'^bhw/UpdateService/$', views.updateHealthservice, name='updateHealthservice'),
     re_path('bhwMaintenance/', views.bhwMaintenance, name = 'bhwMaintenance'),
     re_path(r'^approve-schedule/(?P<schedule_id>\d+)/$', views.approve_schedule, name='approve_schedule'),
+    re_path(r'^reject-schedule/(?P<schedule_id>\d+)/$', views.reject_schedule, name='reject_schedule'),
+    re_path(r'^approve-resident/(?P<resident_id>\d+)/$', views.approved_resident, name='approved_resident'),
+    re_path(r'^declined-resident/(?P<resident_id>\d+)/$', views.declined_resident, name='declined_resident'),
 
-    #----------------------------------------Bhw Admin------------------------------------------------
+    #----------------------------------------Bhw------------------------------------------------
     re_path(r'^bhwDashboard/$', views.bhwDashboard, name='bhwDashboard'),
     re_path(r'^bhwOutbreak/$', views.bhwOutbreak, name='bhwOutbreak'),
     re_path('bhw/addOutbreak/', views.addOutbreak, name = 'addOutbreak'),
@@ -67,7 +70,7 @@ urlpatterns = [
      #----------------------------------------Resident------------------------------------------------
 
     re_path(r'^bhw/book_healthServiceform/(?P<HealthService_id>\d+)/$', views.book_healthServiceform, name='book_healthServiceform'),
-    re_path(r'^bhw/book_healthService/(?P<HealthService_id>\d+)/$', views.book_healthService, name='book_healthService'),
+    re_path(r'^bhw/book_healthService/(?P<HealthService_id>\d+)/(?P<resident_id>\d+)/$', views.book_healthService, name='book_healthService'),
     re_path(r'^residentHistory/$', views.residentHistory, name='residentHistory'),
 
 

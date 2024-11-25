@@ -9,3 +9,4 @@ from .Maintenance import *
 from .approvedStatus import *
 from .bsiSide import *
 from .HealthAdminSide import *
+from .verified_resident import *

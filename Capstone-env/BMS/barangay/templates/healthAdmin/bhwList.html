@@ -2,6 +2,7 @@
 
 {% block css %}
 <link rel="stylesheet" href="{% static './css/bhwlist.css' %}">
+<link rel="stylesheet" href="{% static './css/verificationBtn.css' %}">
 <script type="module" src="{% static 'js/bhw.js' %}"></script>
 {% endblock %}
 
@@ -10,10 +11,12 @@
         {% include 'healthAdmin/healthTopnav.html' %}
         
         <div class="Left">
+            <button id="Residents-Accounts">Residents</button> 
             <button id="Bhw-Accounts">Bhw</button>
+            <button id="Bsi-Accounts">BSI</button>
             <button id="BhwAdmin-Accounts">Admin</button> 
             <button id="Officials-Accounts">Officials</button>
-            <button id="Residents-Accounts">Residents</button> 
+
         </div>
 
         <div class="MC-Bottom">
@@ -21,8 +24,49 @@
             
             <div class="contents">
                 <div class="content">
+                       <!-- Residents Accounts -->
+                       <div id="ResidentsAcc-Area">
+                        <table>
+                            <thead>
+                                <tr>  
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>First Name</th>  
+                                    <th>Last Name</th>
+                                    <th>Purok</th>   
+                                    <th>Status</th>  
+                                    <th>Action</th>       
+                                </tr>
+                            </thead>    
+                            <tbody>
+                                {% for resident in residents %}
+                                    <tr>    
+                                        <td>{{ resident.auth_user.username }}</td>
+                                        <td>{{ resident.auth_user.email }}</td>        
+                                        <td>{{ resident.fname }}</td>
+                                        <td>{{ resident.lname }}</td>
+                                        <td>{{ resident.zone }}</td>
+                                        <td>
+                                            {% if resident.status == "Pending" %}
+                                            <span class="status-pending">Pending</span>
+                                            {% elif resident.status == "Verified" %}
+                                                <span class="status-verified">Verified</span>
+                                            {% elif resident.status == "Declined" %}
+                                                <span class="status-declined">Declined</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'approved_resident' resident.id %}" class="btn-approve">Verified</a>
+                                            <a href="{% url 'declined_resident' resident.id %}" class="btn-declined">Declined</a>
+                                        </td>    
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div> 
+
                     <!-- Bhw Accounts -->
-                    <div id="BhwAcc-Area">
+                    <div id="BhwAcc-Area" style="display: none;">
                         <table>
                             <thead>
                                 <tr>  
@@ -45,6 +89,30 @@
                         </table>
                     </div>  
 
+                      <!-- Bsi Accounts -->
+                      <div id="BsiAcc-Area" style="display: none;">
+                        <table>
+                            <thead>
+                                <tr>  
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>First Name</th>  
+                                    <th>Last Name</th>      
+                                </tr>
+                            </thead>    
+                            <tbody>
+                                {% for bsi in bsis %}
+                                    <tr>    
+                                        <td>{{ bsi.auth_user.username }}</td>
+                                        <td>{{ bsi.auth_user.email }}</td>        
+                                        <td>{{ bsi.fname }}</td>
+                                        <td>{{ bsi.lname }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>  
+
                     <!-- BHW Admin Accounts -->
                     <div id="BhwAdminAcc-Area" style="display: none;">
                         <table>
@@ -57,13 +125,12 @@
                                 </tr>
                             </thead>    
                             <tbody>
-                                {% for healthAdmin in healthAdmins %}
+                                {% for healthadmin in healthadmins %}
                                 <tr>
+                                    <td>{{ healthadmin.auth_user.username }}</td>
+                                    <td>{{ healthadmin.auth_user.email }}</td>    
                                     <td>{{ healthadmin.fname }}</td>
                                     <td>{{ healthadmin.mname }}</td>
-                                    <td>{{ healthadmin.lname }}</td>
-                                    <td>{{ healthadmin.phone_number }}</td>
-                                    <td>{{ healthadmin.position }}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -94,29 +161,7 @@
                         </table>
                     </div> 
 
-                    <!-- Residents Accounts -->
-                    <div id="ResidentsAcc-Area" style="display: none;">
-                        <table>
-                            <thead>
-                                <tr>  
-                                    <th>Username</th>
-                                    <th>Email</th>
-                                    <th>First Name</th>  
-                                    <th>Last Name</th>      
-                                </tr>
-                            </thead>    
-                            <tbody>
-                                {% for resident in residents %}
-                                    <tr>    
-                                        <td>{{ resident.auth_user.username }}</td>
-                                        <td>{{ resident.auth_user.email }}</td>        
-                                        <td>{{ resident.fname }}</td>
-                                        <td>{{ resident.lname }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div> 
+                 
 
                 </div>         
             </div>

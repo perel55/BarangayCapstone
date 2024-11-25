@@ -13,20 +13,28 @@
 
             <div class="contents">
                 <section id="img">
-                    {% for x in bhwServices %} 
-            
-                    <div class="p-box" id="1">  
-                        <div class="prod-card"> 
-                            <p>{% if x.picture %}<img src="{{ x.picture.url }}" width = '200'/> {% endif %}</p>
-                            <h3>{{ x.service_name }} </h3>
-                            <p>Description: {{ x.service_description }}</p>
-                            <p>Requirements:{{ x.service_requirements }}</p>
-                            <a href="{% url 'book_healthServiceform' x.id %}" class="btn">Avail</a>
-                        </div> 
-                    </div>  
-                    
-                    {% endfor %}   
-                </section>  
+                    {% for x in bhwServices %}
+                        <div class="p-box" id="1">  
+                            <div class="prod-card"> 
+                                <!-- Check if picture exists, then display it -->
+                                <p>
+                                    {% if x.picture %}
+                                        <img src="{{ x.picture.url }}" width="200" alt="{{ x.service_name }}"/>
+                                    {% else %}
+                                        <img src="{% static 'images/default_image.jpg' %}" width="200" alt="No image available"/>
+                                    {% endif %}
+                                </p>
+                                <h3>{{ x.service_name }}</h3>
+                                <p>Description: {{ x.service_description }}</p>
+                                <p>Requirements: {{ x.service_requirements }}</p>
+                                <a href="{% url 'book_healthServiceform' x.id %}" class="btn">Avail</a>
+                            </div> 
+                        </div>  
+                    {% empty %}
+                        <p>No services available at the moment.</p>
+                    {% endfor %}
+                </section>
+                
             </div>
         </div>
     </div>

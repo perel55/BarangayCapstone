@@ -103,15 +103,15 @@
 <body>
 
     {% block content %}
-    <form method="post" action="{% url 'book_healthService' bhwService.id %}">
+    <form method="post" action="{% url 'book_healthService' bhwService.id resident.id %}">
         {% csrf_token %}
-
+        
         <div class="ext">
             <a href="{% url 'bhwServices' %}">&times;</a>
         </div>
-
+    
         <h1>Service Form</h1>
-
+    
         <div class="service_details">
             <div class="details">
                 <label for="service_name">Service Name:</label>
@@ -122,46 +122,46 @@
                 <input type="service" id="service_description" name="service_description" value="{{ bhwService.service_description }}" readonly>
             </div>
         </div>
-
+    
         <hr>
-
+    
         <div class="service_form">
             <div class="form">
                 <label for="fname">First Name:</label>
-                <input type="text" id="fname" name="fname" required>
+                <input type="text" id="fname" name="fname" value="{{ resident.fname }}" required>
             </div>
-
+    
             <div class="form">
                 <label for="lname">Last Name:</label>
-                <input type="text" id="lname" name="lname" required>
+                <input type="text" id="lname" name="lname" value="{{ resident.lname }}" required>
             </div>
-
+    
             <div class="form">
                 <label for="age">Age:</label>
-                <input type="text" id="age" name="age" required>
+                <input type="text" id="age" name="age"  value="{{ resident.age }}" required>
             </div>
-
+    
             <div class="form">
                 <label for="purok">Purok:</label>
-                <input type="text" id="purok" name="purok" required>
+                <input type="text" id="purok" name="purok"  value="{{ resident.zone }}"required>
             </div>
-
+    
             <div class="form">
                 <label for="phone">Phone Number:</label>
-                <input type="text" id="phone" name="phone" required>
+                <input type="text" id="phone" name="phone" value="{{ resident.phone_number }}" required>
             </div>
-
+    
             <div class="form">
                 <label for="date">Date:</label>
                 <input type="date" id="date" name="date" required>
             </div>
-
-
-            <input type="hidden" name="service_id" value="{{ HealthService.id }}">
+    
+            <input type="hidden" name="service_id" value="{{ bhwService.id }}">
         </div>
-
+    
         <input type="submit" value="Submit">
     </form>
+    
     {% endblock %}
 
 </body>

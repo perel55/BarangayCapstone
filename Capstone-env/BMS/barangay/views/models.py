@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 
 class Residents(models.Model):
     auth_user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE) 
-    auth_user = models.OneToOneField(User, on_delete=models.CASCADE, null=False, default=1)
     fname = models.CharField(max_length=255)
     mname = models.CharField(max_length=255)
     lname = models.CharField(max_length=255)
@@ -18,6 +17,8 @@ class Residents(models.Model):
     picture = models.ImageField(upload_to = 'images/', null=True)
     position = models.CharField(max_length=255)
     is_profile_complete = models.BooleanField(default=False)
+    status = models.CharField(max_length=50, default="Pending")
+
 
     def __str__(self):
         return f"{self.auth_user}"
@@ -103,15 +104,9 @@ class Accounts(models.Model):
     account_typeid= models.ForeignKey(Account_Type, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return f"{self.resident_id} {self.admin_id} {self.bhw_id} {self.bsi_id} {self.ha_id}  "
+        return f"Resident: {self.resident_id} | Admin: {self.admin_id} | BHW: {self.bhw_id} | Account Type: {self.account_typeid}"
     
  
-    #
-    # def __str__(self):
-    #     # Using the __str__ methods of related objects
-    #     return f"Resident: {self.resident_id} | Admin: {self.admin_id} | BHW: {self.bhw_id} | Account Type: {self.account_typeid}"
-
-
 class HealthService(models.Model):
     service_name = models.CharField(max_length =255)
     service_description = models.CharField(max_length =255)
@@ -137,18 +132,13 @@ class Services(models.Model):
 # models.py
 class Schedule(models.Model):
     bhwService = models.ForeignKey(HealthService, on_delete=models.CASCADE, null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    fname = models.CharField(max_length=255)
-    lname = models.CharField(max_length=255)
-    purok = models.IntegerField(null=True, blank=True)
-    age = models.IntegerField(null=True, blank=True)
-    phonenum = models.CharField(max_length=255)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)  
+    resident = models.ForeignKey(Residents, on_delete=models.CASCADE, null=True)  
     date = models.DateField(max_length=255)
-    time = models.CharField(max_length=100, null=True)
-    status = models.CharField(max_length=50, default="Pending")  # Add a status field
+    status = models.CharField(max_length=50, default="Pending")
 
     def __str__(self):
-        return f"{self.fname} {self.lname} {self.phonenum} {self.date} {self.status}"
+        return f"{self.date}"
 
     
     
