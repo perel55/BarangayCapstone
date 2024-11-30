@@ -36,7 +36,7 @@ class Personnel(models.Model):
     picture = models.ImageField(upload_to = 'images/', null=True)
     position = models.CharField(max_length=255)
 
-def __str__(self):
+    def __str__(self):
         return f"{self.auth_user}"
   
 class Bhw(models.Model):
@@ -69,7 +69,7 @@ class Bsi(models.Model):
     picture = models.ImageField(upload_to = 'images/', null=True)
     position = models.CharField(max_length=255)
 
-def __str__(self):
+    def __str__(self):
         return f"{self.auth_user}"
 
 class HealthAdmin(models.Model):
@@ -86,7 +86,7 @@ class HealthAdmin(models.Model):
     picture = models.ImageField(upload_to = 'images/', null=True)
     position = models.CharField(max_length=255)
 
-def __str__(self):
+    def __str__(self):
         return f"{self.auth_user}"
 class Account_Type(models.Model):
     Account_type = models.CharField(max_length =255)
@@ -103,15 +103,9 @@ class Accounts(models.Model):
     account_typeid= models.ForeignKey(Account_Type, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return f"{self.resident_id} {self.admin_id} {self.bhw_id} {self.bsi_id} {self.ha_id}  "
+        return f"Resident: {self.resident_id} | Admin: {self.admin_id} | BHW: {self.bhw_id} | Account Type: {self.account_typeid}"
     
  
-    #
-    # def __str__(self):
-    #     # Using the __str__ methods of related objects
-    #     return f"Resident: {self.resident_id} | Admin: {self.admin_id} | BHW: {self.bhw_id} | Account Type: {self.account_typeid}"
-
-
 class HealthService(models.Model):
     service_name = models.CharField(max_length =255)
     service_description = models.CharField(max_length =255)
@@ -178,15 +172,23 @@ class Request(models.Model):
         return f"{self.Resident_id} {self.service_id} {self.schedule_date}"
 
 
-class Announcement(models.Model):
+class CommunityNotice(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     bhw_id = models.ForeignKey(Bhw, on_delete=models.CASCADE, null=True)
     admin_id = models.ForeignKey(Personnel, on_delete=models.CASCADE, null=True)
-    announcement_name = models.CharField(max_length=100)
-    announcement_description = models.TextField(null=True)
-    announcement_date = models.DateField(null=True)
-    announcement_time = models.TimeField(null=True)
-    announcement_type = models.CharField(max_length=100)
+    notice_name = models.CharField(max_length=100)
+    notice_description = models.TextField(null=True)
+    notice_image = models.ImageField(upload_to = 'images/', null=True)
+    notice_StartDate = models.DateField(null=True)
+    notice_EndDate = models.DateField(null=True)
+    notice_StartTime = models.TimeField(null=True)
+    notice_EndTime = models.TimeField(null=True)
+    notice_type = models.CharField(max_length=100)
+    notice_color = models.CharField(max_length=7, default='#007bff')
 
     def __str__(self):
-        return f"{self.announcement_name} {self.announcement_description} {self.announcement_date} {self.announcement_time} {self.announcement_type}"
+        # Format the string using the updated field names
+        start_datetime = f"{self.notice_StartDate} {self.notice_StartTime}" if self.notice_StartDate and self.notice_StartTime else "N/A"
+        end_datetime = f"{self.notice_EndDate} {self.notice_EndTime}" if self.notice_EndDate and self.notice_EndTime else "N/A"
+        return f"{self.notice_name} ({self.notice_type}): {start_datetime} to {end_datetime}"
+

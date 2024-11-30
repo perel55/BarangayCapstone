@@ -45,7 +45,9 @@
     padding-top: 1rem;
     padding-bottom: 1rem;
     background-color: #f8f8fa;
-    margin: 200px;
+    margin: 4%;
+    position: relative;
+    left: 6%;
   }
   
   .fc-daygrid-day.fc-day-other {
@@ -141,6 +143,7 @@
     border: none;
     margin-left: 8px;
     border: solid 1px rgb(230, 227, 227);
+    top: auto;
   }
   
   #calendar2 {

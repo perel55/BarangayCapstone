@@ -159,10 +159,17 @@ def validatelogin(request):
 def index(request):
     return render(request, 'index.html')
 
+
+
+@login_required
+def logout(request):
+    return render(request, 'accounts/logout.html')
+
 def signup(request):
   template = loader.get_template('accounts/signup.html')
   return HttpResponse(template.render())
 
+@login_required
 def residentdashboard(request):
     return render(request, 'resident/userd.html')
 
@@ -346,3 +353,32 @@ def residentHistory(request):
     schedules = Schedule.objects.filter(user__username=user.username)
     return render(request, 'resident/residentHistory.html', {'schedules': schedules})
 
+@login_required
+def residentdashboard(request):
+    resident = Residents.objects.filter(auth_user=request.user).first()
+
+    # Check if profile is incomplete
+    if resident and not resident.is_profile_complete:
+        if request.method == 'POST':
+            resident.fname = request.POST.get('fname')
+            resident.mname = request.POST.get('mname')
+            resident.lname = request.POST.get('lname')
+            resident.zone = request.POST.get('zone')
+            resident.civil_status = request.POST.get('civil_status')
+            resident.occupation = request.POST.get('occupation')
+            resident.age = request.POST.get('age') or None  # Handle null values
+            resident.birthdate = request.POST.get('birthdate')
+            resident.phone_number = request.POST.get('phone_number')
+            resident.position = request.POST.get('position')
+            
+            if 'picture' in request.FILES:
+                resident.picture = request.FILES['picture']
+            
+            resident.is_profile_complete = True
+            resident.save()
+            return redirect('residentdashboard')  # Reload dashboard after saving
+
+        return render(request, 'resident/userd.html', {'resident': resident, 'show_modal': True})
+
+    # Render dashboard normally if profile is complete
+    return render(request, 'resident/userd.html', {'show_modal': False})

@@ -1,0 +1,190 @@
+<div id="Modal-Schedule-Overlay" class="modal-overlay">
+    <div class="modal-content">
+        <h2>Add Event</h2>
+        <form id="add-notice-form" action="{% url 'add_notice' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="notice_name">Event Title</label>
+                <input type="text" id="notice_name" name="notice_name" placeholder="Enter event title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="notice_description">Event Description</label>
+                <textarea id="notice_description" name="notice_description" placeholder="Enter event description" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="notice_image">Upload Image</label>
+                <input type="file" id="notice_image" name="notice_image" accept="image/*">
+            </div>
+
+            <div class="form-group">
+                <label for="notice_StartDate">Start Date</label>
+                <input type="date" id="notice_StartDate" name="notice_StartDate" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="notice_EndDate">End Date</label>
+                <input type="date" id="notice_EndDate" name="notice_EndDate" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="notice_StartTime">Start Time</label>
+                    <input type="time" id="notice_StartTime" name="notice_StartTime" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="notice_EndTime">End Time</label>
+                    <input type="time" id="notice_EndTime" name="notice_EndTime" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="notice_type">Event Type</label>
+                <select id="notice_type" name="notice_type" required>
+                    <option value="Meeting">Meeting</option>
+                    <option value="Training">Training</option>
+                    <option value="Community Service">Community Service</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="notice_color">Event Color</label>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <input type="color" id="notice_color" name="notice_color" value="#007bff" style="cursor: pointer;">
+                    <button type="button" id="confirm_color" class="btn-confirm" style="padding: 5px 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        Confirm
+                    </button>
+                </div>
+            </div>
+            
+            
+            <div class="modal-actions">
+                <button type="submit" class="btn-save">Save</button>
+                <button type="button" id="cancel-sched" class="btn-cancel">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('notice_color').addEventListener('input', (event) => {
+    const selectedColor = event.target.value;
+    const confirmButton = document.getElementById('confirm_color');
+    confirmButton.style.backgroundColor = selectedColor; // Change button color to match the selection
+});
+
+document.getElementById('confirm_color').addEventListener('click', () => {
+    const selectedColor = document.getElementById('notice_color').value;
+    alert(`Color confirmed: ${selectedColor}`);
+    // Perform any additional action, like saving the color value.
+});
+
+</script>
+
+<style>
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .modal-content {
+        background: #ffffff;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        width: 90%;
+        max-width: 500px;
+        font-family: Arial, sans-serif;
+    }
+
+    .modal-content h2 {
+        margin-top: 0;
+        text-align: center;
+        color: #333;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #555;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    .form-group textarea {
+        height: 80px;
+        resize: none;
+    }
+
+    .form-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+    }
+
+    .form-row .form-group {
+        flex: 1;
+    }
+
+    .modal-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .btn-save {
+        background: #007bff;
+        color: #ffffff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .btn-save:hover {
+        background: #0056b3;
+    }
+
+    .btn-cancel {
+        background: #ff4d4d;
+        color: black;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .btn-cancel:hover {
+        background: #cc0000;
+    }
+</style>

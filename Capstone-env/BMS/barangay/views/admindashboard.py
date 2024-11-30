@@ -14,6 +14,8 @@ from django.shortcuts import redirect
 from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LogoutView
+from django.http import JsonResponse
+from django.urls import reverse
 
 
 def admindashboard(request):
@@ -93,3 +95,94 @@ def account_list(request):
         'account_type': account_type,
     }
     return render(request, 'admin/adminAccounts.html', context)
+
+
+#----------------------------> SECRETARY <-----------------------------
+@login_required
+def add_notice(request):
+    if request.method == 'POST':
+        notice_name = request.POST.get('notice_name')
+        notice_description = request.POST.get('notice_description')
+        notice_image = request.FILES.get('notice_image')
+        notice_StartDate = request.POST.get('notice_StartDate')
+        notice_EndDate = request.POST.get('notice_EndDate')
+        notice_StartTime = request.POST.get('notice_StartTime')
+        notice_EndTime = request.POST.get('notice_EndTime')
+        notice_type = request.POST.get('notice_type')
+        notice_color = request.POST.get('notice_color')
+
+        # Get the current user
+        user = request.user
+        bhw_id = None  # Replace this with logic to fetch the appropriate BHW instance
+        admin_id = None  # Replace this with logic to fetch the appropriate Admin instance
+
+        # Save the notice
+        CommunityNotice.objects.create(
+            user=user,
+            bhw_id=bhw_id,
+            admin_id=admin_id,
+            notice_name=notice_name,
+            notice_description=notice_description,
+            notice_image=notice_image,
+            notice_StartDate=notice_StartDate,
+            notice_EndDate=notice_EndDate,
+            notice_StartTime=notice_StartTime,
+            notice_EndTime=notice_EndTime,
+            notice_type=notice_type,
+            notice_color=notice_color,
+        )
+
+        return redirect('adminEvent')  # Redirect to the desired page
+
+    return render(request, 'admin/adminEvent.html')  # Render form template
+
+def get_notices(request):
+    """API to fetch notices as events."""
+    notices = CommunityNotice.objects.all()
+    events = []
+    for notice in notices:
+        events.append({
+            'id': notice.id,
+            'title': notice.notice_name,
+            'start': f"{notice.notice_StartDate}T{notice.notice_StartTime}",
+            'end': f"{notice.notice_EndDate}T{notice.notice_EndTime}" if notice.notice_EndDate and notice.notice_EndTime else None,
+            'description': notice.notice_description,
+            'type': notice.notice_type,
+            'color': notice.notice_color,
+        })
+    return JsonResponse(events, safe=False)
+
+import json
+
+@login_required
+def edit_notice(request, notice_id):
+    notice = CommunityNotice.objects.get(id=notice_id)
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            notice.notice_name = data.get('notice_name')
+            notice.notice_description = data.get('notice_description')
+            notice.notice_StartDate = data.get('notice_StartDate')
+            notice.notice_EndDate = data.get('notice_EndDate')
+            notice.notice_StartTime = data.get('notice_StartTime')
+            notice.notice_EndTime = data.get('notice_EndTime')
+            notice.notice_type = data.get('notice_type')
+            notice.save()
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+    return JsonResponse({'success': False, 'error': 'Invalid request method.'})
+
+@csrf_exempt
+def delete_notice(request, notice_id):
+    notice = get_object_or_404(Notice, pk=notice_id)
+    
+    if request.method == 'DELETE':
+        notice.delete()
+        return JsonResponse({'success': True})
+    
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+
+
+
