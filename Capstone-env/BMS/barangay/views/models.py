@@ -3,6 +3,8 @@ from django.conf import settings
 from django.contrib.auth.models import User
 # Create your models here.
 
+
+    
 class Residents(models.Model):
     auth_user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE) 
     fname = models.CharField(max_length=255)
@@ -11,10 +13,10 @@ class Residents(models.Model):
     zone = models.CharField(max_length=255)
     civil_status = models.CharField(max_length=255)
     occupation = models.CharField(max_length=255)
-    age = models.IntegerField(null=True, blank=True)
     birthdate = models.DateField(max_length=255, null=True)
     phone_number = models.CharField(max_length=255)
     picture = models.ImageField(upload_to = 'images/', null=True)
+    id_image = models.ImageField(upload_to = 'images/', null=True)
     position = models.CharField(max_length=255)
     is_profile_complete = models.BooleanField(default=False)
     status = models.CharField(max_length=50, default="Pending")
@@ -31,7 +33,6 @@ class Personnel(models.Model):
     zone = models.CharField(max_length=255)
     civil_status = models.CharField(max_length=255)
     occupation = models.CharField(max_length=255)
-    age = models.IntegerField(null=True, blank=True)
     birthdate = models.DateField(max_length=255, null=True)
     phone_number = models.CharField(max_length=255)
     picture = models.ImageField(upload_to = 'images/', null=True)
@@ -48,7 +49,6 @@ class Bhw(models.Model):
     zone = models.CharField(max_length=255)
     civil_status = models.CharField(max_length=255)
     occupation = models.CharField(max_length=255)
-    age = models.IntegerField(null=True, blank=True)
     birthdate = models.DateField(max_length=255, null=True)
     phone_number = models.CharField(max_length=255)
     picture = models.ImageField(upload_to = 'images/', null=True)
@@ -64,7 +64,6 @@ class Bsi(models.Model):
     zone = models.CharField(max_length=255)
     civil_status = models.CharField(max_length=255)
     occupation = models.CharField(max_length=255)
-    age = models.IntegerField(null=True, blank=True)
     birthdate = models.DateField(max_length=255, null=True)
     phone_number = models.CharField(max_length=255)
     picture = models.ImageField(upload_to = 'images/', null=True)
@@ -81,7 +80,6 @@ class HealthAdmin(models.Model):
     zone = models.CharField(max_length=255)
     civil_status = models.CharField(max_length=255)
     occupation = models.CharField(max_length=255)
-    age = models.IntegerField(null=True, blank=True)
     birthdate = models.DateField(max_length=255, null=True)
     phone_number = models.CharField(max_length=255)
     picture = models.ImageField(upload_to = 'images/', null=True)
@@ -136,23 +134,34 @@ class Schedule(models.Model):
     resident = models.ForeignKey(Residents, on_delete=models.CASCADE, null=True)  
     date = models.DateField(max_length=255)
     status = models.CharField(max_length=50, default="Pending")
+    week = models.CharField(max_length=100, null=True)
+    
 
     def __str__(self):
         return f"{self.date}"
 
     
-    
-    
 class Outbreaks(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     outbreak_name = models.CharField(max_length=100) 
-    total_cases =  models.IntegerField(null=True, blank=True)
-    purok = models.CharField(max_length=100, null=True)
-    severity = models.CharField(max_length=100, null=True)   
+    
+    status = models.CharField(max_length=100, default="Active")   
     fname = models.CharField(max_length =255,  null=True)
     lname = models.CharField(max_length =255,  null=True)
     date = models.DateField(max_length =255, null=True)
 
+    Purok_CHOICES = (      
+        ('1A', '1A'),
+        ('1B', '1B'),   
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5'),
+        ('6', '6'),
+        ('7', '7'),
+        ('8', '8'),
+    )
+    purok = models.CharField(max_length=100, null=True)
     def __str__(self):
         return f"{self.outbreak_name} {self.purok} "
 class Request(models.Model):
@@ -180,3 +189,20 @@ class Announcement(models.Model):
 
     def __str__(self):
         return f"{self.announcement_name} {self.announcement_description} {self.announcement_date} {self.announcement_time} {self.announcement_type}"
+    
+class Maintenance(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, null=True)
+    resident_id = models.ForeignKey(Residents, on_delete=models.CASCADE, null=True)
+    date = models.DateField(null=True)
+    week = models.CharField(max_length=100, null=True)
+    kg = models.IntegerField(null=True)
+    bp = models.CharField(max_length=100, null=True)
+    status = models.CharField(max_length=100, default="Pending", null=True)
+
+    def __str__(self):
+        return f"{self.date} {self.week} {self.kg} {self.bp} {self.status}"
+
+
+
+        

@@ -27,7 +27,7 @@ urlpatterns = [
 #----------------------------------------Health Admin------------------------------------------------
     re_path(r'^addBhw/$', views.addBhw, name='addBhw'),
     re_path(r'^bhwregister$', views.bhwregister, name='bhwregister'),
-    re_path(r'^healthAdminreg/$', views.healthAdminreg, name='healthAdminreg'),  # Add trailing slash here
+    re_path(r'^healthAdminreg/$', views.healthAdminreg, name='healthAdminreg'),  
     re_path(r'^healthDashboard/$', views.healthDashboard, name='healthDashboard'),
     re_path(r'^addHA/$', views.addHA, name='addHA'),
     re_path('bhwList/', views.bhwList, name = 'bhwList'),
@@ -45,12 +45,19 @@ urlpatterns = [
     re_path(r'^approve-resident/(?P<resident_id>\d+)/$', views.approved_resident, name='approved_resident'),
     re_path(r'^declined-resident/(?P<resident_id>\d+)/$', views.declined_resident, name='declined_resident'),
 
+    re_path(r'^releasedMaintenance/(?P<schedule_id>\d+)/$', views.releasedMaintenance, name='releasedMaintenance'),
+    re_path(r'^addMaintenance/(?P<schedule_id>\d+)/$', views.addMaintenance, name='addMaintenance'),
+    
+
     #----------------------------------------Bhw------------------------------------------------
     re_path(r'^bhwDashboard/$', views.bhwDashboard, name='bhwDashboard'),
     re_path(r'^bhwOutbreak/$', views.bhwOutbreak, name='bhwOutbreak'),
     re_path('bhw/addOutbreak/', views.addOutbreak, name = 'addOutbreak'),
     re_path(r'^update-outbreak/$', views.update_outbreak, name='updateOutbreak'),
 
+    re_path(r'^active-status/(?P<outbreak_id>\d+)/$', views.active_status, name='active_status'),
+    re_path(r'^inactive-status/(?P<outbreak_id>\d+)/$', views.inactive_status, name='inactive_status'),
+ 
 
 
 
@@ -72,8 +79,8 @@ urlpatterns = [
     re_path(r'^bhw/book_healthServiceform/(?P<HealthService_id>\d+)/$', views.book_healthServiceform, name='book_healthServiceform'),
     re_path(r'^bhw/book_healthService/(?P<HealthService_id>\d+)/(?P<resident_id>\d+)/$', views.book_healthService, name='book_healthService'),
     re_path(r'^residentHistory/$', views.residentHistory, name='residentHistory'),
-
-
+    re_path(r'^get_resident_details/(?P<resident_id>\d+)/$', views.get_resident_details, name='get_resident_details'),
+    
 
 
 

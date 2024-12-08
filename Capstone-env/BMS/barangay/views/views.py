@@ -240,9 +240,27 @@ def addBhw(request):
     return render(request, 'bhw/addBhw.html')
 
 
-def bhwOutbreak(request): 
-    outbreaks = Outbreaks.objects.all()  
-    return render(request, 'bhw/bhwOutbreaks.html', {'outbreaks': outbreaks})
+
+
+from django.db.models import Count
+from django.shortcuts import render
+from .models import Outbreaks
+
+def bhwOutbreak(request):
+    # Fetch all outbreaks
+    outbreaks = Outbreaks.objects.all()
+
+    active_outbreak_counts = (
+        Outbreaks.objects.filter(status="Active")
+        .values('purok')  # Group by purok
+        .annotate(total_active_cases=Count('id'))  
+        .order_by('purok') 
+    )
+    context = {
+        'outbreaks': outbreaks,
+        'active_outbreak_counts': active_outbreak_counts,
+    }
+    return render(request, 'bhw/bhwOutbreaks.html', context)
 
 def addOutbreak(request):
      if request.method == "POST":
@@ -250,20 +268,18 @@ def addOutbreak(request):
         outbreak_name = request.POST.get('outbreak_name')
         fname = request.POST.get('fname')
         lname = request.POST.get('lname')
-        total_cases = request.POST.get('total_cases')
         purok = request.POST.get('purok')
-        severity = request.POST.get('severity')
         date = request.POST.get('date')
+        status = request.POST.get("status", "Active")
 
      
         Outbreaks.objects.create(
             outbreak_name=outbreak_name,
             fname=fname,
             lname=lname,
-            total_cases=total_cases,
             purok=purok,
-            severity=severity,
             date=date,
+            status=status,
              
         )
         
@@ -278,15 +294,11 @@ def update_outbreak(request):
         outbreak.outbreak_name = request.POST.get('outbreak_name')
         outbreak.fname = request.POST.get('fname')
         outbreak.lname = request.POST.get('lname')
-        outbreak.total_cases = request.POST.get('total_cases')
         outbreak.purok = request.POST.get('purok')
-        outbreak.severity = request.POST.get('severity')
         outbreak.date = request.POST.get('date')
 
 
         outbreak.save()
-
-   
         return redirect('bhwOutbreak')  
 
     return HttpResponse("Invalid method", status=405)  
@@ -295,7 +307,7 @@ def update_outbreak(request):
 def bhwServices(request):
     try:
         resident = Residents.objects.get(auth_user=request.user)
-        if resident.status == "Verified":
+        if resident.status == "Verify":
             bhwServices = HealthService.objects.all()
         else:
             bhwServices = HealthService.objects.none()
@@ -317,18 +329,16 @@ from .models import HealthService, Schedule, Residents
 
 
 @login_required
-def book_healthService(request, HealthService_id, resident_id):
-    # Get the `HealthService` instance
+def book_healthService(request, HealthService_id, resident_id): 
     bhwService = get_object_or_404(HealthService, id=HealthService_id)
 
-    # Get the `Resident` instance
+
     resident = get_object_or_404(Residents, id=resident_id)
 
     if request.method == 'POST':
         date = request.POST.get('date')
     
 
-        # Create a new Schedule object and save it to the database
         Schedule.objects.create(
             user=request.user, 
             resident=resident, 
@@ -339,14 +349,7 @@ def book_healthService(request, HealthService_id, resident_id):
         # Redirect to the 'bhwServices' page after successful booking
         return redirect(reverse('bhwServices'))
 
-    return render(request, 'your_template.html', {
-        'bhwService': bhwService,
-        'resident': resident,
-    })
-
-
-
-
+ 
 def book_healthServiceform(request, HealthService_id):
     bhwService = HealthService.objects.get(pk=HealthService_id)
     
@@ -380,13 +383,16 @@ def residentdashboard(request):
             resident.zone = request.POST.get('zone')
             resident.civil_status = request.POST.get('civil_status')
             resident.occupation = request.POST.get('occupation')
-            resident.age = request.POST.get('age') or None  # Handle null values
             resident.birthdate = request.POST.get('birthdate')
             resident.phone_number = request.POST.get('phone_number')
             resident.position = request.POST.get('position')
+
             
             if 'picture' in request.FILES:
                 resident.picture = request.FILES['picture']
+            
+            if 'id_image' in request.FILES:
+                resident.id_image = request.FILES['id_image']
             
             resident.is_profile_complete = True
             resident.save()

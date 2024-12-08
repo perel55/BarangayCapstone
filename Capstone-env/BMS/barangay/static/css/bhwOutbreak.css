@@ -433,3 +433,92 @@ input[type="date"]:focus {
   border-color: #1e88e5;
   box-shadow: 0 0 5px rgba(30, 136, 229, 0.3);
 }
+
+.purok-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns in the grid */
+  gap: 20px; /* space between boxes */
+  padding: 20px;
+  justify-items: center;
+}
+
+.purok-box {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 150px;
+}
+
+.purok-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.outbreak-count {
+  font-size: 1rem;
+  color: #333;
+}
+
+
+/* Status Styles */
+.status-inactive {
+  color: #027702; 
+  padding: 5px 10px;
+  border-radius: 3px;
+  font-weight: bold;
+  display: inline-block;
+  text-align: center;
+}
+
+.status-active {
+  color: #d9534f; 
+  padding: 5px 10px;
+  border-radius: 3px;
+  font-weight: bold;
+  display: inline-block;
+  text-align: center;
+}
+
+
+/* Status Button */
+.btn-inactive {
+  background-color: #28a745; 
+  color: white;
+  padding: 8px 10px;
+  text-decoration: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.btn-inactive:hover {
+  background-color: #218838; 
+  transform: scale(1.05); 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+}
+
+
+.btn-active {
+  background-color: #dc3545; 
+  color: white;
+  padding: 8px 12px;
+  text-decoration: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.btn-active:hover {
+  background-color: #c82333; 
+  transform: scale(1.05); 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+}

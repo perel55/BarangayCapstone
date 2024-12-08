@@ -3,10 +3,13 @@
 {% block css %}
 <link rel="stylesheet" href="{% static './css/bhwlist.css' %}">
 <link rel="stylesheet" href="{% static './css/verificationBtn.css' %}">
+<link rel="stylesheet" href="{% static './css/residentVerification.css' %}">
 <script type="module" src="{% static 'js/bhw.js' %}"></script>
+<script type="module" src="{% static 'js/resident.js' %}"></script>
 {% endblock %}
 
 {% block content %}
+{% include 'modal/resident.html' %}
     <div class="adminContainer">
         {% include 'healthAdmin/healthTopnav.html' %}
         
@@ -26,44 +29,44 @@
                 <div class="content">
                        <!-- Residents Accounts -->
                        <div id="ResidentsAcc-Area">
-                        <table>
-                            <thead>
-                                <tr>  
-                                    <th>Username</th>
-                                    <th>Email</th>
-                                    <th>First Name</th>  
-                                    <th>Last Name</th>
-                                    <th>Purok</th>   
-                                    <th>Status</th>  
-                                    <th>Action</th>       
-                                </tr>
-                            </thead>    
-                            <tbody>
-                                {% for resident in residents %}
-                                    <tr>    
-                                        <td>{{ resident.auth_user.username }}</td>
-                                        <td>{{ resident.auth_user.email }}</td>        
-                                        <td>{{ resident.fname }}</td>
-                                        <td>{{ resident.lname }}</td>
-                                        <td>{{ resident.zone }}</td>
-                                        <td>
-                                            {% if resident.status == "Pending" %}
-                                            <span class="status-pending">Pending</span>
-                                            {% elif resident.status == "Verified" %}
-                                                <span class="status-verified">Verified</span>
-                                            {% elif resident.status == "Declined" %}
-                                                <span class="status-declined">Declined</span>
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            <a href="{% url 'approved_resident' resident.id %}" class="btn-approve">Verified</a>
-                                            <a href="{% url 'declined_resident' resident.id %}" class="btn-declined">Declined</a>
-                                        </td>    
+                            <table>
+                                <thead>
+                                    <tr>  
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>Name</th>  
+                                        <th>View More</th>   
+                                        <th>Status</th>  
+                                        <th>Action</th>       
                                     </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div> 
+                                </thead>    
+                                <tbody>
+                                    {% for resident in residents %}
+                                        <tr>    
+                                            <td>{{ resident.auth_user.username }}</td>
+                                            <td>{{ resident.auth_user.email }}</td>        
+                                            <td>{{ resident.fname }} {{ resident.lname }}</td>
+                                            <td>
+                                                <button class="view-more-btn" data-resident-id="{{ resident.id }}">View More</button>
+                                            </td>
+                                            <td>
+                                                {% if resident.status == "Pending" %}
+                                                <span class="status-pending">Pending</span>
+                                                {% elif resident.status == "Verify" %}
+                                                    <span class="status-verified">Verify</span>
+                                                {% elif resident.status == "Decline" %}
+                                                    <span class="status-declined">Decline</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'approved_resident' resident.id %}" class="btn-approve">Verify</a>
+                                                <a href="{% url 'declined_resident' resident.id %}" class="btn-declined">Decline</a>
+                                            </td>    
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div> 
 
                     <!-- Bhw Accounts -->
                     <div id="BhwAcc-Area" style="display: none;">
@@ -168,3 +171,4 @@
         </div>
     </div>
 {% endblock %}
+

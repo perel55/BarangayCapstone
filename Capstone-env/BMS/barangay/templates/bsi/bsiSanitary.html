@@ -32,12 +32,12 @@
                         {% for schedule in schedules %}
                         <tr>
                             <td>{{ schedule.user.username }}</td>
-                            <td>{{ schedule.fname }} {{ schedule.lname }}</td>
+                            <td>{{ schedule.resident.fname }} {{ schedule.resident.lname }}</td>
                             <td>{{ schedule.bhwService.service_name }}</td>
                             <td>{{ schedule.bhwService.service_type }}</td>
-                            <td>{{ schedule.purok }}</td>
+                            <td>{{ schedule.resident.zone }}</td>
                             <td>{{ schedule.date }}</td>
-                            <td>{{ schedule.phonenum }}</td>
+                            <td>{{ schedule.resident.phone_number}}</td>
                             <td>
                                 {% if schedule.status == "Pending" %}
                                     <span class="status-pending">Pending</span>

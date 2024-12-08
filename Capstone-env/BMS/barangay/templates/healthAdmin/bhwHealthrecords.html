@@ -17,7 +17,7 @@
             <section id="content">
                 <table>
                     <thead>
-                        <tr>
+                        <tr> 
                             <th>Username</th>
                             <th>Full Name</th>
                             <th>Service</th>
@@ -42,15 +42,15 @@
                             <td>
                                 {% if schedule.status == "Pending" %}
                                     <span class="status-pending">Pending</span>
-                                {% elif schedule.status == "Verified" %}
-                                    <span class="status-verified">Verified</span>
-                                {% elif schedule.status == "Declined" %}
-                                    <span class="status-declined">Declined</span>
+                                {% elif schedule.status == "Verify" %}
+                                    <span class="status-verified">Verify</span>
+                                {% elif schedule.status == "Decline" %}
+                                    <span class="status-declined">Decline</span>
                                 {% endif %}
                             </td>
                             <td>
                                     <a href="{% url 'approve_schedule' schedule.id %}" class="btn-approve">Approve</a>
-                                    <a href="{% url 'reject_schedule' schedule.id %}" class="btn-declined">Declined</a>
+                                    <a href="{% url 'reject_schedule' schedule.id %}" class="btn-declined">Decline</a>
                             </td>
                             
                         </tr>

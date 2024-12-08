@@ -77,3 +77,30 @@ def get_services(request):
 
 def view_events(request):
     return render(request, 'resident/residentEvents.html')
+
+
+
+
+from django.http import JsonResponse
+from .models import Residents
+
+def get_resident_details(request, resident_id):
+    resident = Residents.objects.get(id=resident_id)
+    data = {
+        "username": resident.auth_user.username,
+        "email": resident.auth_user.email,
+        "fname": resident.fname,
+        "mname": resident.mname,
+        "lname": resident.lname,
+        "zone": resident.zone,
+        "civil_status": resident.civil_status,
+        "occupation": resident.occupation,
+        "birthdate": resident.birthdate,
+        "phone_number": resident.phone_number,
+        "position": resident.position,
+        "is_profile_complete": resident.is_profile_complete,
+        "status": resident.status,
+        "picture": resident.picture.url if resident.picture else None,
+        "id_image": resident.id_image.url if resident.id_image else None,
+    }
+    return JsonResponse(data)
