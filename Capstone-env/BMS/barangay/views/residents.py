@@ -7,6 +7,7 @@ from datetime import timedelta, datetime
 from django.http import JsonResponse
 from .models import *
 from datetime import datetime
+from django.http import HttpResponse
 
 @login_required
 def edit_profile(request):
@@ -192,6 +193,8 @@ def fetch_notices(request):
 
 
 
+
+
     
 
 
@@ -241,3 +244,8 @@ def barangay_map(request):
     return render(request, 'resident/residentOutbreaks.html')
 
 
+# ------------------------> SERVICE LIST <-----------------------
+
+def resident_services(request):
+    services = Services.objects.all()  # Query all services
+    return render(request, 'resident/residentServices.html', {'services': services})

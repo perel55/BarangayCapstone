@@ -10,9 +10,7 @@
 {% endblock %}
 
 {% block content %}
-
-{% include 'modal/adminSchedule.html' %}
-{% include 'modal/editAdminSchedule.html' %}
+{% include 'modal/residentSchedule.html' %}
 
 <div class="MainContainer">
    {% include 'resident/residentTopnav.html' %} 
@@ -52,6 +50,33 @@
         </div>
     </div>
 </div>
+
+<script>
+  // Get the service details from URL parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const serviceId = urlParams.get('service_id');
+  const serviceName = urlParams.get('service_name');
+  const servicePrice = urlParams.get('service_price');
+
+  // Store the service details in hidden input fields or use them directly
+  const serviceSelect = document.getElementById("service-id");
+  const priceInput = document.getElementById("total-price");
+
+  // If you have hidden inputs for service details
+  if (serviceSelect) {
+      serviceSelect.value = serviceId;
+  }
+  if (priceInput) {
+      priceInput.value = servicePrice;
+  }
+
+  // Optionally, you can display the service name in the modal title
+  const modalTitle = document.querySelector('.MSC-Top h3');
+  if (modalTitle) {
+      modalTitle.innerText = `Schedule for ${serviceName}`;
+  }
+</script>
+
 
 
 {% endblock %}

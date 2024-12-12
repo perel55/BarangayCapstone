@@ -1,45 +1,90 @@
 {% load static %}
 
 {% block css %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="{% static '.css' %}"> -->
-    <title>Document</title>
-</head>
+    <title>Barangay Lala Proper Map</title>
+    <link rel="stylesheet" href="{% static './css/residentHS.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }        
+
+        .map-container {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center;    /* Center vertically if needed */
+            width: 100%;            /* Full width of the parent */
+            margin-top: 40px;
+            margin-left: 40px;
+        }
+
+        #map {
+            height: 800px;  /* Adjust height as needed */
+            width: 100%;     /* Adjust width as needed */
+            max-width: 1750px; /* Optional: set a maximum width */
+            border: 1px solid #ccc; /* Optional: add a border */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: add a shadow */
+        }
+
+        /* Custom styles for zoom control */
+        .leaflet-control-zoom {
+            right: 20px !important; /* Position to the right */
+            top: 20px !important;   /* Adjust top spacing */
+        }
+
+        .leaflet-control-zoom a {
+            width: 40px !important; /* Increase button width */
+            height: 40px !important; /* Increase button height */
+            font-size: 20px !important; /* Increase font size */
+            line-height: 40px !important; /* Center text vertically */
+        }
+    </style>
 {% endblock %}
 
-{% block content %}
 <body>
-    <h2 style="text-align: center;">Barangay Lalaproper Map</h2>
-    <div id="map"></div>
-
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <div class="MainContainer">
+        {% include 'resident/residentTopnav.html' %} 
+        <div class="MC-Bottom">
+            {% include './residentNav1.html' %}  
+            <h1 style="text-align: center;">Barangay Lala Proper Map</h1> <!-- Center the title -->
+            <div class="map-container">
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+   
     <script>
         // Initialize the map
-        const map = L.map('map').setView([14.5995, 120.9842], 16); // Replace with Barangay Lalaproper's coordinates
+        var map = L.map('map', {
+            center: [7.9445, 123.7501], // Coordinates for Barangay Lala Proper
+            zoom: 15,                  // Zoom level
+            dragging: false,           // Disable dragging
+            zoomControl: false,        // Disable zoom control buttons
+            doubleClickZoom: false,    // Disable zoom on double-click
+            scrollWheelZoom: false,    // Disable zoom on scroll
+            touchZoom: false,          // Disable zoom on touch gestures
+            keyboard: false 
+
+        });
 
         // Add OpenStreetMap tiles
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
+            maxZoom: 18,
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        // Example: Adding a marker
-        L.marker([14.5995, 120.9842]).addTo(map) // Replace with specific coordinates
-            .bindPopup('Barangay Lalaproper')
+        // Add custom zoom control at the right
+        L.control.zoom({
+            position: 'topright'       // Move zoom control to the right
+        }).addTo(map);
+
+        // Optionally, add a marker for Barangay Lala Proper
+        L.marker([7.9445, 123.7501]).addTo(map)
+            .bindPopup('Barangay Lala Proper')
             .openPopup();
     </script>
 </body>
-</html>
-
-{% endblock %}
-
-<style>
-    #map {
-        height: 100vh; /* Full viewport height */
-    }
-</style>

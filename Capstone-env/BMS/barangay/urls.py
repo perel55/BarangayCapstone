@@ -124,6 +124,10 @@ urlpatterns = [
     path('edit-profile/', views.edit_profile, name='edit_profile'),
     path('barangay-maps', views.barangay_map, name='barangay_map'),
 
+    path('fetch-services/', views.fetch_services, name='fetch-services'),
+
+    path('resident_services/', views.resident_services, name='resident_services'),
+
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

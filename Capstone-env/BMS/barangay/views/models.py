@@ -2,10 +2,8 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
 # Create your models here.
-
 class Residents(models.Model):
-    auth_user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE) 
-    auth_user = models.OneToOneField(User, on_delete=models.CASCADE, null=False, default=1)
+    auth_user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False)  # Use OneToOneField or ForeignKey, not both
     fname = models.CharField(max_length=255)
     mname = models.CharField(max_length=255)
     lname = models.CharField(max_length=255)
@@ -13,14 +11,15 @@ class Residents(models.Model):
     civil_status = models.CharField(max_length=255)
     occupation = models.CharField(max_length=255)
     age = models.IntegerField(null=True, blank=True)
-    birthdate = models.DateField(max_length=255, null=True)
+    birthdate = models.DateField(null=True)
     phone_number = models.CharField(max_length=255)
-    picture = models.ImageField(upload_to = 'images/', null=True)
+    picture = models.ImageField(upload_to='images/', null=True)
     position = models.CharField(max_length=255)
     is_profile_complete = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.auth_user}"
+
 
 class Personnel(models.Model):
     auth_user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE) 
@@ -123,7 +122,6 @@ class Services(models.Model):
     service_description = models.TextField(null=True)
     service_price = models.IntegerField(null=True)
     image = models.ImageField(upload_to='images/', null=True)
-    officials_id= models.ForeignKey(Personnel, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f"{self.service_id} {self.service_name} {self.requirements} {self.service_description} "
@@ -167,6 +165,7 @@ class Request(models.Model):
     schedule_date = models.DateField(null=True)
     schedule_start_time = models.TimeField(null=True)
     schedule_end_time = models.TimeField(null=True)
+    
     
     def __str__(self):
         return f"{self.Resident_id} {self.service_id} {self.schedule_date}"

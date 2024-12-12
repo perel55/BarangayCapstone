@@ -1,0 +1,114 @@
+<form method="POST" action="{% url 'ScheduleView' %}">
+    {% csrf_token %}
+    <div id="Modal-Schedule-Overlay">
+        <div id="MS-Container">
+            <div class="MSC-Top">
+                <h3>Add Schedule</h3>
+            </div>
+            <div class="MSC-Bottom">
+                <label for="service-id">Service</label>
+                <select id="service-id" name="service-id" required>
+                    {% for service in services %}
+                        <option value="{{ service.service_id }}" 
+                                data-price="{{ service.total_price }}" 
+                                {% if service.service_id == selected_service %}selected{% endif %}>
+                            {{ service.service_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <label for="total-price">Service Price</label>
+                <input type="number" id="total-price" name="total-price" required placeholder="0.00" readonly>
+
+                <label for="schedule-date">Date</label>
+                <input type="date" id="schedule-date" name="schedule-date" required>
+
+                <label for="schedule-start-time">Start Time</label>
+                <select id="schedule-start-time" name="schedule-start-time" required>
+                    <option value="8:00 am - 9:00 am">8:00 am - 9:00 am</option>
+                    <option value="9:00 am - 10:00 am">9:00 am - 10:00 am</option>
+                    <option value="11:00 am - 12:00 pm">11:00 am - 12:00 pm</option>
+                    <option value="1:00 pm - 2:00 pm">1:00 pm - 2:00 pm</option>
+                    <option value="3:00 pm - 4:00 pm">3:00 pm - 4:00 pm</option>
+                    <option value="4:00 pm - 5:00 pm">4:00 pm - 5:00 pm</option>
+                </select>
+
+                <label for="reason">Reason</label>
+                <input type="text" id="reason" name="reason" required placeholder="Enter reason">
+
+                <label for="requirements">Requirements</label>
+                <input type="file" id="requirements-picture" name="requirements-picture">
+            </div>
+
+            <div class="MSC-Bottom2">
+                <button type="button" id="cancel-sched">Cancel</button>
+                <button type="submit" id="add-sched">Submit</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const serviceSelect = document.getElementById('service-id');
+        const priceInput = document.getElementById('total-price');
+
+        function updateTotalPrice() {
+        const selectedOption = serviceSelect.options[serviceSelect.selectedIndex];
+        const price = selectedOption ? selectedOption.getAttribute('data-price') : 0;
+
+        // Update the price input field
+        priceInput.value = price || 0;
+    }
+
+    serviceSelect.addEventListener('change', updateTotalPrice);
+
+    // Call the function once to set the price on page load
+    updateTotalPrice();
+        
+        // Load services when the page is loaded
+        function loadServices() {
+            fetch('/fetch-services/')
+                .then(response => response.json())
+                .then(data => {
+                    serviceSelect.innerHTML = ''; // Clear any existing options
+
+                    if (data.services && data.services.length > 0) {
+                        data.services.forEach(service => {
+                            const option = document.createElement('option');
+                            option.value = service.service_id;
+                            option.textContent = service.service_name;
+
+                            // Add the price as a data attribute for updating the price field
+                            option.setAttribute('data-price', service.service_price);
+
+                            // Dynamically mark selected service
+                            {% if selected_service %}
+                                if (service.service_id == {{ selected_service }}) {
+                                    option.selected = true;
+                                }
+                            {% endif %}
+
+                            serviceSelect.appendChild(option);
+                        });
+
+                        // Trigger update of the total price after populating the dropdown
+                        updateTotalPrice();
+                    } else {
+                        const option = document.createElement('option');
+                        option.disabled = true;
+                        option.textContent = "No services available";
+                        serviceSelect.appendChild(option);
+                    }
+                })
+                .catch(error => console.error('Error fetching services:', error));
+        }
+
+        // Load services when the page is loaded
+        loadServices();
+
+        // Add an event listener to update the total price placeholder when the service selection changes
+        serviceSelect.addEventListener('change', updateTotalPrice);
+    });
+</script>

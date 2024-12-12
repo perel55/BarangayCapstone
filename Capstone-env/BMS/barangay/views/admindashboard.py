@@ -45,7 +45,7 @@ def AddService(request):
 
         return redirect('service_list')
 
-    return render(request, 'modal/AddServices.html')
+    return render(request, 'admin/ServiceList.html')
 
 def update_service(request, service_id):
     service = get_object_or_404(Services, service_id=service_id)

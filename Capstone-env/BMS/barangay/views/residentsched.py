@@ -7,6 +7,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
+from django.template import loader
 
 
 def residentSchedule(request):
@@ -19,31 +21,28 @@ def residentSchedule(request):
     })
 
 
-@login_required
 def ScheduleView(request):
     services = Services.objects.all()  # Get all services
+    selected_service = None
 
     if request.method == "POST":
-        # Fetch form data
         service_id = request.POST.get('service-id')
         reason = request.POST.get('reason')
         total_price = request.POST.get('total-price')
         schedule_date = request.POST.get('schedule-date')
         schedule_start_time = request.POST.get('schedule-start-time')
-        schedule_end_time = request.POST.get('schedule-end-time')
+        service_requirements = request.POST.get('service-requirements')
 
         # Ensure valid data before proceeding
-        if not (service_id and reason and total_price and schedule_date and schedule_start_time and schedule_end_time):
+        if not (service_id and reason and total_price and schedule_date and schedule_start_time and service_requirements):
             messages.error(request, "Please fill all required fields.")
             return redirect('ScheduleView')
 
         service = get_object_or_404(Services, pk=service_id)
+        selected_service = service_id  # Store the selected service ID
 
         # Check if user has a resident profile
-        resident = Residents.objects.filter(user=request.user).first()
-        if not resident:
-            messages.error(request, "You must complete your profile before making a request.")
-            return redirect('ScheduleView')
+        resident = Residents.objects.filter(auth_user=request.user).first()
 
         new_request = Request(
             Resident_id=resident,
@@ -52,15 +51,14 @@ def ScheduleView(request):
             total_price=total_price,
             schedule_date=schedule_date,
             schedule_start_time=schedule_start_time,
-            schedule_end_time=schedule_end_time
+            service_requirements=service_requirements,
         )
         new_request.save()
 
         messages.success(request, "Your schedule has been successfully created.")
         return redirect('ScheduleView')
 
-    # Pass services to the template
-    return render(request, 'resident/userd.html', {'services': services})
+    return render(request, 'resident/ResidentCalendar.html', {'services': services, 'selected_service': selected_service})
 
 
 
@@ -102,4 +100,8 @@ class ScheduleDataView(View):
             })
 
         return JsonResponse(events, safe=False)
+
+def fetch_services(request):
+    services = list(Services.objects.values('service_id', 'service_name', 'service_price'))  # Include service_price
+    return JsonResponse({'services': services})
 
