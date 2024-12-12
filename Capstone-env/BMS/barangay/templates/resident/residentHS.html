@@ -27,6 +27,7 @@
                                 <h3>{{ x.service_name }}</h3>
                                 <p>Description: {{ x.service_description }}</p>
                                 <p>Requirements: {{ x.service_requirements }}</p>
+                                <p>Requirements: {{ x.service_type }}</p>
                                 <a href="{% url 'book_healthServiceform' x.id %}" class="btn">Avail</a>
                             </div> 
                         </div>  

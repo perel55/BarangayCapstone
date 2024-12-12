@@ -84,3 +84,26 @@
 .modal-content .button:hover {
     background-color: #45a049;
 }
+
+
+.view-more-btn {
+    text-decoration: none;
+    font-weight: bold; 
+    color: #ffffff; 
+    background-color: #007bff; 
+    padding: 10px 20px; 
+    border-radius: 4px; 
+    display: inline-block; 
+    transition: background-color 0.3s, transform 0.2s ease-in-out; 
+    border: none;
+}
+
+.view-more-btn:hover {
+    background-color: #0056b3; 
+    transform: translateY(-2px); 
+}
+
+.view-more-btn:active {
+    background-color: #004085;
+    transform: translateY(0); 
+}

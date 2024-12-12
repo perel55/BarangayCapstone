@@ -2,6 +2,8 @@
 {% block css %}
 <link rel="stylesheet" href="{% static './css/bhw.css' %}">
 <link rel="stylesheet" href="{% static './css/bhw.css' %}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.0.1/chart.min.js"></script>
+
 {% endblock %}
 
 
@@ -11,6 +13,69 @@
         {% include 'healthAdmin/healthTopnav.html' %}
         <div class="MC-Bottom"> 
             {% include 'healthAdmin/healthNav.html' %} 
+
+
+            <h1>Health Maintenance</h1>
+
+            <canvas id="maintenanceChart" width="500" height="500"></canvas>
+        
+            <script>
+                // Get graph data from Django context
+                const graphData = JSON.parse('{{ graph_data|escapejs }}');
+        
+                const ctx = document.getElementById('maintenanceChart').getContext('2d');
+                const maintenanceChart = new Chart(ctx, {
+                    type: 'line', // Choose the type of chart
+                    data: {
+                        labels: graphData.weeks, // X-axis labels
+                        datasets: [
+                            {
+                                label: 'Weight (kg)',
+                                data: graphData.weights,
+                                borderColor: 'blue',
+                                borderWidth: 2,
+                                fill: false,
+                            },
+                            {
+                                label: 'Blood Pressure',
+                                data: graphData.bp_readings,
+                                borderColor: 'red',
+                                borderWidth: 2,
+                                fill: false,
+                            }
+                        ],
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Weeks',
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Values',
+                                },
+                                beginAtZero: true,
+                            }
+                        }
+                    }
+                });
+            </script>
+
+            
         </div>
     </div>
 {% endblock %}

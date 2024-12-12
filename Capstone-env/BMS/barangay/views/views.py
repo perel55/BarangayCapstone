@@ -30,6 +30,8 @@ def register(request):
         email = request.POST.get('email')
         password1 = request.POST.get('password')
         password2 = request.POST.get('password2')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
 
         # Check if username or email already exists
         if User.objects.filter(username=username).exists():
@@ -46,6 +48,9 @@ def register(request):
                 username=username,
                 email=email,
                 password=password1,
+                first_name=first_name,
+                last_name=last_name,
+                
             )
 
             resident = Residents.objects.create(
@@ -76,12 +81,16 @@ def adminregister(request):
         email = request.POST.get('email')
         password1 = request.POST.get('password')
         password2 = request.POST.get('password2')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
 
         if password1 == password2:
             user = User.objects.create_superuser(
                 username=username,
                 email=email,
                 password=password1,
+                first_name=first_name,
+                last_name=last_name,
             )
 
             personnel = Personnel.objects.create(
@@ -197,111 +206,6 @@ def addAdmin(request):
 
 
 #-------------------BHW Secretary & Nurse-------------------
-@csrf_exempt
-def bhwregister(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        password1 = request.POST.get('password')
-        password2 = request.POST.get('password2')
-
-        if password1 == password2:
-            user = User.objects.create_superuser(
-                username=username,
-                email=email,
-                password=password1,
-            )
-
-            bhw = Bhw.objects.create(
-                auth_user=user,
-            )
-
-            bhw_account_type = Account_Type.objects.get(Account_type='Bhw')
-
-            newAcc = Accounts.objects.create(
-                bhw_id=bhw,
-                account_typeid=bhw_account_type
-            )
-
-
-            user = authenticate(request, username=username, password=password1)
-            if user is not None:
-                login(request, user)  
-                return redirect('bhwDashboard')
-        else:
-            messages.error(request, "Passwords do not match.")
-
-    return render(request, 'bhw/addBhw.html')
-
-def bhwDashboard(request):
-    return render(request, 'bhw/bhwDashboard.html')
-
-def addBhw(request):
-    return render(request, 'bhw/addBhw.html')
-
-
-
-
-from django.db.models import Count
-from django.shortcuts import render
-from .models import Outbreaks
-
-def bhwOutbreak(request):
-    # Fetch all outbreaks
-    outbreaks = Outbreaks.objects.all()
-
-    active_outbreak_counts = (
-        Outbreaks.objects.filter(status="Active")
-        .values('purok')  # Group by purok
-        .annotate(total_active_cases=Count('id'))  
-        .order_by('purok') 
-    )
-    context = {
-        'outbreaks': outbreaks,
-        'active_outbreak_counts': active_outbreak_counts,
-    }
-    return render(request, 'bhw/bhwOutbreaks.html', context)
-
-def addOutbreak(request):
-     if request.method == "POST":
-        # Retrieve form data from the POST request
-        outbreak_name = request.POST.get('outbreak_name')
-        fname = request.POST.get('fname')
-        lname = request.POST.get('lname')
-        purok = request.POST.get('purok')
-        date = request.POST.get('date')
-        status = request.POST.get("status", "Active")
-
-     
-        Outbreaks.objects.create(
-            outbreak_name=outbreak_name,
-            fname=fname,
-            lname=lname,
-            purok=purok,
-            date=date,
-            status=status,
-             
-        )
-        
-        return redirect('bhwOutbreak')  
-     
-def update_outbreak(request):
-    if request.method == "POST":
-        outbreak_id = request.POST.get('outbreak_id')  
-        outbreak = get_object_or_404(Outbreaks, id=outbreak_id)  
-
-
-        outbreak.outbreak_name = request.POST.get('outbreak_name')
-        outbreak.fname = request.POST.get('fname')
-        outbreak.lname = request.POST.get('lname')
-        outbreak.purok = request.POST.get('purok')
-        outbreak.date = request.POST.get('date')
-
-
-        outbreak.save()
-        return redirect('bhwOutbreak')  
-
-    return HttpResponse("Invalid method", status=405)  
 
 @login_required
 def bhwServices(request):
@@ -377,9 +281,7 @@ def residentdashboard(request):
     # Check if profile is incomplete
     if resident and not resident.is_profile_complete:
         if request.method == 'POST':
-            resident.fname = request.POST.get('fname')
             resident.mname = request.POST.get('mname')
-            resident.lname = request.POST.get('lname')
             resident.zone = request.POST.get('zone')
             resident.civil_status = request.POST.get('civil_status')
             resident.occupation = request.POST.get('occupation')

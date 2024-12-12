@@ -1,17 +1,48 @@
 {% load static %}
 {% block css %}
 <link rel="stylesheet" href="{% static './css/bhw.css' %}">
+<link rel="stylesheet" href="{% static './css/medicine.css' %}">
+
+
 {% endblock %}
 
 
  
 {% block content %}  
-    {% include 'bhw/bhwTopnav.html' %}
+{% include 'bhw/bhwTopnav.html' %}
     <div class="adminContainer">
+        
+        <div class="Left">
+            <button id="Medicine-Modal">ADD</button>
+        </div>
+
+
         <div class="MC-Bottom">
-            {% include './bhwNav.html' %}  
+            {% include 'bhw/bhwNav.html' %}
+
+           
+            
             <div class="contents">
                 <section id="content">
+
+                   <div class="box-container">
+                    {% if medicines %}
+                        {% for medicine in medicines %}
+                        <div class="box">
+                            <img src="{{ medicine.picture.url }}" alt="{{ medicine.medicine_name }}" />
+                            <h1>{{ medicine.medicine_name }}</h1>                      
+                            <p>Quantity: {{ medicine.medicine_quantity }}</p>
+                            <p>Type: {{ medicine.medicine_type }}</p>
+                            <p>Description: {{ medicine.medicine_description }}</p>
+                            <p>Expiration: {{ medicine.expiration_date }}</p>
+                        </div>
+                        {% endfor %}
+                            {% else %}
+                                <p>No medicines available.</p>
+                            {% endif %}
+                    </div>
+
+    
                     <table>
                         <thead>
                             <tr>  
@@ -41,5 +72,75 @@
         </div>
     </div>
    
+
+    <!-- ADD Modal -->
+<div id="Modal-Medicine-Overlay">
+    <div id="CO-Container">
+        <div class="CO-Top">
+            <h3>Add New Medicine</h3>
+        </div>
+        <form method="POST" action="{% url 'addMedicine' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="CO-Bottom">
+             
+                <div class="input-group">
+                    <label for="medicine_name">Medicine Name:</label>
+                    <input type="text" id="medicine_name" name="medicine_name" placeholder="Enter Medicine name" required>
+                </div>
+    
+                <div class="input-group">
+                    <label for="medicine_quantity">Medicine Quantity:</label>
+                    <input type="number" id="medicine_quantity" name="medicine_quantity" placeholder="Enter Medicine Quantity" required>
+                </div>
+            
+                <div class="input-group">
+                    <label for="medicine_description">Medicine Description:</label>
+                    <textarea id="medicinee_description" name="medicine_description" placeholder="Enter medicine description" rows="3" required></textarea>
+                </div>
+    
+                <div class="input-group">
+                    <label for="expiration_date">Expiration:</label>
+                    <input type="date" id="expiration_date" name="expiration_date" required>
+                </div>
+                
+
+                <div class="input-group">
+                    <label for="medicine_type">Medicine Type:</label>
+                    <select id="medicine_type" name="medicine_type" required>
+                        <option value="other">Other</option>
+                        <option value="tb">TB</option>
+                        <option value="highblood">Highblood</option>
+                        <option value="diabetes">Diabetes</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="picture">Service Picture:</label>
+                    <input type="file" id="picture" name="picture" accept="image/*" required>
+                </div>
+            </div>
+            
+          
+            <div class="CO-Bottom2">
+                <button type="button" id="cancel-medicine">Cancel</button>
+                <button type="submit" id="add-medicine">Add</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+   document.getElementById('Medicine-Modal').onclick = function() {
+        document.getElementById('Modal-Medicine-Overlay').style.display = 'flex';
+    };
+    document.getElementById('cancel-medicine').onclick = function() {
+        document.getElementById('Modal-Medicine-Overlay').style.display = 'none';
+    };
+
+    
+
+
+</script>
 
 {% endblock %}

@@ -11,3 +11,5 @@ from .bsiSide import *
 from .HealthAdminSide import *
 from .verified_resident import *
 from .outbreakStatus import *
+from .bhwSide import *
+from .medicine import *

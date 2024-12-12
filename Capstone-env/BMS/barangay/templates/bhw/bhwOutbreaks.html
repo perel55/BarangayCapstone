@@ -50,7 +50,7 @@
                                     <td>{{ outbreak.purok }}</td>                         
                                     <td>{{ outbreak.date }}</td>
                                     <td>
-                                        <button class="update-btn" data-id="{{ outbreak.id }}" data-outbreak_name="{{ outbreak.outbreak_name }}" data-fname="{{ outbreak.fname }}"data-lname="{{ outbreak.lname }}"  data-purok="{{ outbreak.purok }}"data-date="{{ outbreak.date }}"   >Update</button>
+                                        <button class="update-btn" data-id="{{ outbreak.id }}" data-outbreak_name="{{ outbreak.outbreak_name }}" data-fname="{{ outbreak.fname }}"data-lname="{{ outbreak.lname }}"  data-purok="{{ outbreak.purok }}"data-date="{{ outbreak.date }}">Update</button>
                                     </td>
                                     <td>
                                         {% if outbreak.status == "Active" %}
@@ -82,13 +82,6 @@
                             </div>
                             {% endfor %}
                         </div>
-                        
-                        
-                        
-                        
-                        
-                        
-                        
                         
                     </div>
                     
@@ -228,12 +221,5 @@
     };
 
 
-    // Total Cases Modal
-    document.getElementById('totalCasesBtn').onclick = function() {
-        document.getElementById('Modal-Category-Overlay').style.display = 'flex';
-    };
-    document.getElementById('cancel-category').onclick = function() {
-        document.getElementById('Modal-Category-Overlay').style.display = 'none';
-    };
 </script>
 {% endblock %}

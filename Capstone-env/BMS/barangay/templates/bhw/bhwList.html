@@ -11,7 +11,7 @@
 {% block content %}
 {% include 'modal/resident.html' %}
     <div class="adminContainer">
-        {% include 'healthAdmin/healthTopnav.html' %}
+        {% include 'bhw/bhwTopnav.html' %}
         
         <div class="Left">
             <button id="Residents-Accounts">Residents</button> 
@@ -23,7 +23,7 @@
         </div>
 
         <div class="MC-Bottom">
-            {% include 'healthAdmin/healthNav.html' %}
+            {% include 'bhw/bhwNav.html' %}
             
             <div class="contents">
                 <div class="content">
@@ -42,28 +42,29 @@
                                 </thead>    
                                 <tbody>
                                     {% for resident in residents %}
-                                        <tr>    
-                                            <td>{{ resident.auth_user.username }}</td>
-                                            <td>{{ resident.auth_user.email }}</td>        
-                                            <td>{{ resident.fname }} {{ resident.lname }}</td>
-                                            <td>
-                                                <button class="view-more-btn" data-resident-id="{{ resident.id }}">View More</button>
-                                            </td>
-                                            <td>
-                                                {% if resident.status == "Pending" %}
+                                    <tr>    
+                                        <td>{{ resident.auth_user.username }}</td>
+                                        <td>{{ resident.auth_user.email }}</td>        
+                                        <td>{{ resident.auth_user.first_name }} {{ resident.auth_user.last_name }}</td>
+                                        <td>
+                                            <button class="view-more-btn" data-resident-id="{{ resident.id }}">View More</button>
+                                        </td>
+                                        <td>
+                                            {% if resident.status == "Pending" %}
                                                 <span class="status-pending">Pending</span>
-                                                {% elif resident.status == "Verify" %}
-                                                    <span class="status-verified">Verify</span>
-                                                {% elif resident.status == "Decline" %}
-                                                    <span class="status-declined">Decline</span>
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                <a href="{% url 'approved_resident' resident.id %}" class="btn-approve">Verify</a>
-                                                <a href="{% url 'declined_resident' resident.id %}" class="btn-declined">Decline</a>
-                                            </td>    
-                                        </tr>
+                                            {% elif resident.status == "Verify" %}
+                                                <span class="status-verified">Verify</span>
+                                            {% elif resident.status == "Decline" %}
+                                                <span class="status-declined">Decline</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'approved_resident' resident.id %}" class="btn-approve">Verify</a>
+                                            <a href="{% url 'declined_resident' resident.id %}" class="btn-declined">Decline</a>
+                                        </td>    
+                                    </tr>
                                     {% endfor %}
+                                    
                                 </tbody>
                             </table>
                         </div> 
@@ -84,8 +85,8 @@
                                     <tr>    
                                         <td>{{ bhw.auth_user.username }}</td>
                                         <td>{{ bhw.auth_user.email }}</td>        
-                                        <td>{{ bhw.fname }}</td>
-                                        <td>{{ bhw.lname }}</td>
+                                        <td>{{ bhw.auth_user.first_name }} </td>
+                                        <td>{{ bhw.auth_user.last_name }}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
@@ -108,8 +109,8 @@
                                     <tr>    
                                         <td>{{ bsi.auth_user.username }}</td>
                                         <td>{{ bsi.auth_user.email }}</td>        
-                                        <td>{{ bsi.fname }}</td>
-                                        <td>{{ bsi.lname }}</td>
+                                        <td>{{ bsi.auth_user.first_name }} </td>
+                                        <td>{{ bsi.auth_user.last_name }}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
@@ -132,8 +133,8 @@
                                 <tr>
                                     <td>{{ healthadmin.auth_user.username }}</td>
                                     <td>{{ healthadmin.auth_user.email }}</td>    
-                                    <td>{{ healthadmin.fname }}</td>
-                                    <td>{{ healthadmin.mname }}</td>
+                                    <td>{{ healthadmin.auth_user.first_name }} </td>
+                                    <td>{{ healthadmin.auth_user.last_name }}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -156,8 +157,8 @@
                                     <tr>    
                                         <td>{{ official.auth_user.username }}</td>
                                         <td>{{ official.auth_user.email }}</td>        
-                                        <td>{{ official.fname }}</td>
-                                        <td>{{ official.lname }}</td>
+                                        <td>{{ official.auth_user.first_name }} </td>
+                                        <td>{{ official.auth_user.last_name }}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>

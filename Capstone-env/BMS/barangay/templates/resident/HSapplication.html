@@ -121,31 +121,19 @@
                 <label for="service_description">Service Description:</label>
                 <input type="service" id="service_description" name="service_description" value="{{ bhwService.service_description }}" readonly>
             </div>
+            <div class="details">
+                <label for="service_requirements">Service Requirements:</label>
+                <input type="service" id="service_requirements" name="service_requirements" value="{{ bhwService.service_requirements}}" readonly>
+            </div>
+            <div class="details">
+                <label for="service_type">Service Type:</label>
+                <input type="service" id="service_type" name="service_type" value="{{ bhwService.service_type }}" readonly>
+            </div>
         </div>
     
         <hr>
     
         <div class="service_form">
-            <div class="form">
-                <label for="fname">First Name:</label>
-                <input type="text" id="fname" name="fname" value="{{ resident.fname }}" required>
-            </div>
-    
-            <div class="form">
-                <label for="lname">Last Name:</label>
-                <input type="text" id="lname" name="lname" value="{{ resident.lname }}" required>
-            </div>
-        
-            <div class="form">
-                <label for="purok">Purok:</label>
-                <input type="text" id="purok" name="purok"  value="{{ resident.zone }}"required>
-            </div>
-    
-            <div class="form">
-                <label for="phone">Phone Number:</label>
-                <input type="text" id="phone" name="phone" value="{{ resident.phone_number }}" required>
-            </div>
-    
             <div class="form">
                 <label for="date">Date:</label>
                 <input type="date" id="date" name="date" required>

@@ -1,25 +1,38 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import *
+from django.http import JsonResponse
+from django.core.serializers.json import DjangoJSONEncoder
+import json
+
 
 @login_required
 def bhwMaintenance(request):
     # Fetch schedules for maintenance service with verified status
     schedules = Schedule.objects.filter(bhwService__service_type='maintenance', status='Verify')
     
-    return render(request, 'healthAdmin/bhwMaintenance.html', {'schedules': schedules})
+    return render(request, 'bhw/bhwMaintenance.html', {'schedules': schedules})
 
 def releasedMaintenance(request, schedule_id):
     schedule = get_object_or_404(Schedule, id=schedule_id)
 
     # Fetch maintenance entries for the selected schedule
-    maintenance_entries = get_maintenance_entries(schedule.id)
+    maintenance_entries, total_weeks = get_maintenance_entries(schedule.id)
+
+    # Prepare data for the graph
+    graph_data = {
+        'weeks': list(maintenance_entries.values_list('week', flat=True).distinct()),
+        'weights': list(maintenance_entries.values_list('kg', flat=True)),
+        'bp_readings': list(maintenance_entries.values_list('bp', flat=True)),
+    }
 
     context = {
         'schedule': schedule,
         'maintenance_entries': maintenance_entries,
+        'total_weeks': total_weeks,
+        'graph_data': json.dumps(graph_data, cls=DjangoJSONEncoder),  # Pass JSON data
     }
-    return render(request, 'healthAdmin/HealthMaintenance.html', context)
+    return render(request, 'bhw/HealthMaintenance.html', context)
 
 def addMaintenance(request, schedule_id):
     schedule = get_object_or_404(Schedule, id=schedule_id)
@@ -30,7 +43,7 @@ def addMaintenance(request, schedule_id):
         kg = request.POST.get('kg')
         bp = request.POST.get('bp')
 
-        # Create a new Maintenance object (maintenance entry)
+       
         maintenance = Maintenance.objects.create(
             week=week,
             date=date,
@@ -39,25 +52,20 @@ def addMaintenance(request, schedule_id):
             schedule=schedule
         )
 
-        # Debugging: Check if the Maintenance object was created
-        print(f"New maintenance entry created: {maintenance}")
+        maintenance_entries, total_weeks = get_maintenance_entries(schedule.id)
 
-        # Fetch all maintenance entries related to the current schedule
-        maintenance_entries = get_maintenance_entries(schedule.id)
-
-        # Re-render the page with the updated entries
-        return render(request, 'healthAdmin/HealthMaintenance.html', {
+        return render(request, 'bhw/HealthMaintenance.html', {
             'schedule': schedule,
-            'maintenance_entries': maintenance_entries
+            'maintenance_entries': maintenance_entries,
+            'total_weeks': total_weeks,  
         })
     return redirect('releasedMaintenance', schedule_id=schedule.id)
 
 def get_maintenance_entries(schedule_id):
-    # Fetch all maintenance entries for the given schedule ID
     schedule = get_object_or_404(Schedule, id=schedule_id)
     maintenance_entries = Maintenance.objects.filter(schedule=schedule).order_by('week', 'date')
 
-    # Debugging: Print the entries
-    print(maintenance_entries)
 
-    return maintenance_entries
+    total_weeks = maintenance_entries.values_list('week', flat=True).distinct().count()
+
+    return maintenance_entries, total_weeks

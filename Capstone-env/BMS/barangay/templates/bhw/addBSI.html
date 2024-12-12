@@ -8,7 +8,7 @@
   <title>Signup</title>
 </head>
 <body>
-  
+  {% load socialaccount %}
 {% block content %} 
 
   <div class="wrapper">
@@ -17,14 +17,21 @@
 
           <div class="LoginMiddle">
               <div class="LoginTop">
-                  <h2>Register Health Worker</h2>
+                  <h2>Register BSI</h2>
               </div>
 
-              <form action="/bhwregister" method="post">
+              <form action="/bsiregister" method="post">
+
                  {% csrf_token %}
                 <div class="input-group">
                     <input type="text" id="username" name="username" placeholder="Username" required>
                 </div>
+                <div class="input-group">
+                  <input type="text" id="first_name" name="first_name" placeholder="first_name" required>
+              </div>
+              <div class="input-group">
+                <input type="text" id="last_name" name="last_name" placeholder="last_name" required>
+              </div>
                 <div class="input-group">
                     <input type="email" id="email" name="email" placeholder="Email" required>
                 </div>

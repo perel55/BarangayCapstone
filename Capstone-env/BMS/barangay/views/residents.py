@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Residents, Schedule, Request, Services
+from .models import *
 from .forms import ResidentProfileForm  # Import a form for the Residents model
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
@@ -89,9 +89,9 @@ def get_resident_details(request, resident_id):
     data = {
         "username": resident.auth_user.username,
         "email": resident.auth_user.email,
-        "fname": resident.fname,
+        "fname": resident.auth_user.first_name,
         "mname": resident.mname,
-        "lname": resident.lname,
+        "lname": resident.auth_user.last_name,
         "zone": resident.zone,
         "civil_status": resident.civil_status,
         "occupation": resident.occupation,

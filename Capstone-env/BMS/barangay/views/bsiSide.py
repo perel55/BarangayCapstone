@@ -28,12 +28,16 @@ def bsiregister(request):
         email = request.POST.get('email')
         password1 = request.POST.get('password')
         password2 = request.POST.get('password2')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
 
         if password1 == password2:
             user = User.objects.create_superuser(
                 username=username,
                 email=email,
                 password=password1,
+                first_name=first_name,
+                last_name=last_name,    
             )
 
             bsi = Bsi.objects.create(auth_user=user)  # Ensure the model name matches
@@ -60,14 +64,3 @@ def addBSI(request):
 def bsiDashboard(request):
     return render(request, 'bsi/bsiDashboard.html')
 
-def bsiSanitary(request):
-    schedules = Schedule.objects.filter(bhwService__service_type='sanitary')  
-    return render(request, 'bsi/bsiSanitary.html', {'schedules': schedules}) 
-
-
-@login_required
-def approve_sanitary(request, schedule_id):
-    schedule = get_object_or_404(Schedule, id=schedule_id)
-    schedule.status = "Verified"
-    schedule.save()
-    return redirect('bsiSanitary')  

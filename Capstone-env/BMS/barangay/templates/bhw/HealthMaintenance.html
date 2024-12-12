@@ -13,7 +13,7 @@
             <h2>User Profile</h2>
             <div class="profile-details">
                 <p><strong>Username:</strong> {{ schedule.user.username }}</p>
-                <p><strong>Full Name:</strong> {{ schedule.resident.fname }} {{ schedule.resident.lname }}</p>
+                <p><strong>Full Name:</strong> {{ schedule.user.first_name }} {{ schedule.user.last_name }}</p>
                 <p><strong>Purok:</strong> {{ schedule.resident.zone }}</p>
                 <p><strong>Date:</strong> {{ schedule.date }}</p>
                 <p><strong>Phone Number:</strong> {{ schedule.resident.phone_number }}</p>
@@ -31,28 +31,41 @@
         <thead>
             <tr>
                 <th>Username</th>
-                <th>Week</th>
-                <th>Date</th>
                 <th>Kilograms</th>
                 <th>Blood Pressure</th>
+                <th>Week</th>
+                <th>Date</th>
+                <th>Medicine Name</th>
+                <th>Medicine Quantity</th>
             </tr>
         </thead>
         <tbody>
             {% for maintenance in maintenance_entries %}
             <tr>
                 <td>{{ maintenance.schedule.user.username }}</td>
-                <td>{{ maintenance.week }}</td>
-                <td>{{ maintenance.date }}</td>
                 <td>{{ maintenance.kg }}</td>
                 <td>{{ maintenance.bp }}</td>
+                <td>{{ maintenance.week }}</td>
+                <td>{{ maintenance.date }}</td>
+                <td></td>
+                <td></td>
             </tr>
             {% empty %}
             <tr>
                 <td colspan="5">No maintenance records found.</td>
             </tr>
             {% endfor %}
+            <tr>
+                <td colspan="3"></td> 
+                <td colspan="4" style="text-align: left; font-weight: bold;">
+                    Total: {{ total_weeks }}
+                </td>
+            </tr>
         </tbody>
     </table>
+    
+    
+    
 </div>
 
 <div id="popupModal" class="modal">

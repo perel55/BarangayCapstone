@@ -5,10 +5,10 @@
 {% endblock %}
 
 {% block content %}
-    {% include 'healthAdmin/healthTopnav.html' %}
+{% include 'bhw/bhwTopnav.html' %}
 
     <div class="MC-Bottom">
-        {% include './healthNav.html' %}
+        {% include 'bhw/bhwNav.html' %}
         <div class="contents">
             <section id="content">
                 <table>
@@ -20,7 +20,6 @@
                             <th>Purok</th>
                             <th>Date</th>
                             <th>Phone Number</th>
-                            <th>Status</th>
                             <th>View More</th>
                         </tr>
                     </thead>
@@ -28,14 +27,13 @@
                         {% for schedule in schedules %}
                         <tr>
                             <td>{{ schedule.user.username }}</td>
-                            <td>{{ schedule.resident.fname }} {{ schedule.resident.lname }}</td>
+                            <td>{{ schedule.user.first_name }} {{ schedule.user.last_name }}</td>
                             <td>{{ schedule.bhwService.service_name }}</td>
                             <td>{{ schedule.resident.zone }}</td>
                             <td>{{ schedule.date }}</td>
                             <td>{{ schedule.resident.phone_number }}</td>
-                            <td class="verified-status">{{ schedule.status }}</td>
                             <td>
-                                <a href="{% url 'releasedMaintenance' schedule.id %}">View More</a>
+                                <a href="{% url 'releasedMaintenance' schedule.id %}" class="view-more-link">View More</a>
                             </td>
                         </tr>
                         {% endfor %}

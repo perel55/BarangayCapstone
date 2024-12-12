@@ -31,7 +31,7 @@
                             {% for schedule in schedules %}
                             <tr>
                                 <td>{{ schedule.user.username }}</td>
-                                <td>{{ schedule.resident.fname }} {{ scheduleresident..lname }}</td>
+                                <td>{{ schedule.user.first_name }} {{ schedule.user.last_name }}</td>
                                 <td>{{ schedule.bhwService.service_name }}</td>
                                 <td>{{ schedule.resident.zone }}</td>
                                 <td>{{ schedule.date }}</td>

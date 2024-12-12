@@ -29,14 +29,9 @@
           <div class="modal-body">
             <form method="post" enctype="multipart/form-data">
               {% csrf_token %}
-              <label for="fname">First Name:</label>
-              <input type="text" id="fname" name="fname" value="{{ resident.fname }}" required>
-
+  
               <label for="mname">Middle Name:</label>
               <input type="text" id="mname" name="mname" value="{{ resident.mname }}" required>
-
-              <label for="lname">Last Name:</label>
-              <input type="text" id="lname" name="lname" value="{{ resident.lname }}" required>
 
               <label for="zone">Zone:</label>
               <input type="text" id="zone" name="zone" value="{{ resident.zone }}" required>

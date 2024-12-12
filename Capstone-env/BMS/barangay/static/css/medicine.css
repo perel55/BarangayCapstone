@@ -1,5 +1,5 @@
 /* Modal overlay style */
-#Modal-Category-Overlay, #Modal-Update-Overlay, #Modal-Delete-Overlay {
+#Modal-Medicine-Overlay{
     display: none;
     position: fixed;
     top: 0;
@@ -24,7 +24,7 @@
 }
 
 /* Close button and submit styling */
-#cancel-category, #add-category {
+#cancel-medicine, #add-medicine {
     margin: 10px;
     padding: 8px 16px;
     cursor: pointer;
@@ -81,74 +81,6 @@ textarea:focus {
     box-shadow: 0 0 5px rgba(30, 136, 229, 0.3);
 }
 
-/* Button styling cancel*/
-#cancel-category,#add-category, #cancel-btn, #cancel-delete{
-    margin: 12px 8px;
-    padding: 0.5rem;
-    font-size: 0.9rem;
-    font-weight: bold;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-#cancel-category, #cancel-btn, #cancel-delete{
-    background-color: #201f1f;
-    color: white;
-}
-
-#cancel-category:hover, #cancel-btn:hover, #cancel-delete:hover{
-    background-color: #2b2a2a;
-    transform: scale(1.05);
-}
-
-#add-category {
-    background-color: #071aac;
-    color: white;
-}
-
-#add-category:hover {
-    background-color: #071aac;
-    transform: scale(1.05);
-}
-
-
- 
-.update-btn, #update-btn {
-    background-color: rgb(17, 190, 17);
-    color: white;
-    border: none;
-    padding: 0.5rem;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: bold;
-    border-radius: 8px;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-
-.update-btn:hover, #update-btn:hover {
-    background-color: rgb(10, 150, 10);
-    transform: scale(1.05);
-}
-
-.delete-btn, #confirm-delete{
-    background-color: rgb(198, 60, 22);
-    color: white;
-    border: none;
-    padding: 0.5rem;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: bold;
-    border-radius: 8px;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.delete-btn:hover, #confirm-delete:hover {
-    background-color: rgb(139, 41, 13); 
-    transform: scale(1.05);
-}
 select {
     background-color: #f9fafc;
     color: #333;
@@ -169,3 +101,60 @@ select {
     box-shadow: 0 0 5px rgba(30, 136, 229, 0.3);
   }
 
+
+  #cancel-medicine {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  #add-medicine {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  
+#add-medicine:hover {
+    background-color: #4CAF50;
+    transform: scale(1.05); 
+  }
+
+#cancel-medicine:hover {
+    background-color: #f44336;
+    transform: scale(1.05); 
+  }  
+
+/*Medicine Inventory Design*/
+.box {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .box:hover {
+    transform: translateY(-5px);
+  }
+  
+  .box img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  
+  .box h1 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .box p {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  

@@ -167,6 +167,27 @@ table tr:nth-child(even) {
     border: none;
 }   
 
+/* View more*/
+.view-more-link {
+    text-decoration: none;
+    font-weight: bold; 
+    color: #ffffff; 
+    background-color: #007bff; 
+    padding: 10px 20px; 
+    border-radius: 4px; 
+    display: inline-block; 
+    transition: background-color 0.3s, transform 0.2s ease-in-out; 
+}
+
+.view-more-link:hover {
+    background-color: #0056b3; 
+    transform: translateY(-2px); 
+}
+
+.view-more-link:active {
+    background-color: #004085;
+    transform: translateY(0); 
+}
 
 
 

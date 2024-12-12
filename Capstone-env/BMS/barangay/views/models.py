@@ -7,9 +7,7 @@ from django.contrib.auth.models import User
     
 class Residents(models.Model):
     auth_user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE) 
-    fname = models.CharField(max_length=255)
     mname = models.CharField(max_length=255)
-    lname = models.CharField(max_length=255)
     zone = models.CharField(max_length=255)
     civil_status = models.CharField(max_length=255)
     occupation = models.CharField(max_length=255)
@@ -27,9 +25,7 @@ class Residents(models.Model):
 
 class Personnel(models.Model):
     auth_user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE) 
-    fname = models.CharField(max_length=255)
     mname = models.CharField(max_length=255)
-    lname = models.CharField(max_length=255)
     zone = models.CharField(max_length=255)
     civil_status = models.CharField(max_length=255)
     occupation = models.CharField(max_length=255)
@@ -43,9 +39,7 @@ def __str__(self):
   
 class Bhw(models.Model):
     auth_user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE) 
-    fname = models.CharField(max_length=255)
     mname = models.CharField(max_length=255)
-    lname = models.CharField(max_length=255)
     zone = models.CharField(max_length=255)
     civil_status = models.CharField(max_length=255)
     occupation = models.CharField(max_length=255)
@@ -58,9 +52,7 @@ class Bhw(models.Model):
         return f"{self.auth_user}"
 class Bsi(models.Model):
     auth_user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE) 
-    fname = models.CharField(max_length=255)
     mname = models.CharField(max_length=255)
-    lname = models.CharField(max_length=255)
     zone = models.CharField(max_length=255)
     civil_status = models.CharField(max_length=255)
     occupation = models.CharField(max_length=255)
@@ -74,9 +66,7 @@ def __str__(self):
 
 class HealthAdmin(models.Model):
     auth_user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE) 
-    fname = models.CharField(max_length=255)
     mname = models.CharField(max_length=255)
-    lname = models.CharField(max_length=255)
     zone = models.CharField(max_length=255)
     civil_status = models.CharField(max_length=255)
     occupation = models.CharField(max_length=255)
@@ -204,5 +194,17 @@ class Maintenance(models.Model):
         return f"{self.date} {self.week} {self.kg} {self.bp} {self.status}"
 
 
+class Medicine(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    resident_id = models.ForeignKey(Residents, on_delete=models.CASCADE, null=True)
+    maintenece_id = models.ForeignKey(Maintenance, on_delete=models.CASCADE, null=True)
+    medicine_name = models.CharField(max_length=100)
+    medicine_description = models.TextField(null=True)
+    medicine_quantity = models.IntegerField(null=True)
+    expiration_date = models.DateField(null=True)
+    medicine_type = models.CharField(max_length=100)
+    picture = models.ImageField(upload_to='images/', null=True)
 
-        
+    def __str__(self):
+        return f"{self.medicine_name} {self.medicine_description} {self.medicine_quantity} {self.expiration_date} {self.medicine_type}"
+      
