@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .views.models import Accounts, Residents, Bhw, Account_Type, Personnel, HealthService, Schedule, Services, Outbreaks, Request, Bsi,HealthAdmin, Maintenance,Medicine
-from .views.models import Accounts, Residents, Bhw, Account_Type, Personnel, HealthService, Schedule, Services, Outbreaks, Request, Bsi,HealthAdmin, CommunityNotice
+from .views.models import Accounts, Residents, Bhw, Account_Type, Personnel, HealthService, Schedule, Services, Outbreaks, Request, Bsi,HealthAdmin, Maintenance,Medicine, CommunityNotice
+
 
 
 # Register your models here.
@@ -18,3 +18,4 @@ admin.site.register(Bsi)
 admin.site.register(HealthAdmin)
 admin.site.register(Maintenance)
 admin.site.register(Medicine)
+admin.site.register(CommunityNotice)
