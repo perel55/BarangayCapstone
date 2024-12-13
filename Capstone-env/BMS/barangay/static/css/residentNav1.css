@@ -29,6 +29,20 @@
     padding: 0 15px;
 }
 
+.arrow-icon {
+    display: none; /* Default state */
+}
+
+.sidebar:hover .arrow-icon {
+    display: flex; /* Show arrow icons on sidebar hover */
+}
+
+.sidebar .nav-links li.showMenu .arrow-icon {
+    display: flex; /* Ensure arrows show when submenu is active */
+}
+
+
+
 .sidebar .logo-details i {
     font-size: 30px;
     color: #fff;

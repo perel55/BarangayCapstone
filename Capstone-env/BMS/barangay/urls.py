@@ -113,6 +113,7 @@ urlpatterns = [
     path('api/get_services/', views.get_services, name='get_services'),
 
 
+    path('resident/view_events', views.view_events, name='view_events'),
 
 # -------------> TRY <------------
     # re_path(r'^ScheduleView/$', views.ScheduleView.as_view(), name='ScheduleView'),
@@ -121,6 +122,23 @@ urlpatterns = [
     path('schedule/', views.ScheduleView, name='ScheduleView'),
     path('api/schedules/', views.get_events, name='GetEvents'),
 
+    path('add-notice/', views.add_notice, name='add_notice'),
+
+    path('notices/edit/<int:notice_id>/', views.edit_notice, name='edit_notice'),
+    path('notices/delete/<int:notice_id>/', views.delete_notice, name='delete_notice'),
+
+    path('api/notices/', views.get_resident_notices, name='get_resident_notices'),
+    path('api/notices/<int:notice_id>/', views.get_notice_detail, name='get_notice_detail'),
+
+    path('notices/<int:notice_id>/details/', views.notice_details_view, name='notice_details'),
+
+
+    path('edit-profile/', views.edit_profile, name='edit_profile'),
+    path('barangay-maps', views.barangay_map, name='barangay_map'),
+
+    path('fetch-services/', views.fetch_services, name='fetch-services'),
+
+    path('resident_services/', views.resident_services, name='resident_services'),
 
 
 

@@ -24,23 +24,27 @@
                     <span class="link_name">Dashboard</span>
                 </a>
                 <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Dashboard</a></li>
+                    <li><a class="link_name" href="{% url 'residentdashboard' %}">Dashboard</a></li>
                 </ul>
             </li>
 
             <li>
+    
                 <div class="icon-links">
-                <a href="#">
-                    <i class='bx bx-edit' ></i>
-                    <span class="link_name">Services</span>
-                </a>
-                <i class='bx bx-chevron-down arrow' ></i>
+                    <a href="#">
+                        <i class='bx bx-edit' ></i>
+                        <span class="link_name">Services</span>
+                    </a>
+                        <div class="arrow-icon">
+                            <i class='bx bx-chevron-down arrow' ></i>
+                        </div>
                 </div>
                 <ul class="sub-menu">
                     <li><a class="link_name" href="#">SERVICES</a></li>
                     <li><a href="{% url 'calendar' %}">Adminstrative Services</a></li>
                     <li><a href="{% url 'bhwServices' %}">Health Services</a></li>
                 </ul>
+                
             </li>
 
             
@@ -50,22 +54,22 @@
                     <span class="link_name">History</span>
                 </a>
                 <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">History</a></li>
+                    <li><a class="link_name" href="{% url 'residentHistory' %}">History</a></li>
                 </ul>
             </li>
 
             <li>
-                <a href="{% url 'view_events' }">
+                <a href="{% url 'view_events' %}">
                     <i class='bx bx-calendar' ></i>
                     <span class="link_name">Events</span>
                 </a>
                 <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Events</a></li>
+                    <li><a class="link_name" href="{% url 'view_events' %}">Events</a></li>
                 </ul>
             </li>
 
             <li>
-                <a href="#">
+                <a href="{% url 'barangay_map' %}">
                     <i class='bx bx-shield-plus' ></i>
                     <span class="link_name">Outbreaks</span>
                 </a>
@@ -75,7 +79,7 @@
             </li>
 
             <li>
-                <a href="#">
+                <a href="{% url 'resident_services' %}">
                     <i class='bx bx-plus-medical' ></i>
                     <span class="link_name">Health Records</span>
                 </a>
@@ -86,26 +90,28 @@
 
             <li>
                 <div class="icon-links">
-                <a href="#">
-                    <i class='bx bx-cog' ></i>
-                    <span class="link_name">Settings</span>
-                </a>
-                <i class='bx bx-chevron-down arrow' ></i>
+                    <a href="#">
+                        <i class='bx bx-cog' ></i>
+                        <span class="link_name">Settings</span>
+                    </a>
+                    <div class="arrow-icon">
+                        <i class='bx bx-chevron-down arrow' ></i>
+                    </div>
                 </div>
                 <ul class="sub-menu">
                     <li><a class="link_name" href="#">SETTINGS</a></li>
-                    <li><a href="#">Update Profile</a></li>
+                    <li><a href="{% url 'edit_profile' %}">Update Profile</a></li>
                     
                 </ul>
             </li>
 
             <li>
                 <a href="{% url 'logout' %}">
-                    <i class='bx bx-grid-alt' ></i>
+                    <i class='bx bx-log-out' ></i>
                     <span class="link_name">Logout</span>
                 </a>
                 <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Logout</a></li>
+                    <li><a class="link_name" href="{% url 'logout' %}">Logout</a></li>
                 </ul>
             </li>
 
@@ -136,10 +142,13 @@
 
         let sidebar = document.querySelector(".sidebar");
         let sidebarBtn = document.querySelector(".bx-menu");
-        console.log(sidebarBtn);
-        sidebarBtn.addEventListener("click", ()=>{
+
+        sidebarBtn.addEventListener("click", () => {
             sidebar.classList.toggle("close");
         });
+
+
+        
     
     </script>
     

@@ -1,0 +1,124 @@
+/* Main Content Area */
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+    width: calc(100% - 250px);
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.adminContainer {
+    margin-top: 100px;
+}
+
+/* Title Styling */
+h2 {
+    font-size: 28px;
+    color: #333;
+    margin-top: 5vh;
+    margin-bottom: 1px;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Form Styling */
+form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Label Styling */
+label {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+/* Input Styling */
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="file"] {
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+    margin-bottom: 2px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+}
+
+/* Error Message Styling */
+#birthdate-error {
+    color: red;
+    font-size: 14px;
+    display: none;
+}
+
+/* Profile Picture Section */
+#current-picture,
+#preview-picture {
+    justify-content: space-between;
+    display: block;
+    max-width: 400px;
+    max-height: 400px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+input[readonly] {
+    background-color: #f9f9f9; /* Light gray background */
+    color: #969090; /* Slightly muted text color */
+    cursor: not-allowed; /* Indicates the field is not editable */
+}
+
+/* Button Styling */
+.button {
+    padding: 12px 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-bottom: 20%;
+}
+
+button:hover {
+    background-color: #424642;
+}
+
+/* Input Fields Focus Effect */
+input:focus {
+    border-color: #4CAF50;
+    outline: none;
+    background-color: #e9f5e2;
+}
+
+/* Container for both sidebar and main content */
+.container {
+    display: flex;
+    width: 100%;
+}
+
+/* Subtle hover effect for form fields */
+input[type="text"]:hover,
+input[type="number"]:hover,
+input[type="date"]:hover,
+input[type="file"]:hover {
+    border-color: #4CAF50;
+}
+
+/* Improve button alignment */
+form button {
+    margin-top: 20px;
+}

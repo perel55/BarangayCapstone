@@ -1,0 +1,151 @@
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static './css/residentHS.css' %}">
+    <link rel="stylesheet" href="{% static './css/residentServices.css' %}">
+    <title>Resident Services List</title>
+{% endblock %}
+
+<body>
+    <div class="MainContainer">
+        {% include 'resident/residentTopnav.html' %}
+        <div class="MC-Bottom">
+            {% include './residentNav1.html' %}
+            <div class="title-container">
+                <h1 class="service-title">All Barangay Services</h1>
+            </div>
+            <div class="service-list-container">
+                {% for service in services %}
+                <div 
+                class="service-card" 
+                onclick="showServiceInfoModal(
+                    '{{ service.service_name }}',
+                    '{{ service.service_description }}',
+                    '{% if service.image %}{{ service.image.url }}{% else %}{% static 'images/default_service_image.jpg' %}{% endif %}',
+                    '{{ service.requirements|default:'' }}',
+                    {{ service.service_price }}
+                )"
+            >
+                {% if service.image %}
+                    <img src="{{ service.image.url }}" alt="{{ service.service_name }} image">
+                {% else %}
+                    <img src="{% static 'images/default_service_image.jpg' %}" alt="Default service image">
+                {% endif %}
+                <h3>{{ service.service_name }}</h3>
+                <p>{{ service.service_description|truncatewords:15 }}</p>
+                <a 
+                    href="{% url 'calendar' %}?service_id={{ service.service_id }}&service_name={{ service.service_name }}&service_price={{ service.service_price }}" 
+                    class="btn" 
+                    onclick="event.stopPropagation();">
+                    Avail now
+                </a>
+            </div>
+                          
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Include the modals -->
+    {% include 'modal/serviceInfo.html' %}
+</body>
+
+<script>
+    /**
+     * Opens the service info modal.
+     * @param {string} title - The service name.
+     * @param {string} description - The service description.
+     * @param {string} imageUrl - The URL of the service image.
+     */
+     function showServiceInfoModal(title, description, imageUrl, requirements, price) {
+    const modal = document.getElementById("serviceModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalDescription = document.getElementById("modalDescription");
+    const modalImage = document.getElementById("modalImage");
+    const modalRequirements = document.getElementById("modalRequirements");
+    const modalPrice = document.getElementById("modalPrice"); // Get the price element
+
+    // Set modal content
+    modal.style.display = "flex";
+    modalTitle.innerText = title;
+    modalDescription.innerText = description;
+    modalImage.src = imageUrl;
+
+    // Set the price in the modal
+    modalPrice.innerText = `Price: ₱${price.toFixed(2)}`; // Display the price with two decimals
+
+    // Clear previous requirements
+    modalRequirements.innerHTML = '';
+
+    // Add requirements if any
+    if (requirements) {
+        const requirementList = requirements.split(","); // assuming requirements are comma separated
+        requirementList.forEach(function(requirement) {
+            const listItem = document.createElement("li");
+            listItem.textContent = requirement.trim();
+            modalRequirements.appendChild(listItem);
+        });
+    } else {
+        const noRequirements = document.createElement("li");
+        noRequirements.textContent = "No requirements available.";
+        modalRequirements.appendChild(noRequirements);
+    }
+}
+
+
+    /**
+     * Closes the service info modal.
+     */
+    function closeServiceInfoModal() {
+        const modal = document.getElementById("serviceModal");
+        modal.style.display = "none";
+    }
+
+    // Close the modal when clicking outside the content
+    window.addEventListener("click", function (event) {
+        const modal = document.getElementById("serviceModal");
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+
+    function openResidentScheduleModal(serviceId, serviceName, servicePrice) {
+        const scheduleModal = document.getElementById("Modal-Schedule-Overlay");
+        const serviceSelect = document.getElementById("service-id");
+        const priceInput = document.getElementById("total-price");
+
+        // Show the resident schedule modal
+        scheduleModal.style.display = "flex";
+
+        // Set the service information
+        const serviceOption = serviceSelect.querySelector(`option[value="${serviceId}"]`);
+        if (serviceOption) {
+            serviceOption.selected = true;
+            priceInput.value = servicePrice; // Update the price field with the selected service's price
+        }
+
+        // Optionally, set the modal title to the service name
+        const modalTitle = document.querySelector('.MSC-Top h3');
+        if (modalTitle) {
+            modalTitle.innerText = `Schedule for ${serviceName}`;
+        }
+    }
+
+    // Close the resident schedule modal on "Cancel"
+    document.getElementById('cancel-sched').addEventListener('click', function () {
+        const scheduleModal = document.getElementById("Modal-Schedule-Overlay");
+        scheduleModal.style.display = "none";
+    });
+
+    // Close the service info modal on outside click
+    window.onclick = function (event) {
+        const serviceModal = document.getElementById("serviceModal");
+        const scheduleModal = document.getElementById("Modal-Schedule-Overlay");
+
+        if (event.target === serviceModal) {
+            serviceModal.style.display = "none";
+        }
+        if (event.target === scheduleModal) {
+            scheduleModal.style.display = "none";
+        }
+    };
+</script>

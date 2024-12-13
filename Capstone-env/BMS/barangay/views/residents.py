@@ -1,10 +1,53 @@
-from django.shortcuts import render, redirect
-from .models import *
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Residents, Schedule, Request, Services
 from .forms import ResidentProfileForm  # Import a form for the Residents model
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from datetime import timedelta, datetime
 from django.http import JsonResponse
+from .models import *
+from datetime import datetime
+from django.http import HttpResponse
+
+@login_required
+def edit_profile(request):
+    # Fetch the resident profile for the logged-in user
+    resident = get_object_or_404(Residents, auth_user=request.user)
+    
+    if request.method == "POST":
+        # Retrieve data from POST request
+        resident.fname = request.POST.get('fname', resident.fname)
+        resident.mname = request.POST.get('mname', resident.mname)
+        resident.lname = request.POST.get('lname', resident.lname)
+        resident.zone = request.POST.get('zone', resident.zone)
+        resident.civil_status = request.POST.get('civil_status', resident.civil_status)
+        resident.occupation = request.POST.get('occupation', resident.occupation)
+        resident.age = request.POST.get('age', resident.age)
+        
+        # Convert the birthdate from string to date
+        birthdate_str = request.POST.get('birthdate', resident.birthdate)
+        if birthdate_str:
+            resident.birthdate = datetime.strptime(birthdate_str, '%Y-%m-%d').date()
+        
+        resident.phone_number = request.POST.get('phone_number', resident.phone_number)
+        resident.position = request.POST.get('position', resident.position)
+        
+        # Handle file upload for the picture
+        if 'picture' in request.FILES:
+            resident.picture = request.FILES['picture']
+        
+        # Mark the profile as complete
+        resident.is_profile_complete = True
+        resident.save()
+
+        # Redirect to a profile view or another page
+        return redirect('view_events')  # Replace 'profile' with the actual name of your profile view
+    
+    # Render the edit profile page with current data
+    # Ensure birthdate is passed as a string in the correct format
+    birthdate_str = resident.birthdate.strftime('%Y-%m-%d') if resident.birthdate else ""
+    return render(request, 'resident/residentEditProfile.html', {'resident': resident, 'birthdate_str': birthdate_str})
+
 
 
 # View to render the calendar
@@ -75,32 +118,134 @@ def get_services(request):
     
     return JsonResponse(services_list, safe=False)
 
+# ----------------------------> Community Notices <---------------------------
+
 def view_events(request):
+    """Render the page with the calendar."""
     return render(request, 'resident/residentEvents.html')
 
+def get_resident_notices(request):
+    """Fetch the notices to display on the calendar."""
+    notices = CommunityNotice.objects.all()
+    events = []
+
+    for notice in notices:
+        event = {
+            'title': notice.notice_name,
+            'start': f"{notice.notice_StartDate}T{notice.notice_StartTime}",
+            'end': f"{notice.notice_EndDate}T{notice.notice_EndTime}" if notice.notice_EndDate else None,
+            'notice_id': notice.id,
+            'description': notice.notice_description,
+            'image': notice.notice_image.url if notice.notice_image else None,
+            'notice_type': notice.notice_type,
+            'notice_color': notice.notice_color,
+        }
+        events.append(event)
+
+    return JsonResponse(events, safe=False)
+
+
+def get_notice_detail(request, notice_id):
+    try:
+        notice = CommunityNotice.objects.get(id=notice_id)
+        data = {
+            'notice_name': notice.notice_name,
+            'notice_description': notice.notice_description,
+            'notice_image': notice.notice_image.url if notice.notice_image else None,
+            'notice_StartDate': notice.notice_StartDate,
+            'notice_EndDate': notice.notice_EndDate,
+            'notice_StartTime': notice.notice_StartTime.strftime('%I:%M %p') if notice.notice_StartTime else None,
+            'notice_EndTime': notice.notice_EndTime.strftime('%I:%M %p') if notice.notice_EndTime else None,
+            'notice_type': notice.notice_type,
+        }
+        return JsonResponse(data)
+    except CommunityNotice.DoesNotExist:
+        return JsonResponse({'error': 'Notice not found'}, status=404)
 
 
 
-from django.http import JsonResponse
-from .models import Residents
+def notice_details_view(request, notice_id):
+    """Render the full details of a specific notice."""
+    notice = get_object_or_404(CommunityNotice, id=notice_id)
+    return render(request, 'resident/notice_details.html', {
+        'notice': notice,
+    })
 
-def get_resident_details(request, resident_id):
-    resident = Residents.objects.get(id=resident_id)
-    data = {
-        "username": resident.auth_user.username,
-        "email": resident.auth_user.email,
-        "fname": resident.auth_user.first_name,
-        "mname": resident.mname,
-        "lname": resident.auth_user.last_name,
-        "zone": resident.zone,
-        "civil_status": resident.civil_status,
-        "occupation": resident.occupation,
-        "birthdate": resident.birthdate,
-        "phone_number": resident.phone_number,
-        "position": resident.position,
-        "is_profile_complete": resident.is_profile_complete,
-        "status": resident.status,
-        "picture": resident.picture.url if resident.picture else None,
-        "id_image": resident.id_image.url if resident.id_image else None,
-    }
-    return JsonResponse(data)
+
+def fetch_notices(request):
+    notices = CommunityNotice.objects.all()
+    events = [
+        {
+            'title': notice.notice_name,
+            'start': f"{notice.notice_StartDate}T{notice.notice_StartTime}",
+            'end': f"{notice.notice_EndDate}T{notice.notice_EndTime}" if notice.notice_EndDate else None,
+            'extendedProps': {
+                'notice_id': notice.id,  # Add the notice_id inside extendedProps
+                'description': notice.notice_description,
+                'image': notice.notice_image.url if notice.notice_image else None,
+                'notice_type': notice.notice_type,
+                'notice_color': notice.notice_color,
+            },
+        }
+        for notice in notices
+    ]
+    return JsonResponse(events, safe=False)
+
+
+
+
+
+    
+
+
+# --------------------------> RESIDENT PROFILE <-------------------------------
+
+from datetime import datetime
+
+@login_required
+def edit_profile(request):
+    resident = get_object_or_404(Residents, auth_user=request.user)
+
+    if request.method == "POST":
+        resident.fname = request.POST.get('fname', resident.fname)
+        resident.mname = request.POST.get('mname', resident.mname)
+        resident.lname = request.POST.get('lname', resident.lname)
+        resident.zone = request.POST.get('zone', resident.zone)
+        resident.civil_status = request.POST.get('civil_status', resident.civil_status)
+        resident.occupation = request.POST.get('occupation', resident.occupation)
+        resident.age = request.POST.get('age', resident.age)
+
+        birthdate_str = request.POST.get('birthdate', resident.birthdate)
+        if birthdate_str:
+            resident.birthdate = datetime.strptime(birthdate_str, '%Y-%m-%d').date()
+
+        resident.phone_number = request.POST.get('phone_number', resident.phone_number)
+        resident.position = request.POST.get('position', resident.position)
+
+        if 'picture' in request.FILES:
+            resident.picture = request.FILES['picture']
+
+        resident.is_profile_complete = True
+        resident.save()
+
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'message': 'Profile updated successfully'}, status=200)
+
+        return redirect('edit_profile')
+
+    birthdate_str = resident.birthdate.strftime('%Y-%m-%d') if resident.birthdate else ""
+    return render(request, 'resident/residentEditProfile.html', {'resident': resident, 'birthdate_str': birthdate_str})
+
+
+
+# ------------------------> MAP <---------------------------
+
+def barangay_map(request):
+    return render(request, 'resident/residentOutbreaks.html')
+
+
+# ------------------------> SERVICE LIST <-----------------------
+
+def resident_services(request):
+    services = Services.objects.all()  # Query all services
+    return render(request, 'resident/residentServices.html', {'services': services})

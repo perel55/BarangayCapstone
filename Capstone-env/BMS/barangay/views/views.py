@@ -168,10 +168,17 @@ def validatelogin(request):
 def index(request):
     return render(request, 'index.html')
 
+
+
+@login_required
+def logout(request):
+    return render(request, 'accounts/logout.html')
+
 def signup(request):
   template = loader.get_template('accounts/signup.html')
   return HttpResponse(template.render())
 
+@login_required
 def residentdashboard(request):
     return render(request, 'resident/userd.html')
 
