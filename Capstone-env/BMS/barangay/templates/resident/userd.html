@@ -92,5 +92,11 @@
         reader.readAsDataURL(file);
       }
     }
+
+        window.addEventListener("beforeunload", function () {
+            navigator.sendBeacon("/accounts/logout/");
+        });
+    
+
   </script>
 </body>

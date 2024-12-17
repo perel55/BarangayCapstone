@@ -1,5 +1,7 @@
 from django.contrib import admin
 from .views.models import Accounts, Residents, Bhw, Account_Type, Personnel, HealthService, Schedule, Services, Outbreaks, Request, Bsi,HealthAdmin, Maintenance,Medicine, CommunityNotice,Immunize
+from .views.models import Accounts, Residents, Bhw, Account_Type, Personnel, HealthService, Schedule, Services, Outbreaks, Request, Bsi,HealthAdmin, Maintenance,Medicine, CommunityNotice
+
 
 
 # Register your models here.

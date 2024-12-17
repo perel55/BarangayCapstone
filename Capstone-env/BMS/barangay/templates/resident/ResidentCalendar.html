@@ -11,12 +11,18 @@
 
 {% block content %}
 {% include 'modal/residentSchedule.html' %}
+{% include 'modal/editRequest.html' %}
 
 <div class="MainContainer">
    {% include 'resident/residentTopnav.html' %} 
     <div class="MC-Bottom">
         {% include './residentNav1.html' %}      
         <div id="Schedule-Content">
+
+            <div id="confirmation-message">
+                Your request is under review by the secretary. You can check the status in your history.
+            </div>
+            
             <div class="SC-Top">
               <div class="SCT-Left">
                <select id="monthSelect">
@@ -51,30 +57,136 @@
     </div>
 </div>
 
+
+<style>
+
+    /* Confirmation Message Styles */
+#confirmation-message {
+    display: none;  /* Hidden initially */
+    background-color: #28a745; /* Green background */
+    color: white;
+    padding: 50px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 400px;
+    z-index: 9999;
+    opacity: 0;
+    animation: fadeInOut 8s forwards; /* Animation for fading in and out */
+    margin-top: 230px;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        top: 5%;
+    }
+    20% {
+        opacity: 1;
+        top: 10%;
+    }
+    80% {
+        opacity: 1;
+        top: 10%;
+    }
+    100% {
+        opacity: 0;
+        top: 5%;
+    }
+}
+
+</style>
+
 <script>
-  // Get the service details from URL parameters
-  const urlParams = new URLSearchParams(window.location.search);
-  const serviceId = urlParams.get('service_id');
-  const serviceName = urlParams.get('service_name');
-  const servicePrice = urlParams.get('service_price');
 
-  // Store the service details in hidden input fields or use them directly
-  const serviceSelect = document.getElementById("service-id");
-  const priceInput = document.getElementById("total-price");
+document.addEventListener('DOMContentLoaded', function () {
+    const confirmationMessage = document.getElementById('confirmation-message');
 
-  // If you have hidden inputs for service details
-  if (serviceSelect) {
-      serviceSelect.value = serviceId;
-  }
-  if (priceInput) {
-      priceInput.value = servicePrice;
-  }
+    // If a success message exists in the Django context, show the confirmation message
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                confirmationMessage.style.display = 'block';
+                confirmationMessage.style.opacity = 1;
+                confirmationMessage.innerHTML = 'Your request is under review by the secretary. You can check the status in your history.';
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 
-  // Optionally, you can display the service name in the modal title
-  const modalTitle = document.querySelector('.MSC-Top h3');
-  if (modalTitle) {
-      modalTitle.innerText = `Schedule for ${serviceName}`;
-  }
+    // Hide the confirmation message after the animation finishes (4 seconds in this case)
+    setTimeout(function () {
+        confirmationMessage.style.display = 'none';
+    }, 8000);
+});
+
+
+function showServiceInfoModal(title, description, imageUrl, requirements, price) {
+    const modal = document.getElementById("serviceModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalDescription = document.getElementById("modalDescription");
+    const modalImage = document.getElementById("modalImage");
+    const modalRequirements = document.getElementById("modalRequirements");
+    const modalPrice = document.getElementById("modalPrice");
+
+    // Set modal content
+    modal.style.display = "flex";
+    modalTitle.innerText = title;
+    modalDescription.innerText = description;
+    modalImage.src = imageUrl;
+
+    // Set the price in the modal
+    modalPrice.innerText = `Price: ₱${price.toFixed(2)}`;
+
+    // Clear previous requirements
+    modalRequirements.innerHTML = '';
+
+    // Add requirements if any
+    if (requirements) {
+        const requirementList = requirements.split(","); // assuming requirements are comma separated
+        requirementList.forEach(function(requirement) {
+            const listItem = document.createElement("li");
+            listItem.textContent = requirement.trim();
+            modalRequirements.appendChild(listItem);
+        });
+    } else {
+        const noRequirements = document.createElement("li");
+        noRequirements.textContent = "No requirements available.";
+        modalRequirements.appendChild(noRequirements);
+    }
+}
+
+
+// Get the service details from URL parameters
+const urlParams = new URLSearchParams(window.location.search);
+const serviceId = urlParams.get('service_id');
+const serviceName = urlParams.get('service_name');
+const servicePrice = urlParams.get('service_price');
+
+// Store the service details in hidden input fields or use them directly
+const serviceSelect = document.getElementById("service-id");
+const priceInput = document.getElementById("total-price");
+
+// If you have hidden inputs for service details
+if (serviceSelect) {
+    serviceSelect.value = serviceId;
+}
+if (priceInput) {
+    priceInput.value = servicePrice;
+}
+
+// Optionally, you can display the service name in the modal title
+const modalTitle = document.querySelector('.MSC-Top h3');
+if (modalTitle) {
+    modalTitle.innerText = `Schedule for ${serviceName}`;
+}
+
+
 </script>
 
 

@@ -184,5 +184,42 @@ def delete_notice(request, notice_id):
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 
+from django.shortcuts import render
+from django.db.models import Q
+
+def accounts_view(request):
+    account_type = request.GET.get('type', 'all')
+
+    # Define the accounts to be passed based on the account type
+    if account_type == "Residents":
+        accounts = Residents.objects.all()
+    elif account_type == "Bhw":
+        accounts = Bhw.objects.all()
+    elif account_type == "Personnel":
+        accounts = Personnel.objects.all()
+    elif account_type == "Health Admin":
+        accounts = HealthAdmin.objects.all()
+    elif account_type == "Bsi":
+        accounts = Bsi.objects.all()
+    else:
+        # Pass all accounts for the 'all' filter
+        accounts = {
+            'residents': Residents.objects.all(),
+            'bhws': Bhw.objects.all(),
+            'personnel': Personnel.objects.all(),
+            'health_admins': HealthAdmin.objects.all(),
+            'bsis': Bsi.objects.all(),
+        }
+
+    context = {
+        'account_type': account_type,
+        'accounts': accounts,
+    }
+    return render(request, 'admin/adminAccounts.html', context)
+
+
+
+
+
 
 

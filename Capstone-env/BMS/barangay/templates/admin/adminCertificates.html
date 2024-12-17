@@ -1,31 +1,64 @@
 {% load static %}
+
 {% block css %}
-<link rel="stylesheet" href="{% static './css/admin.css' %}">
+<link rel="stylesheet" href="{% static './css/adminCertificates.css' %}">
 {% endblock %}
 
-
 {% block content %}
-
-    <div class="adminContainer">
-        <div class="ac-top">
-            <div class="ac-Left">
-                <img src="../../static/images/lala-logo.jpg" alt="">
-                <h3>Barangay Management System</h3>
-            </div>
-
-            <div class="ac-middle">
+    <div class="admin-certificates-page">
+        {% include './adminheader.html' %}
+        <div class="content-container">
+            {% include 'admin/AdminNav.html' %}
             
-            </div>
-
-            <div class="ac-right">
-                <input type="" name="" id="HomeSearch" placeholder="Search"> 
-                <div class="NotifAdmin">
-                  <img src="../../static/images/Bell-Notification--Streamline-Flex.png" alt="">
+            <!-- Main Content Wrapper -->
+            <div class="admin-certificates-main-content">
+                <div class="requestTable">
+                    <h2>Requests</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Full Name</th>
+                                <th>Service</th>
+                                <th>Purok</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Phone Number</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for request in requests %}
+                            <tr>
+                                <td>{{ request.user.username }}</td>
+                                <td>{{ request.user.first_name }} {{ request.user.last_name }}</td>
+                                <td>{{ request.service_id.service_name }}</td>
+                                <td>{{ request.Resident_id.zone }}</td>
+                                <td>{{ request.schedule_date }}</td>
+                                <td>{{ request.schedule_start_time }}</td>
+                                <td>{{ request.Resident_id.phone_number }}</td>
+                                <td>{{ request.status }}</td>
+                                <td>
+                                    <form method="POST" action="{% url 'update_status' request.id %}">
+                                        {% csrf_token %}
+                                        <select name="status" id="status">
+                                            <option value="Pending" {% if request.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                            <option value="Approved" {% if request.status == 'Approved' %}selected{% endif %}>Approved</option>
+                                        </select>
+                                        <button type="submit">Update</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="9">No requests found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-        </div>
-        <div class="MC-Bottom">
-        {% include './adminNav.html' %}      
-        </div>
-    </div>
+            </div> 
+        </div> 
+    </div> 
 {% endblock %}

@@ -1,0 +1,145 @@
+<div id="EModal-Schedule-Overlay" class="modal-overlay">
+    <div class="modal-content">
+        <form id="edit-schedule-form" method="POST" action="">
+            {% csrf_token %}
+            <input type="hidden" id="eschedule-id" name="schedule_id" value="{{ request.id }}">
+
+            <label for="eschedule-service-name">Service Name</label>
+            <input type="text" id="eschedule-service-name" name="service_name" value="{{ request.service_id.service_name }}" disabled>
+
+            <label for="eschedule-type">Reason</label>
+            <input type="text" id="eschedule-type" name="reason" value="{{ request.reason }}">
+            
+            <label for="eschedule-date">Date</label>
+            <input type="date" id="eschedule-date" name="schedule_date" value="{{ request.schedule_date }}">
+            
+            <label for="eschedule-start-time">Start Time</label>
+            <input type="time" id="eschedule-start-time" name="schedule_start_time" value="{{ request.schedule_start_time }}">
+        
+            <label for="eschedule-price">Total Price</label>
+            <input type="number" id="eschedule-price" name="total_price" value="{{ request.total_price }}">
+
+            <label for="eschedule-requirements">Request Requirements</label>
+            <img id="eschedule-requirements" src="{{ request.request_requirements.url }}" alt="Request Requirements Image" style="max-width: 100%; max-height: 200px;">
+            
+            <button type="submit">Save Changes</button>
+            <button type="button" id="ecancel-sched">Cancel</button>
+        </form>
+    </div>
+</div>
+
+
+<style>
+
+
+/* Show modal overlay when visible */
+.modal-overlay.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Modal Content */
+.modal-content {
+    margin-top: 6rem;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 500px;
+    max-height: 800px;
+    animation: modal-animate 0.3s ease;
+    margin-left: 40%;
+
+}
+
+/* Modal Animation */
+@keyframes modal-animate {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+}
+
+input, button {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+input:focus, button:focus {
+    border-color: #007BFF;
+}
+
+input[type="date"], input[type="time"], input[type="number"] {
+    background-color: #f9f9f9;
+}
+
+button[type="submit"] {
+    background-color: #007BFF;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+button[type="button"] {
+    background-color: #f44336;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="button"]:hover {
+    background-color: #d32f2f;
+}
+
+/* Image Styling */
+#eschedule-requirements {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 8px;
+}
+
+/* Cancel Button Styling */
+#ecancel-sched {
+    background-color: transparent;
+    border: none;
+    color: #007BFF;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    font-weight: 500;
+}
+
+#ecancel-sched:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+
+</style>

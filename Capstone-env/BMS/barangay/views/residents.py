@@ -238,10 +238,40 @@ def edit_profile(request):
 
 
 
-# ------------------------> MAP <---------------------------
+# ------------------------> OUTBREAKS <---------------------------
 
-def barangay_map(request):
+from django.http import JsonResponse
+from django.db.models import Count
+from .models import Outbreaks
+
+def resident_outbreaks_view(request):
     return render(request, 'resident/residentOutbreaks.html')
+
+
+def outbreak_chart_data(request):
+    # Group outbreaks by `purok` and collect outbreak names
+    data = (
+        Outbreaks.objects.values('purok')
+        .annotate(
+            count=Count('id'),  # Count the number of outbreaks in each purok
+            outbreak_names=Count('outbreak_name')  # Collect outbreak names for each purok
+        )
+        .order_by('purok')  # Optional: Order by purok
+    )
+
+    # Prepare the response structure
+    chart_data = {
+        "labels": [item['purok'] for item in data],  # Purok labels
+        "counts": [item['count'] for item in data],  # Outbreak counts
+        "names": {
+            item["purok"]: list(
+                Outbreaks.objects.filter(purok=item["purok"]).values_list("outbreak_name", flat=True)
+            )
+            for item in data
+        }  # Outbreak names grouped by purok
+    }
+
+    return JsonResponse(chart_data)
 
 
 # ------------------------> SERVICE LIST <-----------------------
@@ -249,24 +279,3 @@ def barangay_map(request):
 def resident_services(request):
     services = Services.objects.all()  # Query all services
     return render(request, 'resident/residentServices.html', {'services': services})
-
-def get_resident_details(request, resident_id):
-    # Fetch the resident object by ID
-    resident = get_object_or_404(Residents, id=resident_id)
-
-    # Prepare the response data
-    data = {
-        'username': resident.auth_user.username,
-        'email': resident.auth_user.email,
-        'fname': resident.auth_user.first_name,
-        'mname': resident.auth_user.middle_name,
-        'lname': resident.auth_user.last_name,
-        'zone': resident.zone,
-        'civil_status': resident.civil_status,
-        'occupation': resident.occupation,
-        'phone_number': resident.phone_number,
-        'picture': resident.picture.url if resident.picture else None,
-        'id_image': resident.id_image.url if resident.id_image else None,
-        'status': resident.status,
-    }
-    return JsonResponse(data)
