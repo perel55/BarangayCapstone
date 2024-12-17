@@ -1,0 +1,101 @@
+<form method="POST" action="{% url 'ScheduleView' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div id="Modal-Schedule-Overlay">
+        <div id="MS-Container">
+            <div class="MSC-Top">
+                <h3>Add Schedule</h3>
+            </div>
+            <div class="MSC-Bottom">
+                <!-- Service Selection -->
+                <label for="service-id">Service</label>
+                <select id="service-id" name="service-id" required>
+                    {% for service in services %}
+                        <option value="{{ service.service_id }}"
+                                data-price="{{ service.total_price }}"
+                                {% if service.service_id == selected_service %}selected{% endif %}>
+                            {{ service.service_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <!-- Service Price -->
+                <label for="total-price">Service Price</label>
+                <input type="number" id="total-price" name="total-price" required placeholder="0.00" readonly>
+
+                <!-- Schedule Details -->
+                <label for="schedule-date">Date</label>
+                <input type="date" id="schedule-date" name="schedule-date" required>
+
+                <label for="schedule-start-time">Start Time</label>
+            <select id="schedule-start-time" name="schedule-start-time" required>
+                <option value="">Select a time</option>
+                <option value="08:00">8:00 am</option>
+                <option value="09:00">9:00 am</option>
+                <option value="11:00">11:00 am</option>
+                <option value="13:00">1:00 pm</option>
+                <option value="15:00">3:00 pm</option>
+                <option value="16:00">4:00 pm</option>
+            </select>
+
+
+                <!-- Reason for Appointment -->
+                <label for="reason">Reason</label>
+                <input type="text" id="reason" name="reason" required placeholder="Enter reason">
+
+                <!-- File Upload for Requirements -->
+                <label for="requirements">Requirements</label>
+                <input type="file" id="requirements-picture" name="requirements-picture">
+            </div>
+
+            <div class="MSC-Bottom2">
+                <button type="button" id="cancel-sched">Cancel</button>
+                <button type="submit" id="add-sched">Submit</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const serviceSelect = document.getElementById('service-id');
+        const priceInput = document.getElementById('total-price');
+
+        // Parse URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const serviceId = urlParams.get('service_id');
+        const serviceName = urlParams.get('service_name');
+        const servicePrice = urlParams.get('service_price');
+
+        // Function to update the total price based on selected service
+        function updateTotalPrice() {
+            const selectedOption = serviceSelect.options[serviceSelect.selectedIndex];
+            const price = selectedOption ? selectedOption.getAttribute('data-price') : 0;
+            priceInput.value = price || 0;
+        }
+
+        // Pre-fill form fields based on URL parameters
+        if (serviceId && servicePrice) {
+            const serviceOption = serviceSelect.querySelector(`option[value="${serviceId}"]`);
+            if (serviceOption) {
+                serviceOption.selected = true;
+            } else {
+                // Add the service dynamically if not already in the options
+                const newOption = document.createElement('option');
+                newOption.value = serviceId;
+                newOption.textContent = serviceName || "Unnamed Service";
+                newOption.setAttribute('data-price', servicePrice);
+                newOption.selected = true;
+                serviceSelect.appendChild(newOption);
+            }
+
+            // Set the price input field
+            priceInput.value = servicePrice;
+        }
+
+        // Update the price when service selection changes
+        serviceSelect.addEventListener('change', updateTotalPrice);
+
+        // Initialize the price field on page load
+        updateTotalPrice();
+    });
+</script>

@@ -1,0 +1,210 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Ubuntu:wght@300;400;500;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 78px; /* collapsed width */
+    background: #11102d;
+    z-index: 1001;
+    transition: all 0.5s ease;
+}
+
+.sidebar:hover {
+    width: 260px; /* expanded width on hover */
+}
+
+.sidebar .logo-details {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+}
+
+.arrow-icon {
+    display: none; /* Default state */
+}
+
+.sidebar:hover .arrow-icon {
+    display: flex; /* Show arrow icons on sidebar hover */
+}
+
+.sidebar .nav-links li.showMenu .arrow-icon {
+    display: flex; /* Ensure arrows show when submenu is active */
+}
+
+
+
+.sidebar .logo-details i {
+    font-size: 30px;
+    color: #fff;
+    text-align: center;
+    line-height: 50px;
+}
+
+.sidebar .logo-details .logo_name {
+    font-size: 22px;
+    color: #fff;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar:hover .logo-details .logo_name {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.sidebar .nav-links {
+    margin-top: 20px;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar .nav-links li {
+    position: relative;
+    transition: all 0.4s ease;
+    align-items: center;
+}
+
+.sidebar .nav-links li:hover {
+    background: #1d1b31;
+}
+
+.sidebar .nav-links li i {
+    height: 60px;
+    min-width: 78px;
+    text-align: center;
+    line-height: 50px;
+    color: #fff;
+    font-size: 20px;
+    transition: all 0.3s ease;
+}
+
+/* Hide link names when sidebar is collapsed */
+.sidebar .nav-links li .link_name {
+    font-size: 18px;
+    font-weight: 400;
+    color: #fff;
+    opacity: 0;
+    white-space: nowrap;
+    transition: opacity 0.3s ease;
+    margin-left: 10px;
+}
+
+.sidebar:hover .nav-links li .link_name {
+    opacity: 1; /* Show link names when sidebar is hovered */
+}
+
+.sidebar .nav-links li .icon-links {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    width: 100%;
+}
+
+.sidebar .nav-links li:hover .icon-links {
+    justify-content: space-between;
+}
+
+.sidebar .nav-links li:hover i {
+    transform: scale(1.1);
+}
+
+.sidebar .nav-links li a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+/* Submenu styling */
+.sidebar .nav-links li .sub-menu {
+    position: absolute;
+    top: 0;
+    left: 100%; /* Position submenu to the right of the sidebar */
+    background: #1d1b31;
+    padding: 10px 20px;
+    border-radius: 0 6px 6px 0;
+    display: none;
+    white-space: nowrap;
+    opacity: 0;
+    transition: all 0.4s ease;
+    z-index: 99;
+    list-style-type: none; /* Remove bullet points in submenu */
+}
+
+.sidebar:hover .nav-links li:hover .sub-menu {
+    display: block;
+    opacity: 1;
+}
+
+.sidebar .nav-links li .sub-menu a {
+    color: #fff;
+    font-size: 19px;
+    padding: 5px 0;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+}
+
+.sidebar .nav-links li .sub-menu a:hover {
+    opacity: 1;
+}
+
+.sidebar .nav-links li i.arrow {
+    transition: transform 0.3s ease;
+}
+
+.sidebar .nav-links li.showMenu i.arrow {
+    transform: rotate(-180deg);
+}
+
+.home-section {
+    position: relative;
+    background: #E4E9F7;
+    height: 100vh;
+    left: 78px; /* adjusted for collapsed sidebar */
+    width: calc(100% - 78px);
+    transition: all 0.5s ease;
+}
+
+.sidebar:hover ~ .home-section {
+    left: 260px; /* expanded sidebar */
+    width: calc(100% - 260px);
+}
+
+.home-section .home-content {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+}
+
+.home-section .home-content .bx-menu,
+.home-section .home-content .text {
+    color: #11101d;
+    font-size: 35px;
+}
+
+.home-section .home-content .bx-menu {
+    margin: 0 15px;
+    cursor: pointer;
+}
+
+.home-section .home-content .text {
+    font-size: 26px;
+    font-weight: 600;
+    color: #11101d;
+}
+
+.help-sup {
+    margin-top: 18rem;
+}

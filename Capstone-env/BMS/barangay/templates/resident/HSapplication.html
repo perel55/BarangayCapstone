@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Form</title>
+    <style>
+        /* General body styling */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+            font-family: 'Arial', sans-serif;
+        }
+
+        form {
+            width: 60%;
+            padding: 30px;
+            background-color: #ffffff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"], input[type="date"], input[type="time"], input[type="service"], select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            width: 50%;
+            padding: 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            margin: auto;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .service_details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .service_form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .ext a {
+            text-align: right;
+            font-size: 1.5rem;
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .ext a:hover {
+            color: #ff0000;
+        }
+
+        @media (max-width: 768px) {
+            form {
+                width: 90%;
+            }
+
+            .service_details, .service_form {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    {% block content %}
+    <form method="post" action="{% url 'book_healthService' bhwService.id resident.id %}">
+        {% csrf_token %}
+        
+        <div class="ext">
+            <a href="{% url 'bhwServices' %}">&times;</a>
+        </div>
+    
+        <h1>Service Form</h1>
+    
+        <div class="service_details">
+            <div class="details">
+                <label for="service_name">Service Name:</label>
+                <input type="service" id="service_name" name="service_name" value="{{ bhwService.service_name }}" readonly>
+            </div>
+            <div class="details">
+                <label for="service_description">Service Description:</label>
+                <input type="service" id="service_description" name="service_description" value="{{ bhwService.service_description }}" readonly>
+            </div>
+            <div class="details">
+                <label for="service_requirements">Service Requirements:</label>
+                <input type="service" id="service_requirements" name="service_requirements" value="{{ bhwService.service_requirements}}" readonly>
+            </div>
+            <div class="details">
+                <label for="service_type">Service Type:</label>
+                <input type="service" id="service_type" name="service_type" value="{{ bhwService.service_type }}" readonly>
+            </div>
+        </div>
+    
+        <hr>
+    
+        <div class="service_form">
+            <div class="form">
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+    
+            <input type="hidden" name="service_id" value="{{ bhwService.id }}">
+        </div>
+    
+        <input type="submit" value="Submit">
+    </form>
+    
+    {% endblock %}
+
+</body>
+</html>

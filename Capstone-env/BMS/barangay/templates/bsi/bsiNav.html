@@ -1,0 +1,42 @@
+
+<nav> 
+    <div class="nav-content">
+      <ul>
+        <a href="{% url 'bsiDashboard'   %}">
+          <li class="{% if request.path == '/bsiDashboard/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/dash2.png" alt="">
+            </div>
+            <p>Home</p>
+          </li>
+        </a>  
+  
+        <a href="{% url 'bsiSanitary' %}">
+          <li class="{% if request.path == '/bsiSanitary/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/medic.png" alt="">
+            </div>
+            <p>Health Record</p>
+          </li>
+        </a>
+
+        <a href="{% url 'addBSI' %}">
+          <li class="{% if request.path == 'bsi/register' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/hworker.png" alt="">
+            </div>
+            <p>Add BSI</p>
+          </li>
+        </a>
+
+        <a href="{% url 'logout' %}">
+          <li>
+            <div class="NavContainer">
+              <img src="../../static/images/signout.png" alt="">
+            </div>
+            <p>Logout</p>
+          </li>
+        </a>
+      </ul>
+    </div>
+</nav>

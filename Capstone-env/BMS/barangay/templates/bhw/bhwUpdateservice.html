@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            height: 75%;
+       
+        }
+        h1 {
+            text-align: center;
+            font-size: 30px;
+        }
+        label{
+            font: 1.7em sans-serif;
+        }
+        button {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        input {
+            width: 90%;
+            height: 50px;   
+            font-size: 1rem;    
+        }
+        .extbtns a{
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            font-size: 50px;
+            position: absolute; 
+            padding-left: 25%;
+        }
+        p{
+            font-size: 20px;
+        }
+
+
+    </style>
+</head> 
+<body>  
+  
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="extbtns">
+            <span><a href="{% url 'bhwService' %}">&times;</a></span>
+        </div>
+        <h1>Update Health Service</h1>
+    
+        <p>
+            <label for="id_service_name">Service name:</label>
+            <input type="text" name="service_name" maxlength="255" class="form-control" required placeholder="Enter service name" value="{{ bhwService.service_name }}">
+        </p>
+    
+        <p>
+            <label for="id_service_description">Service description:</label>
+            <input type="text" name="service_description" maxlength="255" class="form-control" required  placeholder="Enter service description" value="{{ bhwService.service_description }}">
+        </p>
+    
+        <p>
+            <label for="id_service_requirements">Service requirements:</label>
+            <input type="text" name="service_requirements" maxlength="255" class="form-control" required placeholder="Enter service requirements" value="{{ bhwService.service_requirements }}">
+        </p>
+    
+        <p>
+            <label for="id_picture">Picture:</label>
+            <input type="file" name="picture" class="form-control" id="id_picture">
+
+            {% if bhwService.picture %}
+            <img src="{{ bhwService.picture.url }}" alt="Current picture" width="150">
+            {% endif %}
+        </p>
+    
+        <button type="submit">Update</button>
+    </form>
+    
+    
+   
+
+</body>
+</html>

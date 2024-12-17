@@ -1,0 +1,67 @@
+/* Modal styling */
+.modal-content {
+  border-radius: 25px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(135deg, #f0f4ff, #dbdfe7);
+}
+
+.modal-header {
+  background-color: #ffffff;
+  color: #020101;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+
+.modal-header .modal-title {
+  font-weight: 600;
+}
+
+.modal-header .close {
+  color: #ffffff;
+}
+
+.modal-body label {
+  font-weight: 500;
+  color: #000000;
+  margin-top: 2px;
+}
+
+.modal-body input[type="text"],
+.modal-body input[type="number"],
+.modal-body input[type="date"],
+.modal-body input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 2px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  border: 1px solid #cccccc;
+  transition: border-color 0.3s ease;
+}
+
+.modal-body input:focus {
+  border-color: #4a90e2;
+  outline: none;
+}
+
+.modal-footer {
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  padding: 10px 20px;
+}
+
+/* Save button styling */
+.modal-footer .btn-primary {
+  background-color: #4a90e2;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.modal-footer .btn-primary:hover {
+  background-color: #043b72;
+}

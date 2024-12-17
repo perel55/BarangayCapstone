@@ -1,0 +1,29 @@
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+<div class="form-container">
+    <h1>Add New Service</h1>
+    <form method="post" enctype="multipart/form-data" action="{% url 'AddService' %}">
+        {% csrf_token %}
+        
+        <label for="service_name">Service Name:</label>
+        <input type="text" id="service_name" name="service_name" required><br><br>
+
+        <label for="requirements">Requirements:</label>
+        <input type="text" id="requirements" name="requirements" required><br><br>
+
+        <label for="service_description">Service Description:</label>
+        <textarea id="service_description" name="service_description"></textarea><br><br>
+
+        <label for="service_price">Service Price:</label>
+        <input type="number" id="service_price" name="service_price" required><br><br>
+
+        <label for="image">Upload Image:</label>
+        <input type="file" id="image" name="image"><br><br>
+
+        <button type="submit">Add Service</button>
+    </form>
+</div>

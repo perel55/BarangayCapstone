@@ -1,0 +1,148 @@
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static './css/residentProfile.css' %}">
+<link rel="stylesheet" href="{% static './css/residentHS.css' %}">
+<style>
+    /* Styling for messages */
+    .messages {
+        position: fixed; /* Fixed at the top */
+        top: 20px; /* Distance from the top of the screen */
+        left: 50%; /* Center horizontally */
+        transform: translateX(-50%); /* Adjust for horizontal centering */
+        z-index: 999999; /* Ensure it appears above other elements */
+        width: 80%; /* Optional: Limit the width */
+        max-width: 500px; /* Optional: Maximum width */
+        text-align: center; /* Center the text */
+        padding: 10px; /* Box padding */
+        border-radius: 5px; /* Rounded corners */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a shadow for emphasis */
+        display: none; /* Hidden by default */
+    }
+
+    /* Success message styling */
+    .success-message {
+        color: green;
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+    }
+
+    /* Error message styling */
+    .error-message {
+        color: red;
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Messages container -->
+<div id="messages" class="messages"></div>
+
+{% include 'resident/residentTopnav.html' %}
+{% include 'resident/residentNav1.html' %}
+
+<h2>Edit Profile</h2>
+<form method="post" enctype="multipart/form-data" id="edit-profile-form">
+    {% csrf_token %}
+
+    <label for="fname">First Name:</label>
+    <input type="text" name="fname" value="{{ resident.auth_user.first_name }}" required>
+    
+    <label for="mname">Middle Name:</label>
+    <input type="text" name="mname" value="{{ resident.mname }}">
+    
+    <label for="lname">Last Name:</label>
+    <input type="text" name="lname" value="{{ resident.auth_user.last_name }}" required>
+    
+    <label for="zone">Zone:</label>
+    <input type="text" name="zone" value="{{ resident.zone }}">
+    
+    <label for="civil_status">Civil Status:</label>
+    <input type="text" name="civil_status" value="{{ resident.civil_status }}">
+    
+    <label for="occupation">Occupation:</label>
+    <input type="text" name="occupation" value="{{ resident.occupation }}">
+    
+    <label for="birthdate">Birthdate:</label>
+    <input type="date" name="birthdate" value="{{ birthdate_str }}" id="birthdate" required>
+    
+    <label for="phone_number">Phone Number:</label>
+    <input type="text" name="phone_number" value="{{ resident.phone_number }}">
+    
+    <label for="position">Position:</label>
+    <input type="text" name="position" value="{{ resident.position }}" readonly>
+    
+    <label for="picture">Profile Picture:</label>
+    <div>
+        <!-- Current picture -->
+        {% if resident.picture %}
+        <img id="current-picture" src="{{ resident.picture.url }}" alt="Current Profile Picture" style="max-width: 400px; max-height: 400px; display: block; margin-bottom: 10px;">
+        {% else %}
+        <p>No picture uploaded.</p>
+        {% endif %}
+        
+        <!-- Picture preview -->
+        <img id="preview-picture" style="max-width: 400px; max-height: 400px; display: none; margin-bottom: 10px;">
+        
+        <!-- File input -->
+        <input type="file" name="picture" id="picture-input" accept="image/*">
+    </div>
+    <br>
+    
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+
+<script>
+    // JavaScript for previewing the uploaded image
+    document.getElementById('picture-input').addEventListener('change', function(event) {
+        const preview = document.getElementById('preview-picture');
+        const currentPicture = document.getElementById('current-picture');
+        
+        // If a file is selected, preview it
+        if (event.target.files && event.target.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(event.target.files[0]);
+            // Hide the current picture when previewing the new one
+            if (currentPicture) currentPicture.style.display = 'none';
+        }
+    });
+
+    // Form validation for birthdate and showing messages
+    document.getElementById('edit-profile-form').addEventListener('submit', function(event) {
+        const birthdateInput = document.getElementById('birthdate');
+        const birthdate = new Date(birthdateInput.value);
+        const today = new Date();
+        const messages = document.getElementById('messages');
+        
+        // Calculate age
+        const age = today.getFullYear() - birthdate.getFullYear();
+        const monthDiff = today.getMonth() - birthdate.getMonth();
+        
+        // Check if the user is under 18
+        if (age < 18 || (age === 18 && monthDiff < 0)) {
+            // Display error message
+            messages.textContent = "Must be at least 18 years old.";
+            messages.className = "messages error-message";
+            messages.style.display = "block";
+            event.preventDefault(); // Prevent form submission
+        } else {
+            // Display success message
+            messages.textContent = "Changes saved successfully.";
+            messages.className = "messages success-message";
+            messages.style.display = "block";
+        }
+
+        setTimeout(function () {
+            messages.style.display = "none";
+        }, 3000);
+    });
+</script>
+
+{% endblock %}

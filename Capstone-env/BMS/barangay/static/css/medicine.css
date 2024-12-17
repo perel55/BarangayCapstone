@@ -1,0 +1,160 @@
+/* Modal overlay style */
+#Modal-Medicine-Overlay{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+
+/* Modal content container */
+#CO-Container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Close button and submit styling */
+#cancel-medicine, #add-medicine {
+    margin: 10px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+
+/* Title styling */
+.CO-Top h3 {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+}
+
+/* Input fields and labels */
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 6px;
+    display: inline-block;
+}
+
+input[type="text"],
+textarea,
+input[type="file"] {
+    background-color: #f9fafc;
+    color: #333;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    padding: 12px 14px;
+    width: 100%;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    height: 48px; 
+    box-sizing: border-box; 
+}
+
+textarea {
+    height: 120px; /* Adjusted height for text areas */
+    resize: vertical; /* Allows vertical resizing */
+}
+
+input:focus,
+textarea:focus {
+    border-color: #1e88e5;
+    box-shadow: 0 0 5px rgba(30, 136, 229, 0.3);
+}
+
+select {
+    background-color: #f9fafc;
+    color: #333;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    padding: 12px 14px;
+    width: 100%;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    height: 48px; /* Consistent height with text inputs */
+    box-sizing: border-box;
+  }
+  
+ 
+  select:focus {
+    border-color: #1e88e5;
+    box-shadow: 0 0 5px rgba(30, 136, 229, 0.3);
+  }
+
+
+  #cancel-medicine {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  #add-medicine {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  
+#add-medicine:hover {
+    background-color: #4CAF50;
+    transform: scale(1.05); 
+  }
+
+#cancel-medicine:hover {
+    background-color: #f44336;
+    transform: scale(1.05); 
+  }  
+
+/*Medicine Inventory Design*/
+.box {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .box:hover {
+    transform: translateY(-5px);
+  }
+  
+  .box img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  
+  .box h1 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .box p {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  

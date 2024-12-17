@@ -1,0 +1,111 @@
+
+<nav> 
+    <div class="nav-content">
+      <ul>
+        <a href="{% url 'residentdashboard'   %}">
+          <li class="{% if request.path == '/residentDashboard/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/dash2.png" alt="">
+            </div>
+            <p>Home</p>
+          </li>
+        </a>  
+
+        <a href="">
+            <li class="{% if request.path == '/bhwResidentlist/' %}active{% endif %}">
+              <div class="NavContainer">
+                <img src="../../static/images/accounts.png" alt="">
+              </div>
+              <p>Update Profile</p> 
+            </li> 
+          </a>
+  
+        <a href="{% url 'residentHistory' %}">
+          <li class="{% if request.path == '/residentHistory/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/recent-sched.png" alt="">
+            </div>
+            <p>History</p> 
+          </li> 
+        </a>
+
+        <a href="">
+            <li class="{% if request.path == '/bhwService/' %}active{% endif %}">
+              <div class="NavContainer">
+                <img src="../../static/images/certificates.png" alt="">
+              </div>
+              <p>Administrative Services</p>    
+            </li>
+          </a>
+
+        <a href="{% url 'bhwServices' %}">
+          <li class="{% if request.path == '/resident/service/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/hservice.png" alt="">
+            </div>
+            <p>Health Services</p>    
+          </li>
+        </a>
+  
+    
+        <a href="">
+          <li class="{% if request.path == '/bhwEvents/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/calendar.png" alt="">
+            </div>
+            <p>Events</p>
+          </li>
+        </a>
+
+        <a href="">
+          <li class="{% if request.path == '/bhwOutbreak/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/health.png" alt="">
+            </div>
+            <p>Outbreaks</p>
+          </li>
+        </a>
+
+        <a href="">
+          <li class="{% if request.path == '/bhwRecord/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/medic.png" alt="">
+            </div>
+            <p>Health Record</p>
+          </li>
+        </a>
+
+        <a href="">
+            <li class="{% if request.path == '/bhwMedic/' %}active{% endif %}">
+              <div class="NavContainer">
+                <img src="../../static/images/inventory.png" alt="">
+              </div>
+              <p>Settings</p>
+            </li>
+          </a>
+
+
+        <a href="{% url 'logout' %}">
+          <li>
+            <div class="NavContainer">
+              <img src="../../static/images/signout.png" alt="">
+            </div>
+            <p>Logout</p>
+          </li>
+        </a>
+
+
+        <ul>
+          <a href="#">
+            <li class="{% if request.path == '/adminHelpSupport/' %}active{% endif %}">
+              <div class="NavContainer">
+                <img src="../../static/images/Question-Square--Streamline-Solar.png" alt="">
+              </div>
+              <p>Help & Support</p>
+            </li>
+          </a>
+        </ul>
+        
+      </ul>
+    </div>
+</nav>

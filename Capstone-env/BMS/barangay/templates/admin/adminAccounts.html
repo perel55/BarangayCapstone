@@ -1,0 +1,142 @@
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static './css/admin.css' %}">
+<link rel="stylesheet" href="{% static './css/accounts.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="adminContainer">
+    <div class="ac-top">
+        <div class="ac-Left">
+            <img src="{% static 'images/lala-logo.jpg' %}" alt="">
+            <h3>Barangay Management System</h3>
+        </div>
+
+        <div class="ac-middle">
+            <div class="button-group">
+                <!-- Buttons to filter by account type -->
+                <a href="?type=Residents" class="filter-btn">Residents</a>
+                <a href="?type=Bhw" class="filter-btn">Bhw</a>
+                <a href="?type=Personnel" class="filter-btn">Personnel</a>
+                <a href="?type=Health Admin" class="filter-btn">Health Admin</a>
+                <a href="?type=Bsi" class="filter-btn">Bsi</a>
+                <a href="?type=all" class="filter-btn">All</a>
+            </div>
+
+            <div class="accounts-list">
+                <h2>Accounts - {{ account_type|title }}</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Zone</th>
+                            <th>Occupation</th>
+                            <th>Position</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if account_type == "Residents" %}
+                            {% for resident in accounts %}
+                            <tr>
+                                <td>{{ resident.mname }} {{ resident.lname }}</td>
+                                <td>{{ resident.zone }}</td>
+                                <td>{{ resident.occupation }}</td>
+                                <td>{{ resident.position }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4">No Residents available.</td>
+                            </tr>
+                            {% endfor %}
+                        {% elif account_type == "Bhw" %}
+                            {% for bhw in accounts %}
+                            <tr>
+                                <td>{{ bhw.mname }} {{ bhw.lname }}</td>
+                                <td>{{ bhw.zone }}</td>
+                                <td>{{ bhw.occupation }}</td>
+                                <td>{{ bhw.position }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4">No BHW available.</td>
+                            </tr>
+                            {% endfor %}
+                        {% elif account_type == "Personnel" %}
+                            {% for personnel in accounts %}
+                            <tr>
+                                <td>{{ personnel.mname }} {{ personnel.lname }}</td>
+                                <td>{{ personnel.zone }}</td>
+                                <td>{{ personnel.occupation }}</td>
+                                <td>{{ personnel.position }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4">No Personnel available.</td>
+                            </tr>
+                            {% endfor %}
+                        {% elif account_type == "Health Admin" %}
+                            {% for health_admin in accounts %}
+                            <tr>
+                                <td>{{ health_admin.mname }} {{ health_admin.lname }}</td>
+                                <td>{{ health_admin.zone }}</td>
+                                <td>{{ health_admin.occupation }}</td>
+                                <td>{{ health_admin.position }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4">No Health Admin available.</td>
+                            </tr>
+                            {% endfor %}
+                        {% elif account_type == "Bsi" %}
+                            {% for bsi in accounts %}
+                            <tr>
+                                <td>{{ bsi.mname }} {{ bsi.lname }}</td>
+                                <td>{{ bsi.zone }}</td>
+                                <td>{{ bsi.occupation }}</td>
+                                <td>{{ bsi.position }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4">No BSI available.</td>
+                            </tr>
+                            {% endfor %}
+                        {% elif account_type == "all" %}
+                            {% for group, items in accounts.items %}
+                                <tr><td colspan="4"><strong>{{ group|title }}</strong></td></tr>
+                                {% for item in items %}
+                                <tr>
+                                    <td>{{ item.mname }} {{ item.lname }}</td>
+                                    <td>{{ item.zone }}</td>
+                                    <td>{{ item.occupation }}</td>
+                                    <td>{{ item.position }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4">No {{ group|title }} available.</td>
+                                </tr>
+                                {% endfor %}
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="4">Please select a valid account type.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="ac-right">
+            <input type="text" id="HomeSearch" placeholder="Search">
+            <div class="NotifAdmin">
+                <img src="{% static 'images/Bell-Notification--Streamline-Flex.png' %}" alt="">
+            </div>
+        </div>
+    </div>
+
+    <div class="MC-Bottom">
+        {% include './adminNav.html' %}
+    </div>
+</div>
+{% endblock %}

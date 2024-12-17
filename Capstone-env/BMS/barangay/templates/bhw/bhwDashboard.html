@@ -1,0 +1,78 @@
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static './css/bhw.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="adminContainer">
+        {% include 'bhw/bhwTopnav.html' %}
+        <div class="MC-Bottom"> 
+            {% include './bhwNav.html' %} 
+
+            <div class="contents">
+                <section id="content">
+
+                    <div class="box-container">
+                        <div class="box">
+                            <img src="../../static/images/hworker.png" alt="BHWs">    
+                            <h1>Total BHW</h1>
+                            <p>{{ total_bhw }}</p>
+                        </div>
+                    
+                        <div class="box">
+                            <img src="../../static/images/residents.png" alt="Residents">    
+                            <h1>Total Resident</h1>
+                            <p>{{ total_resident }}</p>
+                        </div>
+                    
+                        <div class="box">
+                            <img src="../../static/images/residents.png" alt="Residents">    
+                            <h1>Verified Resident</h1>
+                            <p>{{ verified_resident }}</p>
+                        </div>
+
+                        <div class="box">
+                            <img src="../../static/images/accounts.png" alt="Officials">    
+                            <h1>Total Official</h1>
+                            <p>{{ total_admin }}</p>
+                        </div>
+
+                        <div class="box">
+                            <img src="../../static/images/hservice.png" alt="Officials">    
+                            <h1>Health Services</h1>
+                            <p>{{ total_healthService}}</p>
+                        </div>
+
+                        <div class="box">
+                            <img src="../../static/images/health.png" alt="Officials">    
+                            <h1>Active Outbreaks</h1>
+                            <p>{{ active_outbreaks }}</p>
+                        </div>
+                        
+                        <div class="box">
+                            <img src="../../static/images/health.png" alt="Officials">    
+                            <h1>Inactive Outbreaks</h1>
+                            <p>{{ inactive_outbreaks }}</p>
+                        </div>
+
+                        <div class="box">
+                            <img src="../../static/images/health.png" alt="Officials">    
+                            <h1>Total Maintenance</h1>
+                            <p>{{ total_maintenance }}</p>
+                        </div>
+                    </div>
+                    
+
+
+
+
+
+                </section>
+            </div>
+        </div>
+    </div>
+
+    
+{% endblock %}

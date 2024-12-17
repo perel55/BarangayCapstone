@@ -1,0 +1,100 @@
+<!-- modal/CompleteProfile.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+</head>
+
+{% if show_modal %}
+  <div class="modal fade show" id="profileModal" tabindex="-1" role="dialog" style="display: block;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Complete Your Profile</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="post" enctype="multipart/form-data" id="profileForm">
+            {% csrf_token %}
+            
+            <label for="fname">First Name:</label>
+            <input type="text" id="fname" name="fname" value="{{ resident.fname }}" required>
+
+            <label for="mname">Middle Name:</label>
+            <input type="text" id="mname" name="mname" value="{{ resident.mname }}" required>
+
+            <label for="lname">Last Name:</label>
+            <input type="text" id="lname" name="lname" value="{{ resident.lname }}" required>
+
+            <label for="zone">Zone:</label>
+            <input type="text" id="zone" name="zone" value="{{ resident.zone }}" required>
+
+            <label for="civil_status">Civil Status:</label>
+            <input type="text" id="civil_status" name="civil_status" value="{{ resident.civil_status }}" required>
+
+            <label for="occupation">Occupation:</label>
+            <input type="text" id="occupation" name="occupation" value="{{ resident.occupation }}" required>
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" value="{{ resident.age }}" min="0">
+
+            <label for="birthdate">Birthdate:</label>
+            <input type="date" id="birthdate" name="birthdate" value="{{ resident.birthdate }}" required>
+            <p id="birthdate-error" style="color: red; display: none;">You must be at least 18 years old.</p>
+
+            <label for="phone_number">Phone Number:</label>
+            <input type="text" id="phone_number" name="phone_number" value="{{ resident.phone_number }}" required>
+
+            <label for="picture">Profile Picture:</label>
+            <input type="file" id="picture" name="picture">
+
+            <label for="id_image">Valid ID Image:</label>
+            <input type="file" id="id_image" name="id_image">
+
+            <label for="position">Position:</label>
+            <input type="text" id="position" name="position" value="{{ resident.position }}" required>
+
+            <button type="submit" class="btn btn-primary">Save Profile</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<script>
+  document.getElementById("profileForm").addEventListener("submit", function(event) {
+    const birthdateInput = document.getElementById("birthdate");
+    const birthdateError = document.getElementById("birthdate-error");
+    const birthdateValue = new Date(birthdateInput.value);
+    const today = new Date();
+    const age = today.getFullYear() - birthdateValue.getFullYear();
+    const monthDiff = today.getMonth() - birthdateValue.getMonth();
+    const dayDiff = today.getDate() - birthdateValue.getDate();
+
+    // Adjust age if birthdate hasn't been reached yet this year
+    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+      age--;
+    }
+
+    if (age < 18) {
+      event.preventDefault(); // Prevent form submission
+      birthdateError.style.display = "block";
+    } else {
+      birthdateError.style.display = "none";
+    }
+  });
+
+  // Optional: Ensure the modal triggers automatically on page load
+  document.addEventListener("DOMContentLoaded", function() {
+    const modalElement = document.getElementById("profileModal");
+    if (modalElement) {
+      $(modalElement).modal('show');
+    }
+  });
+</script>

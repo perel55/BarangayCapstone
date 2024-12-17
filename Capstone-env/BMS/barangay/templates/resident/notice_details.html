@@ -1,0 +1,105 @@
+
+{% load static %}
+
+{% block css %}
+ <link rel="stylesheet" href="{% static './css/residentNav1.css' %}">
+ <link rel="stylesheet" href="{% static './css/residentHS.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+{% include 'resident/residentNav1.html' %}
+{% include 'resident/residentTopnav.html' %}
+
+
+<div class="notice-container">
+    <div class="notice-details">
+        <h1>{{ notice.notice_name }}</h1>
+        {% if notice.notice_image %}
+        <img src="{{ notice.notice_image.url }}" alt="Notice Image">
+        {% else %}
+            <p>No image available for this notice.</p>
+        {% endif %}
+        <p><strong>Start's:</strong> {{ notice.notice_StartDate }} {{ notice.notice_StartTime }}</p>
+        <p><strong>End's:</strong> {{ notice.notice_EndDate }} {{ notice.notice_EndTime }}</p>
+        <p><strong>Type:</strong> {{ notice.notice_type }}</p>
+        <br>
+        <p><strong>Description:</strong> <br>
+            <br>
+            {{ notice.notice_description }}</p>
+    </div>
+    <br>
+    <br>
+ 
+</div>
+{% endblock %}
+
+<style>
+
+    .notice-details {
+    margin-top: 100px;
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 80;
+    padding: 20px;
+    background-color: #f8f1e7;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.notice-details h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    color: #333;
+}
+
+.notice-details p {
+    font-size: 1.1rem;
+    margin: 10px 0;
+    color: #555;
+}
+
+.notice-details img {
+    max-width: 80%;
+    height: auto;
+    border-radius: 10px;
+    margin: 15px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.notice-details strong {
+    color: #222;
+}
+
+.notice-details .event-date {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.notice-details .subscribe-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.notice-details .subscribe-button:hover {
+    background-color: #555;
+}
+
+</style>
