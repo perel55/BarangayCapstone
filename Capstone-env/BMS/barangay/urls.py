@@ -116,7 +116,6 @@ urlpatterns = [
     path('resident/view_events', views.view_events, name='view_events'),
 
 # -------------> TRY <------------
-    # re_path(r'^ScheduleView/$', views.ScheduleView.as_view(), name='ScheduleView'),
     path('resident/schedule/', views.residentSchedule, name='residentSchedule'),
 
     path('schedule/', views.ScheduleView, name='ScheduleView'),
@@ -132,13 +131,27 @@ urlpatterns = [
 
     path('notices/<int:notice_id>/details/', views.notice_details_view, name='notice_details'),
 
-
     path('edit-profile/', views.edit_profile, name='edit_profile'),
-    path('barangay-maps', views.barangay_map, name='barangay_map'),
+
+    path('api/chart-data/', views.outbreak_chart_data, name='outbreak-chart-data'),
+    path('resident-outbreaks/', views.resident_outbreaks_view, name='resident_outbreaks_view'),
 
     path('fetch-services/', views.fetch_services, name='fetch-services'),
 
     path('resident_services/', views.resident_services, name='resident_services'),
+
+    path('schedules/delete/<int:schedule_id>/', views.delete_request, name='delete_schedule'),
+
+    path('requests/<int:request_id>/details/', views.get_request_details, name='get_request_details'),
+    
+    path('edit_request/<int:schedule_id>/', views.edit_resident_request, name='edit_resident_request'),
+
+    path('update_status/<int:request_id>/', views.update_request_status, name='update_status'),
+
+    path('profile-check/', views.profile_check, name='profile_check'),
+
+    path('accounts_view/', views.accounts_view, name='accounts_view'),
+
 
 
 

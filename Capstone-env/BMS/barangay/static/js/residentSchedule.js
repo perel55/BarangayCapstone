@@ -7,32 +7,52 @@ let ecancelsched = document.getElementById('ecancel-sched');
 // Initialize FullCalendar
 var calendarEl = document.getElementById('calendar');
 var calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: 'dayGridMonth', // Set the default view to month view
+    initialView: 'dayGridMonth',
     height: 'auto',
-    events: '/api/schedules/', // Fetch events from the backend API
-    initialDate: new Date(),  // Start on the current date
-    hiddenDays: [0],  // Hide Sundays (0 is Sunday)
-    dateClick: function(info) {
-        // Trigger when a date is clicked
-        ModalScheduleOverlay.style.display = "flex"; // Show the modal to add a new schedule
-        scheduledate.value = info.dateStr;  // Set the selected date in the input field
-    },
-    eventClick: function(info) {
-        // Trigger when an event is clicked to edit or view details
-        var event = info.event;
-        var scheduleId = event.extendedProps.schedule_id;
+    events: '/api/schedules/', // Use your backend API
+    initialDate: new Date(),
+    hiddenDays: [0], // Optional: Hide Sundays if needed
+    dateClick: function (info) {
+        const selectedDate = new Date(info.dateStr);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Normalize time for accurate comparison
 
-        // Show the event editing modal
+        if (selectedDate < today) {
+            alert("You cannot schedule on a past date.");
+            return; // Prevent opening the modal for past dates
+        }
+
+        // Show the scheduling modal for valid dates
+        ModalScheduleOverlay.style.display = "flex";
+        scheduledate.value = info.dateStr; // Set the selected date in the modal
+        openScheduleModal(info.dateStr, serviceId, serviceName, servicePrice);
+    },
+    headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,dayGridWeek,dayGridDay',
+    },
+    eventClick: function (info) {
+        var event = info.event;
+        var scheduleId = event.id; // Event ID corresponds to the Request model ID
+    
+        // Show the edit modal
         EModalScheduleOverlay.style.display = "flex";
-        document.getElementById('eschedule-type').value = event.extendedProps.schedule_type || "Available";
-        document.getElementById('eschedule-date').value = event.extendedProps.schedule_date;
-        document.getElementById('eschedule-start-time').value = 
-            event.start ? event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
-        document.getElementById('eschedule-end-time').value = 
-            event.end ? event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
         
-        // Set the form action for editing the event
-        document.getElementById('edit-schedule-form').action = `/schedules/edit/${scheduleId}/`;
+        // Fill in the form fields with event data
+        document.getElementById('eschedule-id').value = scheduleId; // Set the request ID
+        document.getElementById('eschedule-type').value = event.extendedProps.reason; // Set the reason
+        document.getElementById('eschedule-date').value = event.start.toISOString().split('T')[0]; // Set the date
+        document.getElementById('eschedule-start-time').value = event.start.toTimeString().split(' ')[0]; // Set start time
+        document.getElementById('eschedule-price').value = event.extendedProps.total_price; // Set total price
+        document.getElementById('eschedule-requirements').src = event.extendedProps.request_requirements; // Set image URL
+    
+        // You can also dynamically set the form action if you want
+        document.getElementById('edit-schedule-form').action = `/request/edit/${scheduleId}/`; 
+    },
+    validRange: {
+        start: null, // Allow all past and future dates to be shown
+        end: null,
     },
     eventContent: function(arg) {
         // Customize the event appearance (start time, end time, etc.)
@@ -43,7 +63,7 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
 
         var deleteButton = document.createElement('img');
         deleteButton.className = 'delete-event';
-        deleteButton.src = '../static/images/Delete-2--Streamline-Block---Free.png';
+        deleteButton.src = '../static/images/delete.png';
         deleteButton.dataset.scheduleId = scheduleId;
 
         // Event deletion handling
@@ -70,6 +90,8 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
     }
 });
 
+
+
 // Render the calendar
 calendar.render();
 
@@ -84,35 +106,45 @@ ecancelsched.addEventListener('click', function(event){
     EModalScheduleOverlay.style.display = "none";  // Hide the edit modal
 })
 
-// Fetch and update events from backend using the FullCalendar API
-function getEvents() {
-    fetch('/api/schedules/')
-        .then(response => response.json())
-        .then(data => {
-            calendar.addEventSource(data); // Add events to FullCalendar
-        })
-        .catch(error => console.error('Error fetching events:', error));
-}
+fetch('/api/schedules/')
+    .then(response => response.json())
+    .then(data => {
+        calendar.refetchEvents(); // Refetch events after submission
+    })
+    .catch(error => console.error('Error refetching events:', error));
 
-// Function to delete an event
-function deleteEvent(scheduleId) {
-    if (confirm("Are you sure you want to delete this schedule?")) {
-        fetch(`/schedules/delete/${scheduleId}/`, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRFToken': getCookie('csrftoken')  // Ensure CSRF token is sent with request
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                calendar.getEventById(scheduleId).remove(); // Remove event from calendar
-            } else {
-                alert('Failed to delete the event');
-            }
-        })
-        .catch(error => console.error('Error deleting event:', error));
+
+    function deleteEvent(requestId) {
+        console.log('Deleting request with ID:', requestId);  // Debug log
+        if (confirm("Are you sure you want to delete this schedule?")) {
+            fetch(`/schedules/delete/${requestId}/`, {  // Updated path to match the Django view
+                method: 'DELETE',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Event deleted successfully.');
+                    // Remove the event from the calendar
+                    calendar.getEventById(requestId).remove(); 
+    
+                    // Show success message
+                    alert('Event deleted successfully.');  // You can customize this as needed
+                } else {
+                    console.log('Failed to delete the event');
+                    alert('Failed to delete the event');
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting event:', error);
+                alert('An error occurred while deleting the event');
+            });
+        }
     }
-}
+    
+    
 
 // Utility to get the CSRF token
 function getCookie(name) {

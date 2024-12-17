@@ -1,90 +1,81 @@
 {% load static %}
-
 {% block css %}
-    <title>Barangay Lala Proper Map</title>
     <link rel="stylesheet" href="{% static './css/residentHS.css' %}">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }        
-
-        .map-container {
-            display: flex;
-            justify-content: center; /* Center horizontally */
-            align-items: center;    /* Center vertically if needed */
-            width: 100%;            /* Full width of the parent */
-            margin-top: 40px;
-            margin-left: 40px;
-        }
-
-        #map {
-            height: 800px;  /* Adjust height as needed */
-            width: 100%;     /* Adjust width as needed */
-            max-width: 1750px; /* Optional: set a maximum width */
-            border: 1px solid #ccc; /* Optional: add a border */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: add a shadow */
-        }
-
-        /* Custom styles for zoom control */
-        .leaflet-control-zoom {
-            right: 20px !important; /* Position to the right */
-            top: 20px !important;   /* Adjust top spacing */
-        }
-
-        .leaflet-control-zoom a {
-            width: 40px !important; /* Increase button width */
-            height: 40px !important; /* Increase button height */
-            font-size: 20px !important; /* Increase font size */
-            line-height: 40px !important; /* Center text vertically */
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
 
-<body>
-    <div class="MainContainer">
-        {% include 'resident/residentTopnav.html' %} 
-        <div class="MC-Bottom">
-            {% include './residentNav1.html' %}  
-            <h1 style="text-align: center;">Barangay Lala Proper Map</h1> <!-- Center the title -->
-            <div class="map-container">
-                <div id="map"></div>
-            </div>
+<div class="MainContainer">
+    {% include './residentTopnav.html' %}
+    <div class="MC-Bottom">
+        {% include './residentNav1.html' %}
+
+        <div style="width: 80%; margin: auto; margin-top: 6rem;">
+            <h2 style="text-align: center;">Outbreak Counts by Purok</h2>
+            <canvas id="outbreakChart"></canvas>
         </div>
     </div>
-   
-    <script>
-        // Initialize the map
-        var map = L.map('map', {
-            center: [7.9445, 123.7501], // Coordinates for Barangay Lala Proper
-            zoom: 15,                  // Zoom level
-            dragging: false,           // Disable dragging
-            zoomControl: false,        // Disable zoom control buttons
-            doubleClickZoom: false,    // Disable zoom on double-click
-            scrollWheelZoom: false,    // Disable zoom on scroll
-            touchZoom: false,          // Disable zoom on touch gestures
-            keyboard: false 
+</div>
 
+<script>
+    // Fetch data from the backend
+    fetch("{% url 'outbreak-chart-data' %}")
+        .then(response => response.json())
+        .then(data => {
+            const ctx = document.getElementById('outbreakChart').getContext('2d');
+
+            // Create the chart
+            const outbreakChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.labels, // Purok names
+                    datasets: [{
+                        label: 'Number of Outbreaks',
+                        data: data.counts, // Outbreak counts
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)', // Bar color
+                        borderColor: 'rgba(75, 192, 192, 1)', // Border color
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    const purok = data.labels[tooltipItem.dataIndex];
+                                    const names = data.names[purok];
+                                    const nameList = names.join(', ');
+                                    return `Count: ${tooltipItem.raw}\nOutbreaks: ${nameList}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Outbreaks',
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Purok',
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Calculate and display the total outbreaks
+            const totalOutbreaks = data.counts.reduce((a, b) => a + b, 0);
+            const totalOutbreaksElement = document.getElementById('totalOutbreaks');
+            const showTotalBtn = document.getElementById('showTotalBtn');
+
+            showTotalBtn.addEventListener('click', () => {
+                totalOutbreaksElement.innerText = `Total Outbreaks: ${totalOutbreaks}`;
+            });
         });
+</script>
 
-        // Add OpenStreetMap tiles
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
-
-        // Add custom zoom control at the right
-        L.control.zoom({
-            position: 'topright'       // Move zoom control to the right
-        }).addTo(map);
-
-        // Optionally, add a marker for Barangay Lala Proper
-        L.marker([7.9445, 123.7501]).addTo(map)
-            .bindPopup('Barangay Lala Proper')
-            .openPopup();
-    </script>
-</body>

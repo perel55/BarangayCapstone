@@ -238,10 +238,40 @@ def edit_profile(request):
 
 
 
-# ------------------------> MAP <---------------------------
+# ------------------------> OUTBREAKS <---------------------------
 
-def barangay_map(request):
+from django.http import JsonResponse
+from django.db.models import Count
+from .models import Outbreaks
+
+def resident_outbreaks_view(request):
     return render(request, 'resident/residentOutbreaks.html')
+
+
+def outbreak_chart_data(request):
+    # Group outbreaks by `purok` and collect outbreak names
+    data = (
+        Outbreaks.objects.values('purok')
+        .annotate(
+            count=Count('id'),  # Count the number of outbreaks in each purok
+            outbreak_names=Count('outbreak_name')  # Collect outbreak names for each purok
+        )
+        .order_by('purok')  # Optional: Order by purok
+    )
+
+    # Prepare the response structure
+    chart_data = {
+        "labels": [item['purok'] for item in data],  # Purok labels
+        "counts": [item['count'] for item in data],  # Outbreak counts
+        "names": {
+            item["purok"]: list(
+                Outbreaks.objects.filter(purok=item["purok"]).values_list("outbreak_name", flat=True)
+            )
+            for item in data
+        }  # Outbreak names grouped by purok
+    }
+
+    return JsonResponse(chart_data)
 
 
 # ------------------------> SERVICE LIST <-----------------------

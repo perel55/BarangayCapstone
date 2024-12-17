@@ -1,8 +1,7 @@
 {% load static %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static 'css/index.css' %}">
-<link rel="stylesheet" href="{% static './css/admin.css' %}">
+<link rel="stylesheet" href="{% static './css/adminServiceList.css' %}">
 
 {% endblock %}
 
@@ -13,7 +12,6 @@
         {% include 'admin/AdminNav.html' %}
         
         <div class="main-content">
-            <!-- Add Service button -->
             <div class="add-service">
                 <button class="Add-Service" onclick="openModal()">Add service</button>
             </div>
@@ -27,29 +25,39 @@
             </div>
             
             <!-- Services list -->
-            <div class="services-container"> 
+            <div class="services-container">
                 <h1 class="services-title">Available Services</h1>
                 <ul class="services-list">
                     {% for service in services %}
-                        <li class="service-item">
-                            <h2 class="service-name">{{ service.service_name }}</h2>
-                            <p class="service-requirements"><strong>Requirements:</strong> {{ service.requirements }}</p>
-                            <p class="service-description"><strong>Description:</strong> {{ service.service_description }}</p>
-                            <p class="service-price"><strong>Price:</strong> {{ service.service_price }}</p>
-                            <p class="service-image">{% if service.image %}<img src="{{ service.image.url }}" alt="{{ service.service_name }}" />{% endif %}</p>
-                            <div class="button-group">
-                                <a href="{% url 'update_service' service.service_id %}" class="btn update-btn">Update</a>
-                                <form action="{% url 'delete_service' service.service_id %}" method="POST" style="display:inline;" onsubmit="confirmDelete(event);">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn delete-btn">Delete</button>
-                                </form>
-                            </div>
-                        </li>
+                    <li class="services-item">
+                        <div class="service-img-container">
+                            {% if service.image %}
+                                <img src="{{ service.image.url }}" alt="{{ service.service_name }}" class="service-img" />
+                            {% else %}
+                                <div class="placeholder-img">N/A</div>
+                            {% endif %}
+                        </div>
+                        <div class="service-info">
+                            <h2>{{ service.service_name }}</h2>
+                            <p><strong>Requirements:</strong> {{ service.requirements }}</p>
+                            <p>{{ service.service_description }}</p>
+                            <p><strong>Price:</strong> ${{ service.service_price }}</p>
+                        </div>
+                        <div class="service-actions">
+                            <a href="{% url 'update_service' service.service_id %}" class="btn update-btn">Update</a>
+                            <form action="{% url 'delete_service' service.service_id %}" method="POST" onsubmit="confirmDelete(event);">
+                                {% csrf_token %}
+                                <button type="submit" class="btn delete-btn">Delete</button>
+                            </form>
+                        </div>
+                    </li>
                     {% empty %}
-                        <p>No services available.</p>
+                    <li class="services-item no-services">No services available.</li>
                     {% endfor %}
                 </ul>
             </div>
+            
+            
         </div>
     </div>
 

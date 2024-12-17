@@ -67,3 +67,11 @@
 
 </body>
 </html>
+
+{% block scripts %}
+    <script>
+        window.addEventListener("beforeunload", function () {
+            navigator.sendBeacon("/accounts/logout/");
+        });
+    </script>
+    {% endblock %}

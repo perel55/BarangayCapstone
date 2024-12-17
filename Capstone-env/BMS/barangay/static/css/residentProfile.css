@@ -75,7 +75,7 @@ input[type="file"] {
 
 input[readonly] {
     background-color: #f9f9f9; /* Light gray background */
-    color: #969090; /* Slightly muted text color */
+    color: #555353; /* Slightly muted text color */
     cursor: not-allowed; /* Indicates the field is not editable */
 }
 

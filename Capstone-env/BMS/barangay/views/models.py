@@ -157,18 +157,28 @@ class Outbreaks(models.Model):
     purok = models.CharField(max_length=100, null=True)
     def __str__(self):
         return f"{self.outbreak_name} {self.purok} "
+    
 class Request(models.Model):
+    PENDING = 'Pending'
+    APPROVED = 'Approved'
+    STATUS_CHOICES = [
+        (PENDING, 'Pending'),
+        (APPROVED, 'Approved'),
+    ]
+
     Resident_id = models.ForeignKey(Residents, on_delete=models.CASCADE, null=True)
     service_id = models.ForeignKey(Services, on_delete=models.CASCADE, null=True)
-    reason = models.CharField(max_length =255)
+    reason = models.CharField(max_length=255)
     total_price = models.IntegerField(null=True)
     schedule_date = models.DateField(null=True)
     schedule_start_time = models.TimeField(null=True)
-    schedule_end_time = models.TimeField(null=True)
-    
-    
+    request_requirements = models.ImageField(upload_to='images/', null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=PENDING)
+
     def __str__(self):
-        return f"{self.Resident_id} {self.service_id} {self.schedule_date}"
+        return f"{self.Resident_id} - {self.service_id} - {self.schedule_date}"
+
 
 
 class CommunityNotice(models.Model):

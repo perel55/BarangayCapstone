@@ -17,6 +17,7 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from django.db.models import Prefetch
 from django.db.models import Sum
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -168,11 +169,12 @@ def validatelogin(request):
 def index(request):
     return render(request, 'index.html')
 
-
+from django.contrib.auth import logout as django_logout
 
 @login_required
 def logout(request):
-    return render(request, 'accounts/logout.html')
+    django_logout(request)
+    return JsonResponse({'message': 'Logged out successfully'})
 
 def signup(request):
   template = loader.get_template('accounts/signup.html')
@@ -195,7 +197,28 @@ def adminService(request):
     return render(request, 'admin/adminService.html')
 
 def adminCertificates(request):
-    return render(request, 'admin/adminCertificates.html')
+    # Query the Request model to get all requests
+    requests = Request.objects.all()  # You can adjust the query to filter by status, date, etc.
+
+    # Pass the requests to the template
+    return render(request, 'admin/adminCertificates.html', {'requests': requests})
+
+def update_request_status(request, request_id):
+    # Get the request object
+    req = Request.objects.get(id=request_id)
+
+    if request.method == 'POST':
+        new_status = request.POST.get('status')
+        req.status = new_status
+        req.save()
+
+        # Provide feedback to the admin
+        messages.success(request, f"Request status updated to {new_status}.")
+
+        return redirect('adminCertificates')  # Adjust the redirect to the appropriate page
+
+    return redirect('adminCertificates')  # Handle GET request, redirect as needed
+
 
 def adminEvent(request):
     return render(request, 'admin/adminEvent.html')
@@ -277,15 +300,34 @@ def book_healthServiceform(request, HealthService_id):
 #display the recent avail service to the resident sidecd 
 def residentHistory(request):
     user = request.user
-    schedules = Schedule.objects.filter(user__username=user.username)
+
+    # Get the logged-in resident
     resident = Residents.objects.get(auth_user=request.user)
-    return render(request, 'resident/residentHistory.html', {'schedules': schedules, 'resident': resident})
+
+    # Fetch schedules and requests for the logged-in user
+    schedules = Schedule.objects.filter(user=user)  # Assuming 'user' field in Schedule links to auth user
+    requests = Request.objects.filter(user=user)  # Fetch only the requests of the logged-in user
+
+    return render(request, 'resident/residentHistory.html', {
+        'schedules': schedules,
+        'requests': requests,
+        'resident': resident
+    })
+
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+from django.utils.timezone import now
 
 @login_required
 def residentdashboard(request):
+    # Check if session is active
+    if not request.user.is_authenticated:
+        # If the session is invalid, log the user out and redirect to login
+        logout(request)
+        return redirect('login')  # Replace 'login' with your login page URL name
+
     resident = Residents.objects.filter(auth_user=request.user).first()
 
-    # Check if profile is incomplete
     if resident and not resident.is_profile_complete:
         if request.method == 'POST':
             resident.mname = request.POST.get('mname')
@@ -296,13 +338,12 @@ def residentdashboard(request):
             resident.phone_number = request.POST.get('phone_number')
             resident.position = request.POST.get('position')
 
-            
             if 'picture' in request.FILES:
                 resident.picture = request.FILES['picture']
-            
+
             if 'id_image' in request.FILES:
                 resident.id_image = request.FILES['id_image']
-            
+
             resident.is_profile_complete = True
             resident.save()
             return redirect('residentdashboard')  # Reload dashboard after saving
@@ -311,3 +352,11 @@ def residentdashboard(request):
 
     # Render dashboard normally if profile is complete
     return render(request, 'resident/userd.html', {'show_modal': False})
+
+
+def profile_check(request):
+    # Log the user out
+    logout(request)
+    
+    # Redirect to the login page after logging out
+    return redirect('login')  # Make sure the 'login' URL pattern is correct in your urls.py

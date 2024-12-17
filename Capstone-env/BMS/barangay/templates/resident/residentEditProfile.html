@@ -49,13 +49,13 @@
     {% csrf_token %}
 
     <label for="fname">First Name:</label>
-    <input type="text" name="fname" value="{{ resident.fname }}" required>
+    <input type="text" name="fname" value="{{ resident.auth_user.first_name }}" required>
     
     <label for="mname">Middle Name:</label>
     <input type="text" name="mname" value="{{ resident.mname }}">
     
     <label for="lname">Last Name:</label>
-    <input type="text" name="lname" value="{{ resident.lname }}" required>
+    <input type="text" name="lname" value="{{ resident.auth_user.last_name }}" required>
     
     <label for="zone">Zone:</label>
     <input type="text" name="zone" value="{{ resident.zone }}">
@@ -65,9 +65,6 @@
     
     <label for="occupation">Occupation:</label>
     <input type="text" name="occupation" value="{{ resident.occupation }}">
-    
-    <label for="age">Age:</label>
-    <input type="number" name="age" value="{{ resident.age }}">
     
     <label for="birthdate">Birthdate:</label>
     <input type="date" name="birthdate" value="{{ birthdate_str }}" id="birthdate" required>
