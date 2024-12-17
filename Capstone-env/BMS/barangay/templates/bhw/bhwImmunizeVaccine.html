@@ -19,7 +19,7 @@
                 <p><strong>Phone Number:</strong> {{ schedule.resident.phone_number }}</p>
             </div>
             <div class="maintenance-button">
-                <a href="{% url 'bhwMaintenance'%}" class="back-btn">Back</a>
+                <a href="{% url 'bhwImmunize' %}" class="back-btn">Back</a>
                 <button id="releasedButton" class="released-btn">Released</button>
             </div>
         </div>
@@ -30,96 +30,73 @@
     <table>
         <thead>
             <tr>
-                <th>Username</th>
-                <th>Kilograms</th>
-                <th>Blood Pressure</th>
-                <th>Week</th>
+                <th>Baby Name</th>
+                <th>Age</th>
+                <th>Vaccine Name</th>
+                <th>Vaccine Description</th>
+                <th>Vaccine Quantity</th>
+                <th>Vaccine Dose</th>
                 <th>Date</th>
-                <th>Medicine Name</th>
-                <th>Medicine Quantity</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
         </thea
         <tbody>
-            {% for maintenance in maintenance_entries %}
+            {% for immunize in immunize_entries %}
             <tr>
-                <td>{{ maintenance.schedule.user.username }}</td>
-                <td>{{ maintenance.kg }}</td>
-                <td>{{ maintenance.bp }}</td>
-                <td>{{ maintenance.week }}</td>
-                <td>{{ maintenance.date }}</td>
-                <form method="post" class="total-price-form">
-                    {% csrf_token %}
-                    <td>
-                        <select name="medicine_id">
-                            {% for medicine in medicines %}
-                                <option value="{{ medicine.id }}">{{ medicine.medicine_name }}</option>
-                            {% endfor %}
-                        </select>
-                    </td>
-                    <td>
-                        <input type="hidden" name="maintenance_id" value="{{ maintenance.id }}">
-                        <div class="input-group">
-                            <input type="number" name="released_quantity" step="1" required>
-                        </div>
-                        <div class="input-group">
-                            <input class="calculate" type="submit" value="Release">
-                        </div>
-                    </td>
-                </form>
+                <td>{{ immunize.schedule.baby_name }}</td>
+                <td>{{ immunize.age}}</td>
+                <td>{{ immunize.vaccine_name }}</td>
+                <td>{{ immunize.vaccine_description}}</td>
+                <td>{{ immunize.vaccine_quantity}}</td>
+                <td>{{ immunize.vaccine_dose}}</td>
+                <td>{{ immunize.date }}</td>
                 <td>
-                    {% if maintenance.status == "Pending" %}
+                    {% if immunize.status == "Pending" %}
                         <span class="status-pending">Pending</span>
-                    {% elif maintenance.status == "Complete" %}
+                    {% elif immunize.status == "Complete" %}
                         <span class="status-verified">Complete</span>
-                    {% elif maintenance.status == "Incomplete" %}
+                    {% elif immunize.status == "Incomplete" %}
                         <span class="status-declined">Incomplete</span>
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{% url 'complete_maintenance' maintenance.id %}" class="btn-approve">Complete</a>
-                    <a href="{% url 'incomplete_maintenance' maintenance.id %}" class="btn-declined">Incomplete</a>
+                    <a href="{% url 'complete_immunize' immunize.id %}" class="btn-approve">Complete</a>
+                    <a href="{% url 'incomplete_immunize' immunize.id %}" class="btn-declined">Incomplete</a>
                 </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="10">No maintenance records found.</td>
-            </tr>
-            {% endfor %}
-            <tr>
-                <td colspan="3"></td> 
-                <td colspan="" style="text-align: left; font-weight: bold;">
-                    Total: {{ total_weeks }}
-                </td>
+                {% endfor %}
             </tr>
         </tbody>
-    </table>
-    
-    
-    
+    </table>  
 </div>
 
 <div id="popupModal" class="modal">
     <div class="modal-content"> 
         <span id="closeButton" class="close-btn">&times;</span>
-        <h2>Week Details</h2>
-        <form method="POST" action="{% url 'addMaintenance' schedule.id %}">
+        <h2>Vaccine Details</h2>
+        <form method="POST" action="{% url 'addImmunize' schedule.id %}">
             {% csrf_token %}
             <input type="hidden" name="schedule_id" value="{{ schedule.id }}">
 
-            <label for="week">Week:</label>
-            <input type="text" id="week" name="week" placeholder="Enter Week" required>
+            <label for="vaccine_name">Vaccine Name:</label>
+            <input type="text" id="vaccine_name" name="vaccine_name" placeholder="Enter Vaccine Name" required>
             <br>
-            <label for="kg">Kilograms:</label>
-            <input type="number" id="kg" name="kg" placeholder="Enter Kilograms">
+            <label for="vaccine_quantity">Vaccine Quantity:</label>
+            <input type="number" id="vaccine_quantity" name="vaccine_quantity" placeholder="Enter Quantity" required>
             <br>
-            <label for="bp">Blood Pressure:</label>
-            <input type="text" id="bp" name="bp" placeholder="Enter Blood pressure">
+            <label for="vaccine_description">Description:</label>
+            <textarea id="vaccine_description" name="vaccine_description" placeholder="Enter Description" column="10" required></textarea>
+            <br>
+            <label for="vaccine_dose">Dose:</label>
+            <input type="text" id="vaccine_dose" name="vaccine_dose" placeholder="Enter Dose" required>
+            <br>
+            <label for="age">Age:</label>
+            <input type="text" id="age" name="age" placeholder="Enter Age" required>
             <br>
             <label for="date">Date:</label>
             <input type="date" id="date" name="date" required>
-            <button type="submit" class="submit-btn">Save Changes</button>
+            <br>
+            <button type="submit" class="submit-btn">Submit</button>
         </form>
     </div>
 </div>

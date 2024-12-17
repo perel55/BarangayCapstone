@@ -128,6 +128,8 @@ def bhwDashboard(request):
     active_outbreaks = Outbreaks.objects.filter(status='Active').count()
     inactive_outbreaks = Outbreaks.objects.filter(status='Inactive').count()
     total_maintenance = Schedule.objects.filter(bhwService__service_type='maintenance' ).count()
+    total_immunization = Schedule.objects.filter(bhwService__service_type='immunization' ).count()
+    total_medicine = Medicine.objects.all().count()
 
 
 
@@ -140,7 +142,8 @@ def bhwDashboard(request):
         'inactive_outbreaks':  inactive_outbreaks,
         'total_maintenance':  total_maintenance,
         'verified_resident':  verified_resident,
-        
+        'total_immunization':  total_immunization,
+        'total_medicine':  total_medicine,
     }
 
     return render(request, 'bhw/bhwDashboard.html', context)

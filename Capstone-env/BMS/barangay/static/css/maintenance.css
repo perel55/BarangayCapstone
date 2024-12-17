@@ -206,7 +206,7 @@ input, select {
 /* Released Record Section */
 .released-record {
     margin-top: 20px; 
-    width: 70%; 
+    width: 80%; 
     background-color: #ffff;
     box-shadow: 0 0 10px rgba(134, 134, 134, 0.2);
     border-radius: 10px;
@@ -235,4 +235,78 @@ input, select {
 
 .released-record tr:hover {
     background-color: #f1f1f1; 
+}
+
+.btn-approve {
+    background-color: #28a745; 
+    color: white;
+    padding: 8px 10px;
+    text-decoration: none;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.btn-approve:hover {
+    background-color: #218838; 
+    transform: scale(1.05); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+}
+
+
+.btn-declined {
+    background-color: #dc3545; 
+    color: white;
+    padding: 8px 12px;
+    text-decoration: none;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.btn-declined:hover {
+    background-color: #c82333; 
+    transform: scale(1.05); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+}
+
+/* Status Styles */
+.status-pending {
+    color: #fd7e14;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+
+}
+
+.status-verified {
+    color: #027702; 
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+}
+
+.status-declined {
+    color: #d9534f; 
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+}
+
+.verified-status{
+    color: #027702; 
+    font-size: 1rem;
+    font-weight: bold;
 }

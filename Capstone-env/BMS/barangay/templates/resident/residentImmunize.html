@@ -1,0 +1,77 @@
+
+{% load static %}
+{% block css %}
+
+<link rel="stylesheet" href="{% static 'css/bookingform.css' %}">
+{% endblock %}
+<body>
+    {% block content %}
+    <form method="post" action="{% url 'book_immunize' bhwService.id resident.id %}" enctype="multipart/form-data">
+
+        {% csrf_token %}
+        
+        <div class="ext">
+            <a href="{% url 'bhwServices' %}">&times;</a>
+        </div>
+    
+        <h1>Immunize Form</h1>
+    
+        <div class="service_details">
+            <div class="details">
+                <label for="service_name">Service Name:</label>
+                <input type="service" id="service_name" name="service_name" value="{{ bhwService.service_name }}" readonly>
+            </div>
+            <div class="details">
+                <label for="service_description">Service Description:</label>
+                <input type="service" id="service_description" name="service_description" value="{{ bhwService.service_description }}" readonly>
+            </div>
+            <div class="details">
+                <label for="service_requirements">Service Requirements:</label>
+                <input type="service" id="service_requirements" name="service_requirements" value="{{ bhwService.service_requirements}}" readonly>
+            </div>
+            <div class="details">
+                <label for="service_type">Service Type:</label>
+                <input type="service" id="service_type" name="service_type" value="{{ bhwService.service_type }}" readonly>
+            </div>
+        </div>
+    
+        <hr>
+    
+        <div class="service_form">
+            
+            <div class="form">
+                <label for="baby_name">Baby Name:</label>
+                <input type="text" id="baby_name" name="baby_name" placeholder="Baby Name" required>
+            </div>
+
+            <div class="form">
+                <label for="father_name">Father Name:</label>
+                <input type="text" id="father_name" name="father_name" placeholder="Father's Name" required>
+            </div>
+
+            <div class="form">
+                <label for="mother_name">Mother Name:</label>
+                <input type="text" id="mother_name" name="mother_name"  placeholder="Mother's Name" required>
+            </div>
+
+            <div class="form">
+                <label for="image">Baby Book Image:</label>
+                <input type="file" id="image" name="image" accept="image/*" required>
+            </div>
+
+            <div class="form">
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+           
+    
+            <input type="hidden" name="service_id" value="{{ bhwService.id }}">
+        </div>
+    
+        <input type="submit" value="Submit">
+    </form>
+    
+    {% endblock %}
+
+    
+</body>

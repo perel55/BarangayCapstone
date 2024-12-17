@@ -65,6 +65,15 @@
             <p>Maintenance</p>
           </li>
         </a>
+
+        <a href="{% url 'bhwImmunize'   %}">
+          <li class="{% if request.path == '/bhwImmunize/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/inventory.png" alt="">
+            </div>
+            <p>Immunization</p>
+          </li>
+        </a>
        
 
         <a href="{% url 'bhwMedic'   %}">

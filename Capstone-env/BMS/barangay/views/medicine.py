@@ -1,5 +1,5 @@
 from .models import *
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.shortcuts import redirect
 from django.http import JsonResponse
 
@@ -31,10 +31,6 @@ def bhwMedic(request):
     medicines = Medicine.objects.all()
     return render(request, 'bhw/bhwMI.html', {'medicines': medicines})    
 
-
-
-
-
 def update_maintenance(request):
     if request.method == "POST":
         for key, value in request.POST.items():
@@ -61,3 +57,28 @@ def update_maintenance(request):
         return redirect('releasedMaintenance')  
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+
+def manage_medicine_release(request):
+    if request.method == 'POST':
+        maintenance_id = request.POST.get('maintenance_id')
+        medicine_id = request.POST.get('medicine_id')
+        released_quantity = int(request.POST.get('released_quantity', 0))
+
+        # Fetch the medicine instance
+        medicine = get_object_or_404(Medicine, id=medicine_id, maintenance_id=maintenance_id)
+
+        if medicine.medicine_quantity >= released_quantity:
+            # Deduct the released quantity from medicine stock
+            medicine.medicine_quantity -= released_quantity
+            medicine.released_quantity = released_quantity  # Save released quantity
+            medicine.save()
+            return JsonResponse({"success": True, "message": "Medicine released successfully."})
+        else:
+            return JsonResponse({"success": False, "message": "Insufficient stock."})
+    
+    # For GET, fetch medicines and maintenance objects
+    medicines = Medicine.objects.all()
+    maintenances = Maintenance.objects.all()
+    return render(request, 'manage_medicine.html', {'medicines': medicines, 'maintenances': maintenances})

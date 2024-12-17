@@ -127,11 +127,14 @@ class Schedule(models.Model):
     resident = models.ForeignKey(Residents, on_delete=models.CASCADE, null=True)  
     date = models.DateField(max_length=255)
     status = models.CharField(max_length=50, default="Pending")
-    week = models.CharField(max_length=100, null=True)
-    
+    baby_name = models.CharField(max_length=255, null=True)
+    father_name = models.CharField(max_length=255, null=True)   
+    mother_name = models.CharField(max_length=255, null=True)
+    image = models.ImageField(upload_to='images/', null=True)
 
+    
     def __str__(self):
-        return f"{self.date}"
+        return f"{self.date} {self.status} {self.baby_name} {self.father_name} {self.mother_name}"
 
     
 class Outbreaks(models.Model):
@@ -204,15 +207,32 @@ class Maintenance(models.Model):
 
 class Medicine(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, null=True)
     resident_id = models.ForeignKey(Residents, on_delete=models.CASCADE, null=True)
-    maintenece_id = models.ForeignKey(Maintenance, on_delete=models.CASCADE, null=True)
+    maintenance = models.ForeignKey(Maintenance, on_delete=models.CASCADE, null=True)
     medicine_name = models.CharField(max_length=100)
     medicine_description = models.TextField(null=True)
     medicine_quantity = models.IntegerField(null=True)
     expiration_date = models.DateField(null=True)
     medicine_type = models.CharField(max_length=100)
     picture = models.ImageField(upload_to='images/', null=True)
+    released_quantity = models.PositiveIntegerField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.medicine_name} {self.medicine_description} {self.medicine_quantity} {self.expiration_date} {self.medicine_type}"
-      
+        return f"{self.medicine_name} {self.medicine_description} {self.medicine_quantity} {self.expiration_date} {self.medicine_type} {self.picture} {self.released_quantity}"
+
+class Immunize(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, null=True)
+    resident_id = models.ForeignKey(Residents, on_delete=models.CASCADE, null=True)
+    vaccine_name = models.CharField(max_length=100)
+    vaccine_quantity = models.IntegerField(null=True)
+    vaccine_description = models.TextField(null=True)
+    vaccine_dose = models.CharField(max_length=100, null=True)
+    age = models.CharField(max_length=100)
+    date = models.DateField(null=True)
+    status = models.CharField(max_length=100, default="Pending", null=True)
+    
+
+    def __str__(self):
+        return f"{self.vaccine_name} {self.vaccine_description} "

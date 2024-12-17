@@ -60,10 +60,18 @@ urlpatterns = [
     re_path(r'^inactive-status/(?P<outbreak_id>\d+)/$', views.inactive_status, name='inactive_status'),
     re_path(r'^addMedicine/$', views.addMedicine, name='addMedicine'),
     re_path(r'^update_maintenance/$', views.update_maintenance, name='update_maintenance'),
+    re_path(r'^manage-medicine/$', views.manage_medicine_release, name='manage_medicine_release'),
 
+    #releasing status
+    re_path(r'^complete_maintenance/(?P<maintenance_id>\d+)/$', views.complete_maintenance, name='complete_maintenance'),
+    re_path(r'^incomplete_maintenance/(?P<maintenance_id>\d+)/$', views.incomplete_maintenance, name='incomplete_maintenance'),
 
-
-
+    #immunize
+    re_path('bhwImmunize/', views.bhwImmunize, name = 'bhwImmunize'),
+    re_path(r'^Vaccine/(?P<schedule_id>\d+)/$', views.Vaccine, name='Vaccine'),
+    re_path(r'^addImmunize/(?P<schedule_id>\d+)/$', views.addImmunize, name='addImmunize'),
+    re_path(r'^complete_immunize/(?P<immunize_id>\d+)/$', views.complete_immunize, name='complete_immunize'),
+    re_path(r'^incomplete_immunize/(?P<immunize_id>\d+)/$', views.incomplete_immunize, name='incomplete_immunize'),
  #----------------------------------------BIS------------------------------------------------
      re_path(r'^addBSI/$', views.addBSI, name='addBSI'),
      re_path(r'^bsiDashboard/$', views.bsiDashboard, name='bsiDashboard'),
@@ -80,8 +88,9 @@ urlpatterns = [
 
     re_path(r'^bhw/book_healthServiceform/(?P<HealthService_id>\d+)/$', views.book_healthServiceform, name='book_healthServiceform'),
     re_path(r'^bhw/book_healthService/(?P<HealthService_id>\d+)/(?P<resident_id>\d+)/$', views.book_healthService, name='book_healthService'),
+    re_path(r'^bhw/book_immunize/(?P<HealthService_id>\d+)/(?P<resident_id>\d+)/$', views.book_immunize, name='book_immunize'),#immunize service type
     re_path(r'^residentHistory/$', views.residentHistory, name='residentHistory'),
-   
+    re_path(r'^get_resident_details/(?P<resident_id>\d+)/$', views.get_resident_details, name='get_resident_details'),
     
 
 

@@ -242,8 +242,6 @@ from .models import HealthService, Schedule, Residents
 @login_required
 def book_healthService(request, HealthService_id, resident_id): 
     bhwService = get_object_or_404(HealthService, id=HealthService_id)
-
-
     resident = get_object_or_404(Residents, id=resident_id)
 
     if request.method == 'POST':
@@ -260,18 +258,50 @@ def book_healthService(request, HealthService_id, resident_id):
         # Redirect to the 'bhwServices' page after successful booking
         return redirect(reverse('bhwServices'))
 
- 
-def book_healthServiceform(request, HealthService_id):
-    bhwService = HealthService.objects.get(pk=HealthService_id)
+
+#immunization type of service
+@login_required
+def book_immunize(request, HealthService_id, resident_id): 
+    bhwService = get_object_or_404(HealthService, id=HealthService_id)
+    resident = get_object_or_404(Residents, id=resident_id)
+
+    if request.method == 'POST':
+        date = request.POST.get('date')
+        father_name = request.POST.get('father_name')
+        mother_name = request.POST.get('mother_name')
+        baby_name = request.POST.get('baby_name')
+        image = request.FILES.get('image')
     
+
+        Schedule.objects.create(
+            user=request.user, 
+            resident=resident, 
+            bhwService=bhwService,
+            date=date,
+            father_name=father_name,
+            mother_name=mother_name,
+            baby_name=baby_name,
+            image=image,    
+        )
+
+        # Redirect to the 'bhwServices' page after successful booking
+        return redirect(reverse('bhwServices'))
+
+    
+@login_required
+def book_healthServiceform(request, HealthService_id):
+    bhwService = get_object_or_404(HealthService, pk=HealthService_id)
+
     try:
-        # Query the Residents model to get the associated resident for the logged-in user
         resident = Residents.objects.get(auth_user=request.user)
     except Residents.DoesNotExist:
-        # Handle the case where no resident is found for the user
         resident = None
-    
-    return render(request, 'resident/Hsapplication.html', {'bhwService': bhwService, 'resident': resident})
+
+    if bhwService.service_type == "immunization": 
+        return render(request, 'resident/residentImmunize.html', {'bhwService': bhwService, 'resident': resident})
+    else:
+        return render(request, 'resident/Hsapplication.html', {'bhwService': bhwService, 'resident': resident})
+
 
 
 #display the recent avail service to the resident sidecd 

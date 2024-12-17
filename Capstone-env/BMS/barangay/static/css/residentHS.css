@@ -64,8 +64,8 @@
   }
   
   nav ul li img {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.2rem;
+    height: 1.2rem;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   }
   
@@ -132,7 +132,7 @@
 }
 .Accounts a {
   display: inline-block;
-  padding: 0.5rem 1rem; /* Adjust padding as needed */
+  padding: 0.5rem 1rem; 
   box-shadow: 0 0 10px rgba(134, 134, 134, 0.2);
   color: #111111; /* Text color */
   border-radius: 5px;
@@ -178,13 +178,13 @@
 
 
 #img {
-    width: 50%;
     margin: 0 auto;
     padding: 1rem;
     display: grid;
     grid-template-columns: auto auto auto auto;
     gap: 0.8rem;
     justify-content: center;
+    
 }
 
 /* product display */
@@ -194,7 +194,7 @@
     text-align: left;   
     display: inline-block;
     position: relative;
-    font-weight: 400px;
+    font-weight: 200px;
     text-decoration: none;
     height: 350px;
     box-shadow: 0 0 10px rgba(42, 42, 42, 0.1);
@@ -206,14 +206,14 @@
 }
 
 .prod-card h3 {
-    font-size: 25px;
+    font-size: 20px;
     justify-content: center;
     color: #000000;
     text-transform: capitalize;
 }
 
 .prod-card p {
-    font-size: 15px;
+    font-size: 13px;
     color: #000000;
     text-decoration: none;
 }

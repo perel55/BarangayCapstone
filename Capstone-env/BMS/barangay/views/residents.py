@@ -249,3 +249,24 @@ def barangay_map(request):
 def resident_services(request):
     services = Services.objects.all()  # Query all services
     return render(request, 'resident/residentServices.html', {'services': services})
+
+def get_resident_details(request, resident_id):
+    # Fetch the resident object by ID
+    resident = get_object_or_404(Residents, id=resident_id)
+
+    # Prepare the response data
+    data = {
+        'username': resident.auth_user.username,
+        'email': resident.auth_user.email,
+        'fname': resident.auth_user.first_name,
+        'mname': resident.auth_user.middle_name,
+        'lname': resident.auth_user.last_name,
+        'zone': resident.zone,
+        'civil_status': resident.civil_status,
+        'occupation': resident.occupation,
+        'phone_number': resident.phone_number,
+        'picture': resident.picture.url if resident.picture else None,
+        'id_image': resident.id_image.url if resident.id_image else None,
+        'status': resident.status,
+    }
+    return JsonResponse(data)

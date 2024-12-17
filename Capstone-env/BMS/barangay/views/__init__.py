@@ -13,3 +13,5 @@ from .verified_resident import *
 from .outbreakStatus import *
 from .bhwSide import *
 from .medicine import *
+from .maintenanceStatus import *
+from .immunize import *

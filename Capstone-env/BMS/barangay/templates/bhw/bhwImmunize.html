@@ -2,44 +2,41 @@
 {% block css %}
 <link rel="stylesheet" href="{% static './css/bhw.css' %}">
 <link rel="stylesheet" href="{% static './css/verificationBtn.css' %}">
-
 {% endblock %}
 
-
- 
-{% block content %}  
+{% block content %}
 {% include 'bhw/bhwTopnav.html' %}
 
-    
-    <div class="MC-Bottom"> 
+    <div class="MC-Bottom">
         {% include 'bhw/bhwNav.html' %}
         <div class="contents">
             <section id="content">
                 <table>
                     <thead>
-                        <tr> 
+                        <tr>
                             <th>Username</th>
-                            <th>Full Name</th>
+                            <th>Baby Name</th>
+                            <th>Father Name</th>
+                            <th>Mother Name</th>
                             <th>Service</th>
-                            <th>Service Type</th>
                             <th>Purok</th>
-                            <th>Date</th>
                             <th>Phone Number</th>
+                            <th>Date</th>
                             <th>Baby Book</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th>View More</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for schedule in schedules %}
                         <tr>
                             <td>{{ schedule.user.username }}</td>
-                            <td>{{ schedule.user.first_name }} {{ schedule.user.last_name }}</td>
+                            <td>{{ schedule.baby_name }}</td>
+                            <td>{{ schedule.father_name }}</td>
+                            <td>{{ schedule.mother_name }}</td>
                             <td>{{ schedule.bhwService.service_name }}</td>
-                            <td>{{ schedule.bhwService.service_type }}</td>
                             <td>{{ schedule.resident.zone }}</td>
-                            <td>{{ schedule.date }}</td>
                             <td>{{ schedule.resident.phone_number }}</td>
+                            <td>{{ schedule.date }}</td>
                             <td>
                                 {% if schedule.image %}
                                 <img src="{{ schedule.image.url }}" alt="Profile Picture" style="max-width: 50px; max-height: 50px; border-radius: 50%;">
@@ -49,29 +46,16 @@
 
                             </td>
                             <td>
-                                {% if schedule.status == "Pending" %}
-                                    <span class="status-pending">Pending</span>
-                                {% elif schedule.status == "Verify" %}
-                                    <span class="status-verified">Verify</span>
-                                {% elif schedule.status == "Decline" %}
-                                    <span class="status-declined">Decline</span>
-                                {% endif %}
+                                <a href="{% url 'Vaccine' schedule.id %}" class="view-more-link">View More</a>
                             </td>
-                            <td>
-                                    <a href="{% url 'approve_schedule' schedule.id %}" class="btn-approve">Approve</a>
-                                    <a href="{% url 'reject_schedule' schedule.id %}" class="btn-declined">Decline</a>
-                            </td>
-                            
                         </tr>
                         {% endfor %}
                     </tbody>
-                    
                 </table>
-                </table>
-            </section>  
-        
+            </section>
         </div>
-
     </div>
 
+    
+    
 {% endblock %}

@@ -1,0 +1,99 @@
+  /* General body styling */
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
+    font-family: 'Arial', sans-serif;
+}
+
+form {
+    width: 60%;
+    padding: 30px;
+    background-color: #ffffff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+    color: #555;
+}
+
+input[type="text"], input[type="date"], input[type="time"], input[type="service"], select {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    width: 50%;
+    padding: 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex;
+    margin: auto;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+.service_details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.service_form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.ext a {
+    text-align: right;
+    font-size: 1.5rem;
+    color: #333;
+    text-decoration: none;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.ext a:hover {
+    color: #ff0000;
+}
+
+@media (max-width: 768px) {
+    form {
+        width: 90%;
+    }
+
+    .service_details, .service_form {
+        grid-template-columns: 1fr;
+    }
+}
