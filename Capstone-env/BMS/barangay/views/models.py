@@ -164,13 +164,14 @@ class Outbreaks(models.Model):
 class Request(models.Model):
     PENDING = 'Pending'
     APPROVED = 'Approved'
+    
     STATUS_CHOICES = [
         (PENDING, 'Pending'),
         (APPROVED, 'Approved'),
     ]
 
-    Resident_id = models.ForeignKey(Residents, on_delete=models.CASCADE, null=True)
-    service_id = models.ForeignKey(Services, on_delete=models.CASCADE, null=True)
+    resident = models.ForeignKey('Residents', on_delete=models.CASCADE, null=True)
+    service = models.ForeignKey('Services', on_delete=models.CASCADE, null=True)
     reason = models.CharField(max_length=255)
     total_price = models.IntegerField(null=True)
     schedule_date = models.DateField(null=True)
@@ -180,7 +181,7 @@ class Request(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=PENDING)
 
     def __str__(self):
-        return f"{self.Resident_id} - {self.service_id} - {self.schedule_date}"
+        return f"{self.resident} - {self.service} - {self.schedule_date}"
 
 
 

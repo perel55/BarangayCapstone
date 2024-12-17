@@ -90,7 +90,7 @@ urlpatterns = [
     re_path(r'^bhw/book_healthService/(?P<HealthService_id>\d+)/(?P<resident_id>\d+)/$', views.book_healthService, name='book_healthService'),
     re_path(r'^bhw/book_immunize/(?P<HealthService_id>\d+)/(?P<resident_id>\d+)/$', views.book_immunize, name='book_immunize'),#immunize service type
     re_path(r'^residentHistory/$', views.residentHistory, name='residentHistory'),
-    re_path(r'^get_resident_details/(?P<resident_id>\d+)/$', views.get_resident_details, name='get_resident_details'),
+    
     
 
 
