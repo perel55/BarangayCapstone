@@ -190,5 +190,11 @@ table tr:nth-child(even) {
 }
 
 
+#AllService-Area, #Highblood-Area, #TB-Area, #Immunize-Area {
+    display: none; /* All areas hidden by default */
+}
+#AllService-Area {
+    display: block; /* Show AllService-Area by default */
+}
 
 

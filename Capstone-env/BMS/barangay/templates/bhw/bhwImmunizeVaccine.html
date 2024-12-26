@@ -19,111 +19,141 @@
                 <p><strong>Phone Number:</strong> {{ schedule.resident.phone_number }}</p>
             </div>
             <div class="maintenance-button">
-                <a href="{% url 'bhwImmunize' %}" class="back-btn">Back</a>
-                <button id="releasedButton" class="released-btn">Released</button>
+                <a href="{% url 'bhwImmunize' %}" class="back-btn">Back</a> 
             </div>
         </div>
     </section>
 </div>
 
 <div class="released-record">
-    <table>
-        <thead>
-            <tr>
-                <th>Baby Name</th>
-                <th>Age</th>
-                <th>Vaccine Name</th>
-                <th>Vaccine Description</th>
-                <th>Vaccine Quantity</th>
-                <th>Vaccine Dose</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thea
-        <tbody>
-            {% for immunize in immunize_entries %}
-            <tr>
-                <td>{{ immunize.schedule.baby_name }}</td>
-                <td>{{ immunize.age}}</td>
-                <td>{{ immunize.vaccine_name }}</td>
-                <td>{{ immunize.vaccine_description}}</td>
-                <td>{{ immunize.vaccine_quantity}}</td>
-                <td>{{ immunize.vaccine_dose}}</td>
-                <td>{{ immunize.date }}</td>
-                <td>
-                    {% if immunize.status == "Pending" %}
-                        <span class="status-pending">Pending</span>
-                    {% elif immunize.status == "Complete" %}
-                        <span class="status-verified">Complete</span>
-                    {% elif immunize.status == "Incomplete" %}
-                        <span class="status-declined">Incomplete</span>
-                    {% endif %}
-                </td>
-                <td>
-                    <a href="{% url 'complete_immunize' immunize.id %}" class="btn-approve">Complete</a>
-                    <a href="{% url 'incomplete_immunize' immunize.id %}" class="btn-declined">Incomplete</a>
-                </td>
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Bakuna</th>
+                    <th>1st Visit (1 1/2months)</th>
+                    <th>2nd Visit (2 1/2months)</th>
+                    <th>3rd Visit (3 1/2months)</th>
+                    <th>4th Visit (9 Months)</th>
+                    <th>5th Visit (1 Year)</th>    
+                    <th>Action</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for immunization in immunizations %}
+                <tr>
+                    <td>{{ immunization.vaccine_name }}</td>
+                    <td>{{ immunization.first_visit }}</td>
+                    <td>{{ immunization.second_visit }}</td>
+                    <td>{{ immunization.third_visit }}</td>
+                    <td>{{ immunization.fourth_visit }}</td>
+                    <td>{{ immunization.fifth_visit }}</td>
+                    <td>
+                        <button type="button" class="released-btn" 
+                            data-vaccine-id="{{ immunization.id }}"
+                            data-vaccine-name="{{ immunization.vaccine_name }}"
+                            data-first-visit="{{ immunization.first_visit }}"
+                            data-second-visit="{{ immunization.second_visit }}"
+                            data-third-visit="{{ immunization.third_visit }}"
+                            data-fourth-visit="{{ immunization.fourth_visit }}"
+                            data-fifth-visit="{{ immunization.fifth_visit }}">Update</button>
+                    </td>
+                    <td>
+                        <select name="status_{{ immunization.id }}">
+                            <option value="Pending" {% if immunization.status == 'Pending' %}selected{% endif %}>Pending</option>
+                            <option value="Completed" {% if immunization.status == 'Completed' %}selected{% endif %}>Completed</option>
+                        </select>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="9">No immunization records found.</td>
+                </tr>
                 {% endfor %}
-            </tr>
-        </tbody>
-    </table>  
+            </tbody>
+        </table>
+    </form>
 </div>
 
-<div id="popupModal" class="modal">
+<div id="popupImmunize" class="modal">
     <div class="modal-content"> 
         <span id="closeButton" class="close-btn">&times;</span>
-        <h2>Vaccine Details</h2>
-        <form method="POST" action="{% url 'addImmunize' schedule.id %}">
+        <h2>Week Details</h2>
+        <form method="POST" action="{% url 'release_immunize' schedule.id %}">
             {% csrf_token %}
-            <input type="hidden" name="schedule_id" value="{{ schedule.id }}">
-
+            <input type="hidden" id="vaccine_id" name="vaccine_id">
             <label for="vaccine_name">Vaccine Name:</label>
-            <input type="text" id="vaccine_name" name="vaccine_name" placeholder="Enter Vaccine Name" required>
-            <br>
-            <label for="vaccine_quantity">Vaccine Quantity:</label>
-            <input type="number" id="vaccine_quantity" name="vaccine_quantity" placeholder="Enter Quantity" required>
-            <br>
-            <label for="vaccine_description">Description:</label>
-            <textarea id="vaccine_description" name="vaccine_description" placeholder="Enter Description" column="10" required></textarea>
-            <br>
-            <label for="vaccine_dose">Dose:</label>
-            <input type="text" id="vaccine_dose" name="vaccine_dose" placeholder="Enter Dose" required>
-            <br>
-            <label for="age">Age:</label>
-            <input type="text" id="age" name="age" placeholder="Enter Age" required>
-            <br>
-            <label for="date">Date:</label>
-            <input type="date" id="date" name="date" required>
-            <br>
-            <button type="submit" class="submit-btn">Submit</button>
+            <input type="text" id="vaccine_name" name="vaccine_name" value="{{ immunization.vaccine_name }}" readonly>
+            
+            <label for="first_visit">1st Visit:</label>
+            <input type="date" id="first_visit" name="first_visit">
+            
+            <label for="second_visit">2nd Visit:</label>
+            <input type="date" id="second_visit" name="second_visit">
+            
+            <label for="third_visit">3rd Visit:</label>
+            <input type="date" id="third_visit" name="third_visit">
+            
+            <label for="fourth_visit">4th Visit:</label>
+            <input type="date" id="fourth_visit" name="fourth_visit">
+            
+            <label for="fifth_visit">5th Visit:</label>
+            <input type="date" id="fifth_visit" name="fifth_visit">
+            
+            <button type="submit" class="submit-btn">Save Changes</button>
         </form>
+        
     </div>
 </div>
 
 <script>
-    // Modal functionality
     document.addEventListener("DOMContentLoaded", function() {
-        const releasedButton = document.getElementById("releasedButton");
-        const popupModal = document.getElementById("popupModal");
+        const popupImmunize = document.getElementById("popupImmunize");
         const closeButton = document.getElementById("closeButton");
 
-        // Open modal when the "Released" button is clicked
-        releasedButton.addEventListener("click", function() {
-            popupModal.style.display = "block";
+        // Open modal and populate with vaccine data when the "Update" button is clicked
+        document.querySelectorAll('.released-btn').forEach(button => {
+            button.addEventListener("click", function(event) {
+                event.preventDefault();  // Prevent form submission
+
+                // Get data attributes from the button
+                const vaccineId = button.getAttribute('data-vaccine-id');
+                const vaccineName = button.getAttribute('data-vaccine-name');
+                const firstVisit = button.getAttribute('data-first-visit');
+                const secondVisit = button.getAttribute('data-second-visit');
+                const thirdVisit = button.getAttribute('data-third-visit');
+                const fourthVisit = button.getAttribute('data-fourth-visit');
+                const fifthVisit = button.getAttribute('data-fifth-visit');
+
+                // Populate the modal with the selected vaccine's data
+                document.getElementById('vaccine_id').value = vaccineId;
+                document.getElementById('first_visit').value = firstVisit || '';
+                document.getElementById('second_visit').value = secondVisit || '';
+                document.getElementById('third_visit').value = thirdVisit || '';
+                document.getElementById('fourth_visit').value = fourthVisit || '';
+                document.getElementById('fifth_visit').value = fifthVisit || '';
+
+                // Show the modal
+                popupImmunize.style.display = "block";
+            });
         });
 
         // Close modal when the "x" button is clicked
-        closeButton.addEventListener("click", function() {
-            popupModal.style.display = "none";
-        });
+        if (closeButton) {
+            closeButton.addEventListener("click", function() {
+                popupImmunize.style.display = "none";
+            });
+        }
 
         // Close modal when clicking outside of it
         window.addEventListener("click", function(event) {
-            if (event.target === popupModal) {
-                popupModal.style.display = "none";
+            if (event.target === popupImmunize) {
+                popupImmunize.style.display = "none";
             }
         });
     });
 </script>
+
 {% endblock %}

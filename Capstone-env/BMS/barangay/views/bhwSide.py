@@ -289,8 +289,17 @@ def bhwEvents(request):
 #fetch Health records in bhw side
 @login_required
 def bhwRecord(request):
-    schedules = Schedule.objects.all()
-    return render(request, 'bhw/bhwHealthrecords.html', {'schedules': schedules})
+    all_schedules = Schedule.objects.all()
+    highblood_schedules = Schedule.objects.filter(bhwService__service_name="HighBlood")
+    tb_schedules = Schedule.objects.filter(bhwService__service_name="TB")
+    immunize_schedules = Schedule.objects.filter(bhwService__service_type="immunization")
+    return render(request, 'bhw/bhwHealthrecords.html', {
+        'all_schedules': all_schedules,
+        'highblood_schedules': highblood_schedules,
+        'tb_schedules': tb_schedules,
+        'immunize_schedules': immunize_schedules,
+    })
+
 
 
 

@@ -1,77 +1,196 @@
 {% load static %}
 {% block css %}
-<link rel="stylesheet" href="{% static './css/bhw.css' %}">
+<link rel="stylesheet" href="{% static './css/bhwHealthRecords.css' %}">
 <link rel="stylesheet" href="{% static './css/verificationBtn.css' %}">
-
+<script type="module" src="{% static 'js/bhwHealthRecords.js' %}"></script>
 {% endblock %}
 
-
- 
 {% block content %}  
+<div class="adminContainer">
 {% include 'bhw/bhwTopnav.html' %}
 
+    <div class="Left">
+        <button id="all-btn">All</button> 
+        <button id="highblood-btn">Highblood</button> 
+        <button id="tb-btn">TB</button>
+        <button id="immunize-btn">Immunize</button>
+    </div>
     
     <div class="MC-Bottom"> 
         {% include 'bhw/bhwNav.html' %}
         <div class="contents">
             <section id="content">
-                <table>
-                    <thead>
-                        <tr> 
-                            <th>Username</th>
-                            <th>Full Name</th>
-                            <th>Service</th>
-                            <th>Service Type</th>
-                            <th>Purok</th>
-                            <th>Date</th>
-                            <th>Phone Number</th>
-                            <th>Baby Book</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for schedule in schedules %}
-                        <tr>
-                            <td>{{ schedule.user.username }}</td>
-                            <td>{{ schedule.user.first_name }} {{ schedule.user.last_name }}</td>
-                            <td>{{ schedule.bhwService.service_name }}</td>
-                            <td>{{ schedule.bhwService.service_type }}</td>
-                            <td>{{ schedule.resident.zone }}</td>
-                            <td>{{ schedule.date }}</td>
-                            <td>{{ schedule.resident.phone_number }}</td>
-                            <td>
-                                {% if schedule.image %}
-                                <img src="{{ schedule.image.url }}" alt="Profile Picture" style="max-width: 50px; max-height: 50px; border-radius: 50%;">
-                                {% else %}
-                                <span>No Image</span>
-                                {% endif %}
-
-                            </td>
-                            <td>
-                                {% if schedule.status == "Pending" %}
-                                    <span class="status-pending">Pending</span>
-                                {% elif schedule.status == "Verify" %}
-                                    <span class="status-verified">Verify</span>
-                                {% elif schedule.status == "Decline" %}
-                                    <span class="status-declined">Decline</span>
-                                {% endif %}
-                            </td>
-                            <td>
+               
+               <!-- All Services Area -->
+               <div id="AllService-Area">
+                    <table>
+                        <thead>
+                            <tr> 
+                                <th>Full Name</th>
+                                <th>Service</th>
+                                <th>Purok</th>
+                                <th>Date</th>
+                                <th>Phone Number</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for schedule in all_schedules %}
+                            <tr>
+                                <td>{{ schedule.user.first_name }} {{ schedule.user.last_name }}</td>
+                                <td>{{ schedule.bhwService.service_name }}</td>
+                                <td>{{ schedule.resident.zone }}</td>
+                                <td>{{ schedule.date }}</td>
+                                <td>{{ schedule.resident.phone_number }}</td>
+                                <td>
+                                    {% if schedule.status == "Pending" %}
+                                        <span class="status-pending">Pending</span>
+                                    {% elif schedule.status == "Verify" %}
+                                        <span class="status-verified">Verify</span>
+                                    {% elif schedule.status == "Decline" %}
+                                        <span class="status-declined">Decline</span>
+                                    {% endif %}
+                                </td>
+                                <td>
                                     <a href="{% url 'approve_schedule' schedule.id %}" class="btn-approve">Approve</a>
                                     <a href="{% url 'reject_schedule' schedule.id %}" class="btn-declined">Decline</a>
-                            </td>
-                            
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                    
-                </table>
-                </table>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                 </div>
+
+                 <!-- Highblood Area -->
+                 <div id="Highblood-Area">
+                    <table>
+                        <thead>
+                            <tr> 
+                                <th>Full Name</th>
+                                <th>Service</th>
+                                <th>Service Type</th>
+                                <th>Purok</th>
+                                <th>Phone Number</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for schedule in highblood_schedules %}
+                            <tr>
+                                <td>{{ schedule.user.first_name }} {{ schedule.user.last_name }}</td>
+                                <td>{{ schedule.bhwService.service_name }}</td>
+                                <td>{{ schedule.bhwService.service_type }}</td>
+                                <td>{{ schedule.resident.zone }}</td>
+                                <td>{{ schedule.resident.phone_number }}</td>
+                                <td>
+                                    {% if schedule.status == "Pending" %}
+                                        <span class="status-pending">Pending</span>
+                                    {% elif schedule.status == "Verify" %}
+                                        <span class="status-verified">Verify</span>
+                                    {% elif schedule.status == "Decline" %}
+                                        <span class="status-declined">Decline</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'approve_schedule' schedule.id %}" class="btn-approve">Approve</a>
+                                    <a href="{% url 'reject_schedule' schedule.id %}" class="btn-declined">Decline</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                 </div>
+
+                 <!-- TB Area -->
+                 <div id="TB-Area">
+                    <table>
+                        <thead>
+                            <tr> 
+                                <th>Full Name</th>
+                                <th>Service</th>
+                                <th>Service Type</th>
+                                <th>Purok</th>
+                                <th>Date</th>
+                                <th>Phone Number</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for schedule in tb_schedules %}
+                            <tr>
+                                <td>{{ schedule.user.first_name }} {{ schedule.user.last_name }}</td>
+                                <td>{{ schedule.bhwService.service_name }}</td>
+                                <td>{{ schedule.bhwService.service_type }}</td>
+                                <td>{{ schedule.resident.zone }}</td>
+                                <td>{{ schedule.date }}</td>
+                                <td>{{ schedule.resident.phone_number }}</td>
+                                <td>
+                                    {% if schedule.status == "Pending" %}
+                                        <span class="status-pending">Pending</span>
+                                    {% elif schedule.status == "Verify" %}
+                                        <span class="status-verified">Verify</span>
+                                    {% elif schedule.status == "Decline" %}
+                                        <span class="status-declined">Decline</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'approve_schedule' schedule.id %}" class="btn-approve">Approve</a>
+                                    <a href="{% url 'reject_schedule' schedule.id %}" class="btn-declined">Decline</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                 </div>
+                 
+                 <!-- Immunize Area -->
+                 <div id="Immunize-Area">
+                    <table>
+                        <thead>
+                            <tr> 
+                                <th>Full Name</th>
+                                <th>Service</th>
+                                <th>Service Type</th>
+                                <th>Purok</th>
+                                <th>Date</th>
+                                <th>Phone Number</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for schedule in immunize_schedules %}
+                            <tr>
+                                <td>{{ schedule.user.first_name }} {{ schedule.user.last_name }}</td>
+                                <td>{{ schedule.bhwService.service_name }}</td>
+                                <td>{{ schedule.bhwService.service_type }}</td>
+                                <td>{{ schedule.resident.zone }}</td>
+                                <td>{{ schedule.date }}</td>
+                                <td>{{ schedule.resident.phone_number }}</td>
+                                <td>
+                                    {% if schedule.status == "Pending" %}
+                                        <span class="status-pending">Pending</span>
+                                    {% elif schedule.status == "Verify" %}
+                                        <span class="status-verified">Verify</span>
+                                    {% elif schedule.status == "Decline" %}
+                                        <span class="status-declined">Decline</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'approve_schedule' schedule.id %}" class="btn-approve">Approve</a>
+                                    <a href="{% url 'reject_schedule' schedule.id %}" class="btn-declined">Decline</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                 </div>
+
             </section>  
-        
         </div>
-
     </div>
-
+</div>
 {% endblock %}

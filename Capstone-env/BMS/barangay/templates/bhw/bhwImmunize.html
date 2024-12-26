@@ -14,37 +14,32 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Username</th>
                             <th>Baby Name</th>
+                            <th>Sex</th>
                             <th>Father Name</th>
                             <th>Mother Name</th>
-                            <th>Service</th>
+                            <th>Birth Place</th>
+                            <th>Sex</th>
                             <th>Purok</th>
-                            <th>Phone Number</th>
-                            <th>Date</th>
-                            <th>Baby Book</th>
+                            <th>vaccine</th>
                             <th>View More</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for schedule in schedules %}
                         <tr>
-                            <td>{{ schedule.user.username }}</td>
                             <td>{{ schedule.baby_name }}</td>
+                            <td>{{ schedule.sex }}</td>
                             <td>{{ schedule.father_name }}</td>
                             <td>{{ schedule.mother_name }}</td>
-                            <td>{{ schedule.bhwService.service_name }}</td>
+                            <td>{{ schedule.birth_place }}</td>
+                            <td>{{ schedule.sex}}</td>
                             <td>{{ schedule.resident.zone }}</td>
-                            <td>{{ schedule.resident.phone_number }}</td>
-                            <td>{{ schedule.date }}</td>
-                            <td>
-                                {% if schedule.image %}
-                                <img src="{{ schedule.image.url }}" alt="Profile Picture" style="max-width: 50px; max-height: 50px; border-radius: 50%;">
-                                {% else %}
-                                <span>No Image</span>
-                                {% endif %}
 
+                            <td>
+                                <a href="{% url 'add_immunize' %}" class="view-more-link">vaccine</a>
                             </td>
+
                             <td>
                                 <a href="{% url 'Vaccine' schedule.id %}" class="view-more-link">View More</a>
                             </td>

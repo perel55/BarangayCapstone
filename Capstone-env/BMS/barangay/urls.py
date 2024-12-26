@@ -69,9 +69,10 @@ urlpatterns = [
     #immunize
     re_path('bhwImmunize/', views.bhwImmunize, name = 'bhwImmunize'),
     re_path(r'^Vaccine/(?P<schedule_id>\d+)/$', views.Vaccine, name='Vaccine'),
-    re_path(r'^addImmunize/(?P<schedule_id>\d+)/$', views.addImmunize, name='addImmunize'),
-    re_path(r'^complete_immunize/(?P<immunize_id>\d+)/$', views.complete_immunize, name='complete_immunize'),
-    re_path(r'^incomplete_immunize/(?P<immunize_id>\d+)/$', views.incomplete_immunize, name='incomplete_immunize'),
+    re_path(r'^release_immunize/(?P<schedule_id>\d+)/$', views.release_immunize, name='release_immunize'),
+    
+
+     re_path(r"^add_immunize/$", views.add_immunize, name="add_immunize"),
  #----------------------------------------BIS------------------------------------------------
      re_path(r'^addBSI/$', views.addBSI, name='addBSI'),
      re_path(r'^bsiDashboard/$', views.bsiDashboard, name='bsiDashboard'),

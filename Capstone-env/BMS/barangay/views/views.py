@@ -289,22 +289,25 @@ def book_immunize(request, HealthService_id, resident_id):
     resident = get_object_or_404(Residents, id=resident_id)
 
     if request.method == 'POST':
-        date = request.POST.get('date')
         father_name = request.POST.get('father_name')
         mother_name = request.POST.get('mother_name')
         baby_name = request.POST.get('baby_name')
-        image = request.FILES.get('image')
-    
+        birth_weight = request.POST.get('birth_weight')
+        birth_height = request.POST.get('birth_height')
+        sex = request .POST.get('sex')
+        birth_place = request.POST.get('birth_place')
 
         Schedule.objects.create(
             user=request.user, 
             resident=resident, 
             bhwService=bhwService,
-            date=date,
             father_name=father_name,
             mother_name=mother_name,
             baby_name=baby_name,
-            image=image,    
+            birth_weight=birth_weight,
+            birth_height=birth_height ,
+            sex=sex,
+            birth_place=birth_place, 
         )
 
         # Redirect to the 'bhwServices' page after successful booking

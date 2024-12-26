@@ -55,19 +55,33 @@
             </div>
 
             <div class="form">
-                <label for="image">Baby Book Image:</label>
-                <input type="file" id="image" name="image" accept="image/*" required>
+                <label for="birth_place">Birth Place:</label>
+                <input type="text" id="birth_place" name="birth_place"  placeholder="Place of Birth" required>
             </div>
 
             <div class="form">
-                <label for="date">Date:</label>
-                <input type="date" id="date" name="date" required>
+                <label for="birth_height">Birth Height:</label>
+                <input type="text" id="birth_height" name="birth_height"  placeholder="Birth Height" required>
             </div>
-           
-    
+
+            <div class="form">
+                <label for="birth_weight">:Birth Weight</label>
+                <input type="text" id="birth_weight" name="birth_weight"  placeholder="Birth Weight" required>
+            </div>
+            <div class="form">
+                <label for="sex">Sex:</label>
+                <select id="sex" name="sex" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+
+
+            
+            
             <input type="hidden" name="service_id" value="{{ bhwService.id }}">
         </div>
-    
+        </div>
         <input type="submit" value="Submit">
     </form>
     

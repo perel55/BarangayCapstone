@@ -125,16 +125,18 @@ class Schedule(models.Model):
     bhwService = models.ForeignKey(HealthService, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)  
     resident = models.ForeignKey(Residents, on_delete=models.CASCADE, null=True)  
-    date = models.DateField(max_length=255)
     status = models.CharField(max_length=50, default="Pending")
     baby_name = models.CharField(max_length=255, null=True)
     father_name = models.CharField(max_length=255, null=True)   
     mother_name = models.CharField(max_length=255, null=True)
-    image = models.ImageField(upload_to='images/', null=True)
+    birth_place = models.CharField(max_length=255, null=True)
+    birth_height = models.CharField(max_length=255, null=True)
+    birth_weight = models.CharField(max_length=255, null=True)
+    sex = models.CharField(max_length=255, null=True)
 
     
     def __str__(self):
-        return f"{self.date} {self.status} {self.baby_name} {self.father_name} {self.mother_name}"
+        return f"{self.status} {self.baby_name} {self.father_name} {self.mother_name}"
 
     
 class Outbreaks(models.Model):
@@ -233,17 +235,31 @@ class Medicine(models.Model):
         return f"{self.medicine_name} {self.medicine_description} {self.medicine_quantity} {self.expiration_date} {self.medicine_type} {self.picture} {self.released_quantity}"
 
 class Immunize(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, null=True)
-    resident_id = models.ForeignKey(Residents, on_delete=models.CASCADE, null=True)
     vaccine_name = models.CharField(max_length=100)
-    vaccine_quantity = models.IntegerField(null=True)
-    vaccine_description = models.TextField(null=True)
     vaccine_dose = models.CharField(max_length=100, null=True)
-    age = models.CharField(max_length=100)
-    date = models.DateField(null=True)
     status = models.CharField(max_length=100, default="Pending", null=True)
-    
+    at_birth = models.CharField(max_length=100, null=True)  
+    status = models.CharField(max_length=100, default="Pending", null=True)
 
     def __str__(self):
-        return f"{self.vaccine_name} {self.vaccine_description} "
+        return f"{self.vaccine_name}"
+class ResidentImmunize(models.Model):
+    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, null=True)
+    immunize = models.ForeignKey(Immunize, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return f"{self.schedule} {self.immunize} "
+    
+class ImmunizeDate(models.Model):
+    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, null=True)
+    immunize = models.ForeignKey(Immunize, on_delete=models.CASCADE, null=True)
+    first_visit = models.DateField(null=True, blank=True)  
+    second_visit = models.DateField(null=True, blank=True)  
+    third_visit = models.DateField(null=True, blank=True)
+    fourth_visit = models.DateField(null=True, blank=True)  
+    fifth_visit = models.DateField(null=True, blank=True)  
+
+    def __str__(self):
+        return f"{self.immunize} {self.first_visit} {self.second_visit} {self.third_visit} {self.fourth_visit} {self.fifth_visit}"
+    
