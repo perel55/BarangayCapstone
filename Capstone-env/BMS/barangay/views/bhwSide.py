@@ -319,3 +319,4 @@ def approve_sanitary(request, schedule_id):
     schedule.status = "Verified"
     schedule.save()
     return redirect('bhwSanitary')  
+

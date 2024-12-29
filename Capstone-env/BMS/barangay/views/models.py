@@ -236,11 +236,16 @@ class Medicine(models.Model):
 
 class Immunize(models.Model):
     schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, null=True)
-    vaccine_name = models.CharField(max_length=100)
+    vaccine_name = models.CharField(max_length=100, null=True)
     vaccine_dose = models.CharField(max_length=100, null=True)
     status = models.CharField(max_length=100, default="Pending", null=True)
     at_birth = models.CharField(max_length=100, null=True)  
     status = models.CharField(max_length=100, default="Pending", null=True)
+    first_visit = models.DateField(null=True, blank=True)
+    second_visit = models.DateField(null=True, blank=True)
+    third_visit = models.DateField(null=True, blank=True)
+    fourth_visit = models.DateField(null=True, blank=True)
+    fifth_visit = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.vaccine_name}"
@@ -251,15 +256,4 @@ class ResidentImmunize(models.Model):
     def __str__(self):
         return f"{self.schedule} {self.immunize} "
     
-class ImmunizeDate(models.Model):
-    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, null=True)
-    immunize = models.ForeignKey(Immunize, on_delete=models.CASCADE, null=True)
-    first_visit = models.DateField(null=True, blank=True)  
-    second_visit = models.DateField(null=True, blank=True)  
-    third_visit = models.DateField(null=True, blank=True)
-    fourth_visit = models.DateField(null=True, blank=True)  
-    fifth_visit = models.DateField(null=True, blank=True)  
-
-    def __str__(self):
-        return f"{self.immunize} {self.first_visit} {self.second_visit} {self.third_visit} {self.fourth_visit} {self.fifth_visit}"
     
