@@ -1,0 +1,153 @@
+{% load static %}
+{% block css %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/residentNav1.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+{% endblock %}
+
+<body>
+    <div class="sidebar">
+        <div class="logo-details">
+            <i class='bx bxs-castle'></i>
+            <span class="logo_name">Barangay Lala</span>
+        </div>
+        
+        <ul class="nav-links">
+            <li>
+                <a href="{% url 'secretarydashboard' %}">
+                    <i class='bx bx-grid-alt' ></i>
+                    <span class="link_name">Dashboard</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="{% url 'secretarydashboard' %}">Dashboard</a></li>
+                </ul>
+            </li>
+
+            <li>
+    
+                <div class="icon-links">
+                    <a href="{% url 'household_list' %}">
+                        <i class='bx bx-edit' ></i>
+                        <span class="link_name">Household</span>
+                    </a>
+                        
+                </div>
+                <ul class="sub-menu">
+                    <li><a class="link_name" href="#">Household</a></li>
+                </ul>
+                
+            </li>
+
+            
+            <li>
+                <a href="{% url 'secVerifyAccounts' %}">
+                    <i class='bx bx-history'></i>
+                    <span class="link_name">Verify Accounts</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="{% url 'residentHistory' %}">History</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="{% url 'secretary_service_list' %}">
+                    <i class='bx bx-calendar' ></i>
+                    <span class="link_name">Services</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="{% url 'secretary_service_list' %}">Services</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="{% url 'secretary_Certificates' %}">
+                    <i class='bx bx-shield-plus' ></i>
+                    <span class="link_name">Requests</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="#">Requests</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="">
+                    <i class='bx bx-plus-medical' ></i>
+                    <span class="link_name">Payments</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="#">Payments</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <div class="icon-links">
+                    <a href="#">
+                        <i class='bx bx-cog' ></i>
+                        <span class="link_name">Settings</span>
+                    </a>
+                    <div class="arrow-icon">
+                        <i class='bx bx-chevron-down arrow' ></i>
+                    </div>
+                </div>
+                <ul class="sub-menu">
+                    <li><a class="link_name" href="#">SETTINGS</a></li>
+                    <li><a href="{% url 'edit_profile' %}">Update Profile</a></li>
+                    
+                </ul>
+            </li>
+
+            <li>
+                <a href="{% url 'logout' %}">
+                    <i class='bx bx-log-out' ></i>
+                    <span class="link_name">Logout</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="{% url 'logout' %}">Logout</a></li>
+                </ul>
+            </li>
+
+            <li class="help-sup">
+                <a href="#">
+                    <i class='bx bx-help-circle' ></i>
+                    <span class="link_name">Help & Support</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="#">Help & Support</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+
+
+    <script>
+
+        let arrow = document.querySelectorAll(".arrow");
+        for (var i = 0; i < arrow.length; i++) {
+            arrow[i].addEventListener("click", (e)=>{
+        let arrowParent = e.target.parentElement.parentElement;
+            console.log(arrowParent);
+            arrowParent.classList.toggle("showMenu");
+            });
+        }
+
+        let sidebar = document.querySelector(".sidebar");
+        let sidebarBtn = document.querySelector(".bx-menu");
+
+        sidebarBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
+        });
+
+
+        
+    
+    </script>
+    
+</body>
+</html>
+

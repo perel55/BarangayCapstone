@@ -19,6 +19,8 @@ class Residents(models.Model):
     is_profile_complete = models.BooleanField(default=False)
     status = models.CharField(max_length=50, default="Pending")
 
+    def full_name(self):
+        return f"{self.auth_user.first_name} {self.mname} {self.auth_user.last_name}"
 
     def __str__(self):
         return f"{self.auth_user}"
@@ -78,6 +80,23 @@ class HealthAdmin(models.Model):
 
     def __str__(self):
         return f"{self.auth_user}"
+    
+
+class Secretary(models.Model):
+    auth_user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE) 
+    mname = models.CharField(max_length=255)
+    zone = models.CharField(max_length=255)
+    civil_status = models.CharField(max_length=255)
+    occupation = models.CharField(max_length=255)
+    birthdate = models.DateField(max_length=255, null=True)
+    phone_number = models.CharField(max_length=255)
+    picture = models.ImageField(upload_to = 'images/', null=True)
+    position = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.auth_user}"
+
+
 class Account_Type(models.Model):
     Account_type = models.CharField(max_length =255)
     
@@ -90,12 +109,10 @@ class Accounts(models.Model):
     bsi_id = models.ForeignKey(Bsi, on_delete=models.CASCADE, null=True)
     bhw_id = models.ForeignKey(Bhw, on_delete=models.CASCADE, null=True)
     admin_id = models.ForeignKey(Personnel, on_delete=models.CASCADE, null=True)
+    secretary_id = models.ForeignKey(Secretary, on_delete=models.CASCADE, null=True)
     account_typeid= models.ForeignKey(Account_Type, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return f"Resident: {self.resident_id} | Admin: {self.admin_id} | BHW: {self.bhw_id} | Account Type: {self.account_typeid}"
-    
- 
         return f"Resident: {self.resident_id} | Admin: {self.admin_id} | BHW: {self.bhw_id} | Account Type: {self.account_typeid}"
     
  
@@ -164,14 +181,13 @@ class Outbreaks(models.Model):
 class Request(models.Model):
     PENDING = 'Pending'
     APPROVED = 'Approved'
-    
     STATUS_CHOICES = [
         (PENDING, 'Pending'),
         (APPROVED, 'Approved'),
     ]
 
-    resident = models.ForeignKey('Residents', on_delete=models.CASCADE, null=True)
-    service = models.ForeignKey('Services', on_delete=models.CASCADE, null=True)
+    Resident_id = models.ForeignKey(Residents, on_delete=models.CASCADE, null=True)
+    service_id = models.ForeignKey(Services, on_delete=models.CASCADE, null=True)
     reason = models.CharField(max_length=255)
     total_price = models.IntegerField(null=True)
     schedule_date = models.DateField(null=True)
@@ -181,7 +197,7 @@ class Request(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=PENDING)
 
     def __str__(self):
-        return f"{self.resident} - {self.service} - {self.schedule_date}"
+        return f"{self.Resident_id} - {self.service_id} - {self.schedule_date}"
 
 
 
@@ -247,3 +263,21 @@ class Immunize(models.Model):
 
     def __str__(self):
         return f"{self.vaccine_name} {self.vaccine_description} "
+    
+class Household(models.Model):
+    name = models.CharField(max_length=255)  # Name of household
+    address = models.TextField()
+    zone = models.CharField(max_length=255)  # Barangay zone
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.zone}"
+
+class Member(models.Model):
+    household = models.ForeignKey(Household, on_delete=models.CASCADE, related_name="members")
+    resident = models.OneToOneField('Residents', on_delete=models.CASCADE, null=True, blank=True)
+    relationship_to_head = models.CharField(max_length=100)
+    is_head_of_household = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.resident.auth_user.username} - {self.relationship_to_head} ({'Head' if self.is_head_of_household else 'Member'})"

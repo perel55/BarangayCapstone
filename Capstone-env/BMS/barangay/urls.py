@@ -127,6 +127,8 @@ urlpatterns = [
 # -------------> TRY <------------
     path('resident/schedule/', views.residentSchedule, name='residentSchedule'),
 
+    path('pending-approval/', views.pending_approval, name='pending_approval'),
+
     path('schedule/', views.ScheduleView, name='ScheduleView'),
     path('api/schedules/', views.get_events, name='GetEvents'),
 
@@ -159,9 +161,39 @@ urlpatterns = [
 
     path('profile-check/', views.profile_check, name='profile_check'),
 
-    path('accounts_view/', views.accounts_view, name='accounts_view'),
+    path('admin/accounts_view/', views.accounts_view, name='accounts_view'),
 
 
+
+
+
+
+
+    # ------------------ SECRETARY -----------------------
+    path('secretary/', views.secretarydashboard, name='secretarydashboard'),
+    path('households/', views.household_list, name='household_list'),
+    path('households/create/', views.household_create, name='household_create'),
+    path('households/<int:pk>/update/', views.household_update, name='household_update'),
+    path('households/<int:pk>/delete/', views.household_delete, name='household_delete'),
+    path('households/<int:household_id>/members/', views.member_list, name='member_list'),
+    path('member/<int:member_id>/delete/', views.member_delete, name='member_delete'),
+    path('households/members/<int:member_id>/', views.member_detail, name='member_detail'),
+    path('households/<int:household_id>/members/create/', views.member_create, name='member_create'),
+
+    path('secVerifyAccounts/', views.secVerifyAccounts, name='secVerifyAccounts'),
+    path('approve_resident/<int:resident_id>/', views.approve_resident, name='approve_resident'),
+    path('decline_resident/<int:resident_id>/', views.decline_resident, name='decline_resident'),
+
+    path('services/', views.secretary_service_list, name='secretary_service_list'),
+    path('services/add/', views.secretary_AddService, name='secretary_AddService'),
+    path('services/update/<int:service_id>/', views.secretary_update_service, name='update_service'),
+    path('services/delete/<int:service_id>/', views.secretary_delete_service, name='delete_service'),
+
+    path('certificates/', views.secretary_Certificates, name='secretary_Certificates'),
+    path('certificates/update/<int:request_id>/', views.secretary_update_request_status, name='secretary_update_request_status'),
+
+
+    
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

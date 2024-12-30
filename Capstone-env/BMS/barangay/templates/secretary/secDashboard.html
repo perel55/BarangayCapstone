@@ -1,0 +1,84 @@
+{% load static %}
+{% block css %}
+
+{% endblock %}
+
+{% include 'secretary/secNavbar.html' %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>Dashboard</h1>
+    </div>
+
+    <div class="dashboard-reports">
+        <div class="dashboard-report">
+            <h2>Pending Accounts</h2>
+            <p>{{ pending_residents_count }}</p>
+        </div>
+        <div class="dashboard-report">
+            <h2>Pending Requests</h2>
+            <p>{{ pending_requests_count }}</p>
+        </div>
+        <div class="dashboard-report">
+            <h2>Upcoming Notices</h2>
+            <p>{{ upcoming_notices_count }}</p>
+        </div>
+        <div class="dashboard-report">
+            <h2>Active Outbreaks</h2>
+            <p>{{ active_outbreaks_count }}</p>
+        </div>
+        <div class="dashboard-report">
+            <h2>Total Residents</h2>
+            <p>{{ total_residents_count }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<style>
+ .dashboard-container {
+    margin-left: 70px; /* Fixed margin for the sidebar */
+    width: calc(100% - 60px); /* Content fills remaining space */
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+}
+
+.dashboard-header h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.dashboard-reports {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.dashboard-report {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 48%;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.dashboard-report h2 {
+    font-size: 1.2rem;
+    color: #007BFF;
+    margin-bottom: 10px;
+}
+
+.dashboard-report p {
+    font-size: 2rem;
+    color: #333;
+    font-weight: bold;
+}
+
+</style>
