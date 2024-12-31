@@ -84,7 +84,7 @@ def Vaccine(request, schedule_id):
 
 def bhwReport(request):
     # Fetch all schedules
-    schedules = Schedule.objects.filter(bhwService__service_type='immunization')
+    schedules = Schedule.objects.filter(bhwService__service_type='immunnization')
 
     # Initialize lists to store immunizations per schedule
     immunizations = []

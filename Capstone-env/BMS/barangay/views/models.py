@@ -204,7 +204,6 @@ class Request(models.Model):
         return f"{self.Resident_id} - {self.service_id} - {self.schedule_date}"
 
 
-
 class CommunityNotice(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     bhw_id = models.ForeignKey(Bhw, on_delete=models.CASCADE, null=True)

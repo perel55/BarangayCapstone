@@ -1,0 +1,139 @@
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/residentHS.css' %}">
+
+{% endblock %}
+
+<body>
+    {% block content %}
+    <div class="adminContainer">
+        {% include 'resident/residentTopnav.html' %}
+        <div class="MC-Bottom">
+            {% include 'resident/residentNav1.html' %}
+
+            <div class="contents">
+                <section id="content">
+
+                    <br>
+                    <!-- Schedule History -->
+                    <div id="schedule-history">
+                        <h2>Immunize Record</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Baby Name</th>
+                                    <th>Father</th>
+                                    <th>Mother</th>
+                                    <th>Birth Place</th>
+                                    <th>Birthday</th>
+                                    <th>Sex</th>
+                                    <th>Purok</th>
+                                    <th colspan="3" class="vacc">PV</th>
+                                    <th colspan="3" class="vacc">OPV</th>
+                                    <th colspan="3" class="vacc">PCV</th>
+                                    <th colspan="2" class="vacc">IPV</th>
+                                    <th colspan="2" class="vacc">MMR</th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    
+                                    <th>1st</th>
+                                    <th>2nd</th>
+                                    <th>3rd</th>
+                            
+                                    <th>1st</th>
+                                    <th>2nd</th>
+                                    <th>3rd</th>
+                            
+                                    <th>1st</th>
+                                    <th>2nd</th>
+                                    <th>3rd</th>
+                            
+                                    <th>3rd</th>
+                                    <th>4th</th>
+                            
+                                    <th>4th</th>
+                                    <th>5th</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for immunization in immunizations %}
+                                    <tr>
+                                        <td>{{ immunization.schedule.baby_name }}</td>
+                                        <td>{{ immunization.schedule.father_name }}</td>
+                                        <td>{{ immunization.schedule.mother_name }}</td>
+                                        <td>{{ immunization.schedule.birth_place }}</td>
+                                        <td>{{ immunization.schedule.birthdate }}</td>
+                                        <td>{{ immunization.schedule.sex }}</td>
+                                        <td>{{ immunization.schedule.resident.zone }}</td>
+                                        
+                                        <!-- PV (Pentavalent Vaccine) -->
+                                        {% if immunization.pentavalent %}
+                                            {% for vac in immunization.pentavalent %}
+                                                <td>{{ vac.first_visit }}</td>
+                                                <td>{{ vac.second_visit }}</td>
+                                                <td>{{ vac.third_visit }}</td>
+                                            {% endfor %}
+                                        {% else %}
+                                            <td colspan="3">Not Available</td>
+                                        {% endif %}
+                                    
+                                        <!-- OPV (Oral Polio Vaccine) -->
+                                        {% if immunization.opv %}
+                                            {% for vac in immunization.opv %}
+                                                <td>{{ vac.first_visit }}</td>
+                                                <td>{{ vac.second_visit }}</td>
+                                                <td>{{ vac.third_visit }}</td>
+                                            {% endfor %}
+                                        {% else %}
+                                            <td colspan="3">Not Available</td>
+                                        {% endif %}
+                                    
+                                        <!-- PCV (Pneumococcal Conjugate Vaccine) -->
+                                        {% if immunization.pcv %}
+                                            {% for vac in immunization.pcv %}
+                                                <td>{{ vac.first_visit }}</td>
+                                                <td>{{ vac.second_visit }}</td>
+                                                <td>{{ vac.third_visit }}</td>
+                                            {% endfor %}
+                                        {% else %}
+                                            <td colspan="3">Not Available</td>
+                                        {% endif %}
+                                    
+                                        <!-- IPV (Inactivated Polio Vaccine) -->
+                                        {% if immunization.ipv %}
+                                            {% for vac in immunization.ipv %}
+                                                <td>{{ vac.first_visit }}</td>
+                                                <td>{{ vac.second_visit }}</td>
+                                            {% endfor %}
+                                        {% else %}
+                                            <td colspan="2">Not Available</td>
+                                        {% endif %}
+                                    
+                                        <!-- MMR (Measles, Mumps, Rubella) -->
+                                        {% if immunization.mmr %}
+                                            {% for vac in immunization.mmr %}
+                                                <td>{{ vac.first_visit }}</td>
+                                                <td>{{ vac.second_visit }}</td>
+                                            {% endfor %}
+                                        {% else %}
+                                            <td colspan="2">Not Available</td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div> 
+
+                </section>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+</body>

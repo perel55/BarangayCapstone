@@ -291,3 +291,34 @@ def outbreak_chart_data(request):
 def resident_services(request):
     services = Services.objects.all()  # Query all services
     return render(request, 'resident/residentServices.html', {'services': services})
+
+
+@login_required
+def residentHealthRecords(request):
+    # Fetch all schedules for the logged-in user
+    schedules = Schedule.objects.filter(user=request.user, bhwService__service_type='immunnization')
+
+    # Initialize list to store immunizations per schedule
+    immunizations = []
+
+    # Loop through each schedule and filter immunizations based on schedule.id
+    for schedule in schedules:
+        pentavalent = Immunize.objects.filter(vaccine_name="Pentavalent Vaccine", schedule_id=schedule.id)
+        opv = Immunize.objects.filter(vaccine_name="Oral Polio Vaccine (OPV)", schedule_id=schedule.id)
+        ipv = Immunize.objects.filter(vaccine_name="Inactivated Polio Vaccine", schedule_id=schedule.id)
+        pcv = Immunize.objects.filter(vaccine_name="Pneumococcal Conjugate Vaccine", schedule_id=schedule.id)
+        mmr = Immunize.objects.filter(vaccine_name="Measles, Mumps, Rubella", schedule_id=schedule.id)
+
+        # Store the immunizations for each schedule
+        immunizations.append({
+            'schedule': schedule,
+            'pentavalent': pentavalent,
+            'opv': opv,
+            'ipv': ipv,
+            'pcv': pcv,
+            'mmr': mmr,
+        })
+
+    return render(request, 'resident/residentHealthRecords.html', {
+        'immunizations': immunizations,
+    })

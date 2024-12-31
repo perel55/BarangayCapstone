@@ -80,6 +80,7 @@ def register(request):
             messages.error(request, "Passwords do not match.")
 
     return render(request, 'account/signup.html')
+
 @csrf_exempt
 def adminregister(request):
     if request.method == 'POST':
@@ -379,7 +380,7 @@ def book_healthServiceform(request, HealthService_id):
     except Residents.DoesNotExist:
         resident = None
 
-    if bhwService.service_type == "immunization": 
+    if bhwService.service_type == "immunnization": 
         return render(request, 'resident/residentImmunize.html', {'bhwService': bhwService, 'resident': resident})
     elif bhwService.service_type == "maintenance":
         return render(request, 'resident/residentTB.html', {'bhwService': bhwService, 'resident': resident})

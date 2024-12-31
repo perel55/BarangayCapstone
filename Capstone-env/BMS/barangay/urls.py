@@ -73,6 +73,7 @@ urlpatterns = [
     
 
     re_path('bhwReport/', views.bhwReport, name = 'bhwReport'),
+    re_path('residentHealthRecords/', views.residentHealthRecords, name = 'residentHealthRecords'),
     
  #----------------------------------------BIS------------------------------------------------
      re_path(r'^addBSI/$', views.addBSI, name='addBSI'),
