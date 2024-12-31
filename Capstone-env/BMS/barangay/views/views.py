@@ -22,6 +22,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .models import HealthService, Schedule, Residents
+from django.utils import timezone
 
 
 
@@ -79,7 +80,6 @@ def register(request):
             messages.error(request, "Passwords do not match.")
 
     return render(request, 'account/signup.html')
-#Register Admin
 @csrf_exempt
 def adminregister(request):
     if request.method == 'POST':
@@ -89,9 +89,10 @@ def adminregister(request):
         password2 = request.POST.get('password2')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
+        account_type = request.POST.get('account_type')
 
         if password1 == password2:
-            user = User.objects.create_superuser(
+            user = User.objects.create_user(
                 username=username,
                 email=email,
                 password=password1,
@@ -99,26 +100,54 @@ def adminregister(request):
                 last_name=last_name,
             )
 
-            personnel = Personnel.objects.create(
-                auth_user=user,
-            )
+            account_type_obj = Account_Type.objects.get(Account_type=account_type)
 
-            personnel_account_type = Account_Type.objects.get(Account_type='Admin')
-
-            newAcc = Accounts.objects.create(
-                admin_id=personnel,
-                account_typeid=personnel_account_type
-            )
-
+            if account_type == "Admin":
+                personnel = Personnel.objects.create(auth_user=user)
+                Accounts.objects.create(
+                    admin_id=personnel,
+                    account_typeid=account_type_obj
+                )
+            elif account_type == "HealthAdmin":
+                health_admin = HealthAdmin.objects.create(auth_user=user)
+                Accounts.objects.create(
+                    ha_id=health_admin,
+                    account_typeid=account_type_obj
+                )
+            elif account_type == "BSI":
+                bsi = Bsi.objects.create(auth_user=user)
+                Accounts.objects.create(
+                    bsi_id=bsi,
+                    account_typeid=account_type_obj
+                )
+            elif account_type == "Bhw":
+                bhw = Bhw.objects.create(auth_user=user)
+                Accounts.objects.create(
+                    bhw_id=bhw,
+                    account_typeid=account_type_obj
+                )
+            elif account_type == "Secretary":
+                secretary = Secretary.objects.create(auth_user=user)
+                Accounts.objects.create(
+                    secretary_id=secretary,
+                    account_typeid=account_type_obj
+                )
+            elif account_type == "Resident":
+                resident = Residents.objects.create(auth_user=user)
+                Accounts.objects.create(
+                    resident_id=resident,
+                    account_typeid=account_type_obj
+                )
 
             user = authenticate(request, username=username, password=password1)
             if user is not None:
-                login(request, user)  
+                login(request, user)
                 return redirect('admindashboard')
         else:
             messages.error(request, "Passwords do not match.")
 
     return render(request, 'admin/addAdmin.html')
+
 
 @csrf_exempt
 def validatelogin(request):
@@ -142,7 +171,9 @@ def validatelogin(request):
             elif Accounts.objects.filter(bsi_id__auth_user=user).exists():
                 profile = Accounts.objects.get(bsi_id__auth_user=user)
             elif Accounts.objects.filter(ha_id__auth_user=user).exists():
-                profile = Accounts.objects.get(ha_id__auth_user=user)          
+                profile = Accounts.objects.get(ha_id__auth_user=user)
+            elif Accounts.objects.filter(secretary_id__auth_user=user).exists():
+                profile = Accounts.objects.get(secretary_id__auth_user=user)              
 
             if profile:
                 account_type = profile.account_typeid.Account_type
@@ -156,6 +187,8 @@ def validatelogin(request):
                     return redirect('bsiDashboard')
                 elif account_type == 'HealthAdmin':
                     return redirect('healthDashboard')
+                elif account_type == 'Secretary':
+                    return redirect('secretarydashboard')
                 else:
                     return redirect('defaultdashboard')
             else:
@@ -381,11 +414,14 @@ from django.utils.timezone import now
 def residentdashboard(request):
     # Check if session is active
     if not request.user.is_authenticated:
-        # If the session is invalid, log the user out and redirect to login
         logout(request)
-        return redirect('login')  # Replace 'login' with your login page URL name
+        return redirect('login')
 
     resident = Residents.objects.filter(auth_user=request.user).first()
+
+    # Automatically fetch first and last name from the auth_user model
+    user_first_name = request.user.first_name
+    user_last_name = request.user.last_name
 
     if resident and not resident.is_profile_complete:
         if request.method == 'POST':
@@ -405,12 +441,19 @@ def residentdashboard(request):
 
             resident.is_profile_complete = True
             resident.save()
-            return redirect('residentdashboard')  # Reload dashboard after saving
+            return redirect('residentdashboard')
 
-        return render(request, 'resident/userd.html', {'resident': resident, 'show_modal': True})
+        context = {
+            'resident': resident,
+            'show_modal': True,
+            'user_first_name': user_first_name,
+            'user_last_name': user_last_name,
+        }
 
-    # Render dashboard normally if profile is complete
+        return render(request, 'resident/userd.html', context)
+
     return render(request, 'resident/userd.html', {'show_modal': False})
+
 
 
 def profile_check(request):
@@ -419,3 +462,43 @@ def profile_check(request):
     
     # Redirect to the login page after logging out
     return redirect('login')  # Make sure the 'login' URL pattern is correct in your urls.py
+
+
+
+def secretarydashboard(request):
+    # Count of pending residents
+    pending_residents_count = Residents.objects.filter(status='Pending').count()
+
+    # Count of pending requests
+    pending_requests_count = Request.objects.filter(status='Pending').count()
+
+    # Count of upcoming community notices
+    today = timezone.now().date()
+    upcoming_notices_count = CommunityNotice.objects.filter(notice_EndDate__gte=today).count()
+
+    # Count of active outbreaks
+    active_outbreaks = Outbreaks.objects.filter(status="Active")
+
+    # Data for the active outbreaks to display in the chart
+    # Corrected the field name to 'outbreak_name' and 'date'
+    outbreaks_data = active_outbreaks.values('outbreak_name', 'status', 'date')  # 'date' used instead of 'date_reported'
+    outbreaks_names = [outbreak['outbreak_name'] for outbreak in outbreaks_data]
+    outbreaks_dates = [outbreak['date'] for outbreak in outbreaks_data]  # Use 'date' here
+
+    # Total residents count
+    total_residents_count = Residents.objects.count()
+
+    context = {
+        'pending_residents_count': pending_residents_count,
+        'pending_requests_count': pending_requests_count,
+        'upcoming_notices_count': upcoming_notices_count,
+        'active_outbreaks_count': active_outbreaks.count(),
+        'outbreaks_names': outbreaks_names,
+        'outbreaks_dates': outbreaks_dates,
+        'total_residents_count': total_residents_count
+    }
+
+    return render(request, 'secretary/secDashboard.html', context)
+
+
+

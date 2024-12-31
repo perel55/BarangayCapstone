@@ -16,6 +16,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LogoutView
 from django.http import JsonResponse
 from django.urls import reverse
+from django.db.models import Prefetch
 
 
 def admindashboard(request):
@@ -184,40 +185,74 @@ def delete_notice(request, notice_id):
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 
-from django.shortcuts import render
-from django.db.models import Q
+from django.contrib.auth.models import User
 
 def accounts_view(request):
-    account_type = request.GET.get('type', 'all')
+     # Retrieve session data
+    account_type = request.session.get('account_type', None)
 
-    # Define the accounts to be passed based on the account type
-    if account_type == "Residents":
-        accounts = Residents.objects.all()
-    elif account_type == "Bhw":
-        accounts = Bhw.objects.all()
-    elif account_type == "Personnel":
-        accounts = Personnel.objects.all()
-    elif account_type == "Health Admin":
-        accounts = HealthAdmin.objects.all()
-    elif account_type == "Bsi":
-        accounts = Bsi.objects.all()
-    else:
-        # Pass all accounts for the 'all' filter
-        accounts = {
-            'residents': Residents.objects.all(),
-            'bhws': Bhw.objects.all(),
-            'personnel': Personnel.objects.all(),
-            'health_admins': HealthAdmin.objects.all(),
-            'bsis': Bsi.objects.all(),
-        }
+    # Query Bhw accounts and count
+    bhws = Bhw.objects.filter(auth_user__isnull=False).prefetch_related(
+        Prefetch(
+            'accounts_set', 
+            queryset=Accounts.objects.filter(account_typeid__Account_type='Bhw')
+        )
+    )
+    total_bhws = bhws.count()
 
+    # Query BSI accounts and count
+    bsi = Bsi.objects.filter(auth_user__isnull=False).prefetch_related(
+        Prefetch(
+            'accounts_set', 
+            queryset=Accounts.objects.filter(account_typeid__Account_type='BSI')
+        )
+    )
+    total_bsi = bsi.count()
+
+    # Query HealthAdmin accounts and count
+    healthadmin = HealthAdmin.objects.filter(auth_user__isnull=False).prefetch_related(
+        Prefetch(
+            'accounts_set', 
+            queryset=Accounts.objects.filter(account_typeid__Account_type='HealhAdmin')
+        )
+    )
+    total_healthadmins = healthadmin.count()
+
+    # Query Residents accounts and count
+    residents = Residents.objects.filter(auth_user__isnull=False).prefetch_related(
+        Prefetch(
+            'accounts_set', 
+            queryset=Accounts.objects.filter(account_typeid__Account_type='Resident')
+        )
+    )
+    total_residents = residents.count()
+
+    # Query Officials accounts and count
+    officials = Personnel.objects.filter(auth_user__isnull=False).prefetch_related(
+        Prefetch(
+            'accounts_set', 
+            queryset=Accounts.objects.filter(account_typeid__Account_type='Admin')
+        )
+    )
+    total_officials = officials.count()
+
+    # Prepare context data with totals
     context = {
         'account_type': account_type,
-        'accounts': accounts,
+        'bhws': bhws,
+        'bsis': bsi,
+        'healthadmins': healthadmin,
+        'residents': residents,
+        'officials': officials,
+        'total_bhws': total_bhws,
+        'total_bsi': total_bsi,
+        'total_healthadmins': total_healthadmins,
+        'total_residents': total_residents,
+        'total_officials': total_officials,
     }
+
+    # Render the template with context
     return render(request, 'admin/adminAccounts.html', context)
-
-
 
 
 

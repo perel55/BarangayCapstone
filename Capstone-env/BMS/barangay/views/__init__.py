@@ -15,3 +15,4 @@ from .bhwSide import *
 from .medicine import *
 from .maintenanceStatus import *
 from .immunize import *
+from .secretary import *

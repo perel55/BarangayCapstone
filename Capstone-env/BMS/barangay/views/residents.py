@@ -9,6 +9,8 @@ from .models import *
 from datetime import datetime
 from django.http import HttpResponse
 
+
+
 @login_required
 def edit_profile(request):
     # Fetch the resident profile for the logged-in user
@@ -48,25 +50,30 @@ def edit_profile(request):
     birthdate_str = resident.birthdate.strftime('%Y-%m-%d') if resident.birthdate else ""
     return render(request, 'resident/residentEditProfile.html', {'resident': resident, 'birthdate_str': birthdate_str})
 
+def is_resident_approved(resident):
+    return resident.status == 'Verified'
 
 
-# View to render the calendar
+@login_required
 def calendar_view(request):
-    # Fetch all requests for the resident (use request.user if a resident is logged in)
-    resident = Residents.objects.get(auth_user=request.user)  # Assuming 'request.user' is the logged-in resident
-    requests = Request.objects.filter(Resident_id=resident)  # Filter requests by the logged-in resident
+    resident = get_object_or_404(Residents, auth_user=request.user)
     
+    # Check if the resident is approved
+    if not resident or resident.status.lower() != 'verified':
+        return redirect('pending_approval')  # Replace with your "Pending Approval" view name or URL
+
+    requests = Request.objects.filter(Resident_id=resident)
     events = []
 
-    # Convert the request data into event format for FullCalendar
     for req in requests:
         events.append({
-            'title': f"{req.service_id.service_name} - {req.reason}",  # Display service name and reason as event title
-            'start': req.schedule_date.isoformat(),  # Use the request date for the event start time
-            'end': (req.schedule_date + timezone.timedelta(hours=1)).isoformat(),  # Assume an event duration of 1 hour
+            'title': f"{req.service_id.service_name} - {req.reason}",
+            'start': req.schedule_date.isoformat(),
+            'end': (req.schedule_date + timezone.timedelta(hours=1)).isoformat(),
         })
 
     return render(request, 'resident/ResidentCalendar.html', {'events': events})
+
 
 # API endpoint to fetch events (if you're using Ajax to load data)
 def get_events(request):
@@ -120,9 +127,19 @@ def get_services(request):
 
 # ----------------------------> Community Notices <---------------------------
 
+def pending_approval(request):
+    return render(request, 'resident/pending.html')
+
+
 def view_events(request):
-    """Render the page with the calendar."""
+    resident = Residents.objects.filter(auth_user=request.user).first()
+    
+    # Check if the resident exists and is verified
+    if not resident or resident.status.lower() != 'verified':
+        return redirect('pending_approval')  # Replace with your "Pending Approval" view name or URL
+    
     return render(request, 'resident/residentEvents.html')
+
 
 def get_resident_notices(request):
     """Fetch the notices to display on the calendar."""
@@ -191,11 +208,6 @@ def fetch_notices(request):
     ]
     return JsonResponse(events, safe=False)
 
-
-
-
-
-    
 
 
 # --------------------------> RESIDENT PROFILE <-------------------------------

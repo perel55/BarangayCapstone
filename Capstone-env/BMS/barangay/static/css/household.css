@@ -1,0 +1,572 @@
+/* Centering the dashboard-section */
+.dashboard-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+/* Title styling */
+.dashboard-section h1 {
+    margin-bottom: 20px;
+    font-size: 2em;
+    color: #333;
+}
+
+/* Form styling */
+.dashboard-section form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.dashboard-section input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 250px;
+}
+
+.dashboard-section button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.dashboard-section button:hover {
+    background-color: #0056b3;
+}
+
+/* Add Household button */
+.add-btn {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.add-btn:hover {
+    background-color: #218838;
+}
+
+/* Household list */
+.household-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    max-width: 600px;
+}
+
+.household-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.household-item span {
+    flex: 2; /* Gives more space for the text */
+    font-size: 1em;
+}
+
+.household-item .button-group {
+    display: flex;
+    gap: 10px; /* Add spacing between buttons */
+}
+
+/* Buttons in the household item */
+.view-btn,
+.edit-btn,
+.delete-btn {
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+    font-size: 0.9em;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Specific styles for buttons in the household item */
+.household-item .button-group .view-btn {
+    background-color: #0b6cdb; /* Green */
+    color: white;
+}
+
+.household-item .button-group .view-btn:hover {
+    background-color: #0c3d75; /* Darker green */
+}
+
+.household-item .button-group .edit-btn {
+    background-color: #ffc107; /* Yellow */
+    color: black; /* Black text for contrast */
+}
+
+.household-item .button-group .edit-btn:hover {
+    background-color: #d39e00; /* Darker yellow */
+}
+
+.household-item .button-group .delete-btn {
+    background-color: #dc3545; /* Red */
+    color: white;
+}
+
+.household-item .button-group .delete-btn:hover {
+    background-color: #c82333; /* Darker red */
+}
+
+
+
+/* Pagination styling */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-top: 20px;
+    padding: 10px;
+}
+
+.pagination a, .pagination span {
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 50%;
+    background-color: #ffffff;
+    color: #007bff;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+    border: 1px solid #007bff;
+}
+
+.pagination a:hover {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+.pagination span.current {
+    background-color: #007bff;
+    color: #ffffff;
+    border: 1px solid #007bff;
+}
+
+
+/* ----------------------- MODAL ------------------- */
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Darker overlay for focus */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Modal Content */
+.modal-content {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 600px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Fade-In Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Close Button */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close:hover {
+    color: #ff0000; /* Red hover effect */
+}
+
+/* Form Inside Modal */
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.modal-content form input[type="text"],
+.modal-content form select,
+.modal-content form textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: border-color 0.3s;
+}
+
+.modal-content form input[type="text"]:focus,
+.modal-content form select:focus,
+.modal-content form textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Buttons */
+.modal-content .btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.modal-content .btn-primary:hover {
+    background-color: #0056b3;
+    box-shadow: 0px 4px 10px rgba(0, 91, 187, 0.4);
+}
+
+.modal-content .btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    text-align: center;
+}
+
+.modal-content .btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .modal-content {
+        padding: 20px;
+    }
+
+    .modal-content form {
+        gap: 15px;
+    }
+
+    .modal-content button {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+}
+
+
+/* ----------------------- ADD MEMBER --------------------- */
+
+
+.household-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.members-container {
+    margin-top: 3rem;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.members-household-name {
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.members-household-name h1 {
+    font-size: 28px;
+    color: #333;
+    font-weight: 600;
+}
+
+/* Button Container */
+.button-container {
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+    gap: 20px; /* Add space between the buttons */
+    margin-top: 10px; /* Optional: add some space between the heading and buttons */
+}
+
+/* Return Button Styling */
+.return-btn {
+    display: inline-block;
+    background-color: #1976d2;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.return-btn:hover {
+    background-color: #1565c0;
+}
+
+/* Add Member Button Styling */
+.add-member {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.add-member:hover {
+    background-color: #45a049;
+}
+
+/* Member List Styling */
+.members-fullnames ul {
+    list-style-type: none;
+}
+
+.members-fullnames li {
+    background-color: #f9f9f9;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s, transform 0.3s ease;
+}
+
+.members-fullnames li:hover {
+    background-color: #e3f2fd;
+    transform: translateY(-5px);
+}
+
+.members-fullnames a {
+    color: #333;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.members-fullnames a:hover {
+    color: #1976d2;
+    text-decoration: underline;
+}
+
+/* Remove Button Styling */
+.remove-member {
+    background-color: #f44336;
+    color: white;
+    padding: 5px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.remove-member:hover {
+    background-color: #d32f2f;
+}
+
+/* Remove Button Form */
+.remove-member-form {
+    display: inline;
+    margin-left: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .members-container {
+        padding: 15px;
+    }
+
+    .members-household-name h1 {
+        font-size: 24px;
+    }
+
+    .return-btn,
+    .add-member {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    .members-fullnames li {
+        padding: 10px;
+    }
+
+    .members-fullnames a {
+        font-size: 14px;
+    }
+}
+
+/* ----------------------- MEMBERS DETAILS --------------------- */
+
+
+/* General Page Layout */
+.members-details-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    border-radius: 8px;
+}
+
+/* Navbar and Page Title */
+.member-details-name {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.member-details-name h1 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #1976d2;
+}
+
+/* Member Details Styling */
+.member-details-info {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0.2, 0.2, 0.6, 0.2);
+}
+
+.member-details-info ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.member-details-info li {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    font-size: 16px;
+    color: #555;
+}
+
+.member-details-info li:last-child {
+    border-bottom: none;
+}
+
+.member-details-info .images-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;  /* Space between images */
+    margin-bottom: 20px; /* Space after images */
+}
+
+.member-details-info .images-container img {
+    width: 250px;  /* Larger image size */
+    height: 250px; /* Maintain square aspect ratio */
+    object-fit: cover;
+    border-radius: 10px;
+    border: 3px solid #ddd; /* Light border for images */
+}
+
+.member-details-info li {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.member-details-info li img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+/* Button Styling */
+.member-return-btn {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.member-return-btn a {
+    display: inline-block;
+    background-color: #1976d2;
+    color: white;
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.member-return-btn a:hover {
+    background-color: #1565c0;
+    transform: translateY(-3px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .members-details-container {
+        padding: 15px;
+    }
+
+    .member-details-name h1 {
+        font-size: 26px;
+    }
+
+    .member-details-info li {
+        font-size: 14px;
+    }
+
+    .member-return-btn a {
+        width: 180px;
+        font-size: 14px;
+    }
+}
