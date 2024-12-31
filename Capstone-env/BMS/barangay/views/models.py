@@ -130,9 +130,11 @@ class Schedule(models.Model):
     father_name = models.CharField(max_length=255, null=True)   
     mother_name = models.CharField(max_length=255, null=True)
     birth_place = models.CharField(max_length=255, null=True)
-    birth_height = models.CharField(max_length=255, null=True)
-    birth_weight = models.CharField(max_length=255, null=True)
+    birthdate = models.DateField(max_length=255, null=True)
     sex = models.CharField(max_length=255, null=True)
+    date = models.DateField(max_length=255, null=True)
+    time = models.CharField(max_length=100, null=True)
+
 
     
     def __str__(self):
@@ -208,11 +210,13 @@ class Maintenance(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, null=True)
     resident_id = models.ForeignKey(Residents, on_delete=models.CASCADE, null=True)
+    week = models.CharField(max_length=100, null=True)
     date = models.DateField(null=True)
     week = models.CharField(max_length=100, null=True)
     kg = models.IntegerField(null=True)
     bp = models.CharField(max_length=100, null=True)
     status = models.CharField(max_length=100, default="Pending", null=True)
+    month = models.CharField(max_length=100, null=True)
 
     def __str__(self):
         return f"{self.date} {self.week} {self.kg} {self.bp} {self.status}"

@@ -4,27 +4,12 @@
 <link rel="stylesheet" href="{% static 'css/maintenance.css' %}">
 {% endblock %}
 
+{% block js %}
+<script src="{% static 'js/3visit.js' %}"></script>
+{% endblock %}
+
 {% block content %}
 {% include 'healthAdmin/healthTopnav.html' %}
-
-<div class="MaintenanceProfile">
-    <section id="maintenance-content">
-        <div class="profile-card">
-            <h2>User Profile</h2>
-            <div class="profile-details">
-                <p><strong>Username:</strong> {{ schedule.user.username }}</p>
-                <p><strong>Full Name:</strong> {{ schedule.user.first_name }} {{ schedule.user.last_name }}</p>
-                <p><strong>Purok:</strong> {{ schedule.resident.zone }}</p>
-                <p><strong>Date:</strong> {{ schedule.date }}</p>
-                <p><strong>Phone Number:</strong> {{ schedule.resident.phone_number }}</p>
-            </div>
-            <div class="maintenance-button">
-                <a href="{% url 'bhwImmunize' %}" class="back-btn">Back</a>
-                <button id="addImmunizeButton" class="released-btn">Add Immunization</button>
-            </div>
-        </div>
-    </section>
-</div>
 
 <div class="released-record">
     <table>
@@ -36,8 +21,6 @@
                 <th>3rd Visit (3 1/2months)</th>
                 <th>4th Visit (9 Months)</th>
                 <th>5th Visit (1 Year)</th>
-                <th>Action</th>
-                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -49,18 +32,6 @@
                 <td>{{ immunization.third_visit }}</td>
                 <td>{{ immunization.fourth_visit }}</td>
                 <td>{{ immunization.fifth_visit }}</td>
-                <td>
-                    <button class="update-btn" data-immunize-id="{{ immunization.id }}" data-vaccine-name="{{ immunization.vaccine_name }}"
-                        data-first-visit="{{ immunization.first_visit }}" data-second-visit="{{ immunization.second_visit }}"
-                        data-third-visit="{{ immunization.third_visit }}" data-fourth-visit="{{ immunization.fourth_visit }}"
-                        data-fifth-visit="{{ immunization.fifth_visit }}">Update</button>
-                </td>
-                <td>
-                    <select name="status_{{ immunization.id }}">
-                        <option value="Pending" {% if immunization.status == 'Pending' %}selected{% endif %}>Pending</option>
-                        <option value="Completed" {% if immunization.status == 'Completed' %}selected{% endif %}>Completed</option>
-                    </select>
-                </td>
             </tr>
             {% empty %}
             <tr>
@@ -68,7 +39,12 @@
             </tr>
             {% endfor %}
         </tbody>
+        
     </table>
+        <div class="immunize-button">
+            <a href="{% url 'bhwRecord' %}" class="back-btn">Back</a>
+            <button id="addImmunizeButton" class="released-btn">Vaccine</button>
+        </div>
 </div>
 
 <!-- Add Immunize Modal -->
@@ -80,64 +56,69 @@
             {% csrf_token %}
             
             <label for="vaccine_name">Vaccine Name:</label>
-            <select id="vaccine_name" name="vaccine_name" required>
+            <select id="vaccine_name" name="vaccine_name" required onchange="toggleVisitFields()">
                 <option value="Pentavalent Vaccine">Pentavalent Vaccine</option>
                 <option value="Oral Polio Vaccine (OPV)">Oral Polio Vaccine (OPV)</option>
                 <option value="Inactivated Polio Vaccine">Inactivated Polio Vaccine</option>
                 <option value="Pneumococcal Conjugate Vaccine">Pneumococcal Conjugate Vaccine</option>
                 <option value="Measles, Mumps, Rubella">Measles, Mumps, Rubella</option>
             </select>
+            
         
             <!-- 1st Visit -->
-            <label for="first_visit">1st Visit:</label>
-            {% if first_visit %}
-                <!-- Hide the input field if there's already data -->
-                <p>Already set</p>
-            {% else %}
-                <input type="date" id="first_visit" name="first_visit">
-            {% endif %}
+            <div id="first-visit-field" class="visit-field">
+                <label for="first_visit">1st Visit:</label>
+                {% if first_visit %}
+                    <p>Already set</p>
+                {% else %}
+                    <input type="date" id="first_visit" name="first_visit">
+                {% endif %}
+            </div>
         
             <!-- 2nd Visit -->
-            <label for="second_visit">2nd Visit:</label>
-            {% if second_visit %}
-                <!-- Hide the input field if there's already data -->
-                <p>Already set</p>
-            {% else %}
-                <input type="date" id="second_visit" name="second_visit">
-            {% endif %}
+            <div id="second-visit-field" class="visit-field">
+                <label for="second_visit">2nd Visit:</label>
+                {% if second_visit %}
+                    <p>Already set</p>
+                {% else %}
+                    <input type="date" id="second_visit" name="second_visit">
+                {% endif %}
+            </div>
         
             <!-- 3rd Visit -->
-            <label for="third_visit">3rd Visit:</label>
-            {% if third_visit %}
-                <!-- Hide the input field if there's already data -->
-                <p>Already set</p>
-            {% else %}
-                <input type="date" id="third_visit" name="third_visit">
-            {% endif %}
+            <div id="third-visit-field" class="visit-field">
+                <label for="third_visit">3rd Visit:</label>
+                {% if third_visit %}
+                    <p>Already set</p>
+                {% else %}
+                    <input type="date" id="third_visit" name="third_visit">
+                {% endif %}
+            </div>
         
             <!-- 4th Visit -->
-            <label for="fourth_visit">4th Visit:</label>
-            {% if fourth_visit %}
-                <!-- Hide the input field if there's already data -->
-                <p>Already set</p>
-            {% else %}
-                <input type="date" id="fourth_visit" name="fourth_visit">
-            {% endif %}
+            <div id="fourth-visit-field" class="visit-field">
+                <label for="fourth_visit">4th Visit:</label>
+                {% if fourth_visit %}
+                    <p>Already set</p>
+                {% else %}
+                    <input type="date" id="fourth_visit" name="fourth_visit">
+                {% endif %}
+            </div>
         
             <!-- 5th Visit -->
-            <label for="fifth_visit">5th Visit:</label>
-            {% if fifth_visit %}
-                <!-- Hide the input field if there's already data -->
-                <p>Already set</p>
-            {% else %}
-                <input type="date" id="fifth_visit" name="fifth_visit">
-            {% endif %}
+            <div id="fifth-visit-field" class="visit-field">
+                <label for="fifth_visit">5th Visit:</label>
+                {% if fifth_visit %}
+                    <p>Already set</p>
+                {% else %}
+                    <input type="date" id="fifth_visit" name="fifth_visit">
+                {% endif %}
+            </div>
         
             <button type="submit">Add Record</button>
         </form>
     </div>
 </div>
-
 
 
 {% endblock %}
@@ -152,29 +133,6 @@
     // Open Add Immunize Modal
     document.getElementById("addImmunizeButton").addEventListener("click", function () {
         addModal.style.display = "block";
-    });
-
-    // Open Update Immunize Modal
-    document.querySelectorAll(".update-btn").forEach(button => {
-        button.addEventListener("click", function () {
-            const immunizeId = this.getAttribute("data-immunize-id");
-            const vaccineName = this.getAttribute("data-vaccine-name");
-            const firstVisit = this.getAttribute("data-first-visit");
-            const secondVisit = this.getAttribute("data-second-visit");
-            const thirdVisit = this.getAttribute("data-third-visit");
-            const fourthVisit = this.getAttribute("data-fourth-visit");
-            const fifthVisit = this.getAttribute("data-fifth-visit");
-
-            document.getElementById("immunize_id").value = immunizeId || "";
-            document.getElementById("update_vaccine_name").value = vaccineName || "";
-            document.getElementById("update_first_visit").value = firstVisit || "";
-            document.getElementById("update_second_visit").value = secondVisit || "";
-            document.getElementById("update_third_visit").value = thirdVisit || "";
-            document.getElementById("update_fourth_visit").value = fourthVisit || "";
-            document.getElementById("update_fifth_visit").value = fifthVisit || "";
-
-            updateModal.style.display = "block";
-        });
     });
 
     // Close Modals
@@ -195,6 +153,8 @@
         }
     });
 });
+
+
 
 </script>
 

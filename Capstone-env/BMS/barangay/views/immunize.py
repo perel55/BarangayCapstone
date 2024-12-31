@@ -8,15 +8,6 @@ from django.shortcuts import redirect
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 
-@login_required
-def bhwImmunize(request):
-    # Fetch schedules for maintenance service with verified status
-    schedules = Schedule.objects.filter(bhwService__service_type='immunization', status='Verify')
-    
-    return render(request, 'bhw/bhwImmunize.html', {'schedules': schedules})
-
-
-
 
 def add_immunize(request, schedule_id):
     if request.method == "POST":
@@ -91,33 +82,39 @@ def Vaccine(request, schedule_id):
     }
     return render(request, 'bhw/bhwImmunizeVaccine.html', context)
 
+def bhwReport(request):
+    # Fetch all schedules
+    schedules = Schedule.objects.filter(bhwService__service_type='immunization')
+
+    # Initialize lists to store immunizations per schedule
+    immunizations = []
+
+    # Loop through each schedule and filter immunizations based on schedule.id
+    for schedule in schedules:
+        pentavalent = Immunize.objects.filter(vaccine_name="Pentavalent Vaccine", schedule_id=schedule.id)
+        opv = Immunize.objects.filter(vaccine_name="Oral Polio Vaccine (OPV)", schedule_id=schedule.id)
+        ipv = Immunize.objects.filter(vaccine_name="Inactivated Polio Vaccine", schedule_id=schedule.id)
+        pcv = Immunize.objects.filter(vaccine_name="Pneumococcal Conjugate Vaccine", schedule_id=schedule.id)
+        mmr = Immunize.objects.filter(vaccine_name="Measles, Mumps, Rubella", schedule_id=schedule.id)
+
+        # Store the immunizations for each schedule
+        immunizations.append({
+            'schedule': schedule,
+            'pentavalent': pentavalent,
+            'opv': opv,
+            'ipv': ipv,
+            'pcv': pcv,
+            'mmr': mmr,
+        })
+
+    return render(request, 'bhw/bhwReports.html', {
+        'immunizations': immunizations,
+    })
+
+
+  
 
 
 
-def update_immunize(request):
-    if request.method == "POST":
-        immunize_id = request.POST.get("immunize_id")
-        vaccine_name = request.POST.get("vaccine_name")
-        first_visit = request.POST.get("first_visit") or None
-        second_visit = request.POST.get("second_visit") or None
-        third_visit = request.POST.get("third_visit") or None
-        fourth_visit = request.POST.get("fourth_visit") or None
-        fifth_visit = request.POST.get("fifth_visit") or None
 
-        immunization = get_object_or_404(Immunize, id=immunize_id)
-        immunization.vaccine_name = vaccine_name
-        immunization.first_visit = first_visit
-        immunization.second_visit = second_visit
-        immunization.third_visit = third_visit
-        immunization.fourth_visit = fourth_visit
-        immunization.fifth_visit = fifth_visit
-
-        try:
-            immunization.full_clean()  # Validate the model before saving
-            immunization.save()
-            return JsonResponse({"success": True, "message": "Immunization record updated successfully."})
-        except ValidationError as e:
-            return JsonResponse({"success": False, "errors": e.messages}, status=400)
-    else:
-        return JsonResponse({"success": False, "message": "Invalid request method."}, status=405)
 

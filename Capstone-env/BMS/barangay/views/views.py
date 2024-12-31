@@ -18,6 +18,11 @@ from .models import *
 from django.db.models import Prefetch
 from django.db.models import Sum
 from django.http import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+from .models import HealthService, Schedule, Residents
+
 
 
 # Create your views here.
@@ -238,7 +243,7 @@ def addAdmin(request):
 #-------------------BHW Secretary & Nurse-------------------
 
 @login_required
-def bhwServices(request):
+def bhwServices(request): #display the available services for verified status
     try:
         resident = Residents.objects.get(auth_user=request.user)
         if resident.status == "Verify":
@@ -256,10 +261,6 @@ def bhwServices(request):
     }
     return HttpResponse(template.render(context, request))
 
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
-from django.contrib.auth.decorators import login_required
-from .models import HealthService, Schedule, Residents
 
 
 @login_required
@@ -275,7 +276,6 @@ def book_healthService(request, HealthService_id, resident_id):
             user=request.user, 
             resident=resident, 
             bhwService=bhwService,
-            date=date,
         )
 
         # Redirect to the 'bhwServices' page after successful booking
@@ -292,8 +292,7 @@ def book_immunize(request, HealthService_id, resident_id):
         father_name = request.POST.get('father_name')
         mother_name = request.POST.get('mother_name')
         baby_name = request.POST.get('baby_name')
-        birth_weight = request.POST.get('birth_weight')
-        birth_height = request.POST.get('birth_height')
+        birthdate = request.POST.get('birthdate')
         sex = request .POST.get('sex')
         birth_place = request.POST.get('birth_place')
 
@@ -304,14 +303,38 @@ def book_immunize(request, HealthService_id, resident_id):
             father_name=father_name,
             mother_name=mother_name,
             baby_name=baby_name,
-            birth_weight=birth_weight,
-            birth_height=birth_height ,
+            birthdate=birthdate,
             sex=sex,
             birth_place=birth_place, 
         )
 
         # Redirect to the 'bhwServices' page after successful booking
         return redirect(reverse('bhwServices'))
+    
+
+#maintenance
+@login_required
+def book_maintenance(request, HealthService_id, resident_id): 
+    bhwService = get_object_or_404(HealthService, id=HealthService_id)
+    resident = get_object_or_404(Residents, id=resident_id)
+
+    if request.method == 'POST':
+        date= request.POST.get('date')
+        time= request.POST.get('time')
+     
+
+        Schedule.objects.create(
+            user=request.user, 
+            resident=resident, 
+            bhwService=bhwService,
+            date=date,
+            time=time,
+         
+        )
+
+        # Redirect to the 'bhwServices' page after successful booking
+        return redirect(reverse('bhwServices'))
+
 
     
 @login_required
@@ -325,8 +348,11 @@ def book_healthServiceform(request, HealthService_id):
 
     if bhwService.service_type == "immunization": 
         return render(request, 'resident/residentImmunize.html', {'bhwService': bhwService, 'resident': resident})
+    elif bhwService.service_type == "maintenance":
+        return render(request, 'resident/residentTB.html', {'bhwService': bhwService, 'resident': resident})
     else:
         return render(request, 'resident/Hsapplication.html', {'bhwService': bhwService, 'resident': resident})
+
 
 
 

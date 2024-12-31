@@ -54,7 +54,6 @@
                                 <th>Full Name</th>
                                 <th>Service</th>
                                 <th>Purok</th>
-                                <th>Date</th>
                                 <th>Time</th>
                                 <th>Phone Number</th>
                                 <th>Status</th>
@@ -67,7 +66,6 @@
                                 <td>{{ request.user.first_name }} {{ request.user.last_name }}</td>
                                 <td>{{ request.service_id.service_name }}</td>
                                 <td>{{ resident.zone }}</td>
-                                <td>{{ request.schedule_date }}</td>
                                 <td>{{ request.schedule_start_time }}</td>
                                 <td>{{ resident.phone_number }}</td>
                                 <td>{{ request.status }}</td> <!-- Replace with actual status field if available -->

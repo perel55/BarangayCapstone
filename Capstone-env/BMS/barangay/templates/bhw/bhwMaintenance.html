@@ -14,7 +14,6 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Username</th>
                             <th>Full Name</th>
                             <th>Service</th>
                             <th>Purok</th>
@@ -26,7 +25,6 @@
                     <tbody>
                         {% for schedule in schedules %}
                         <tr>
-                            <td>{{ schedule.user.username }}</td>
                             <td>{{ schedule.user.first_name }} {{ schedule.user.last_name }}</td>
                             <td>{{ schedule.bhwService.service_name }}</td>
                             <td>{{ schedule.resident.zone }}</td>

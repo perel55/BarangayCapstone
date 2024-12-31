@@ -17,15 +17,15 @@ body {
 
 nav {
   top: 5rem;
-  margin-top: 2.5rem;
+  margin-top: 2rem;
   width: 12%;
   position: fixed;
-  top: 2.5rem; 
+  top: 1.5rem; 
   display: flex;
   flex-direction: column;
   z-index: 1; 
-  height: 70vh;
-  margin-left: 0.5rem;
+  height: 100vh;
+  margin-left: 0.2rem;
 }
 
 .nav-content {
@@ -197,7 +197,7 @@ table {
 }
 
 table th, table td {
-  border: 1px solid #958e8e;
+  border-bottom: 1px solid #dedddd;
   padding: 0.5rem;
   
 }

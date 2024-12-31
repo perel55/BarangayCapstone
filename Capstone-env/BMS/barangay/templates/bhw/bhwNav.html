@@ -57,6 +57,17 @@
           </li>
         </a>
 
+        <a href="{% url 'bhwReport'   %}">
+          <li class="{% if request.path == '/bhwReport/' %}active{% endif %}">
+            <div class="NavContainer">
+              <img src="../../static/images/medic.png" alt="">
+            </div>
+            <p>Immunize Report</p>
+          </li>
+        </a>
+
+      
+
         <a href="{% url 'bhwMaintenance' %}">
           <li class="{% if request.path == '/bhwMaintenance/' %}active{% endif %}">
             <div class="NavContainer">
@@ -65,16 +76,6 @@
             <p>Maintenance</p>
           </li>
         </a>
-
-        <a href="{% url 'bhwImmunize'   %}">
-          <li class="{% if request.path == '/bhwImmunize/' %}active{% endif %}">
-            <div class="NavContainer">
-              <img src="../../static/images/inventory.png" alt="">
-            </div>
-            <p>Immunization</p>
-          </li>
-        </a>
-       
 
         <a href="{% url 'bhwMedic'   %}">
             <li class="{% if request.path == '/bhwMedic/' %}active{% endif %}">

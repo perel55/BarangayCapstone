@@ -1,10 +1,8 @@
 let allBtn = document.getElementById('all-btn');
-let highbloodBtn = document.getElementById('highblood-btn');
 let tbBtn = document.getElementById('tb-btn');
 let immunizeBtn = document.getElementById('immunize-btn');
 
 let allServiceArea = document.getElementById('AllService-Area');
-let highbloodArea = document.getElementById('Highblood-Area');
 let tbArea = document.getElementById('TB-Area');
 let immunizeArea = document.getElementById('Immunize-Area');
 
@@ -27,15 +25,12 @@ buttons.forEach(function(button) {
 
         // Hide all areas
         allServiceArea.style.display = "none";
-        highbloodArea.style.display = "none";
         tbArea.style.display = "none";
         immunizeArea.style.display = "none";
 
         // Display the corresponding area based on the button clicked
         if (this.id === 'all-btn') {
             allServiceArea.style.display = "block";
-        } else if (this.id === 'highblood-btn') {
-            highbloodArea.style.display = "block";
         } else if (this.id === 'tb-btn') {
             tbArea.style.display = "block";
         } else if (this.id === 'immunize-btn') {

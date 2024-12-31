@@ -88,6 +88,14 @@ p{
     gap: 15px; /* Add spacing between the buttons */
 }
 
+.immunize-button {
+    text-align: end; /* Aligns text, not flex items */
+    margin-top: 20px; /* Adds spacing above the buttons */
+    display: flex; /* Enables flexbox layout */
+    justify-content: flex-end; /* Aligns buttons to the right (end) */
+    gap: 15px; /* Adds spacing between the buttons */
+}
+
 .back-btn {
     display: inline-block;
     padding: 10px 20px;
@@ -95,19 +103,18 @@ p{
     font-weight: bold;
     color: white;
     text-decoration: none;
-    background-color: #4caf50; /* Green for Back button */
+    background-color: #070707; /* Green for Back button */
     border-radius: 5px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .back-btn:hover {
-    background-color: #45a049;
+    background-color: #131413;
     transform: translateY(-2px);
 }
 
 .back-btn:active {
-    background-color: #388e3c;
     transform: translateY(0);
 }
 
@@ -206,7 +213,7 @@ input, select {
 /* Released Record Section */
 .released-record {
     margin-top: 20px; 
-    width: 80%; 
+    width: 90%; 
     background-color: #ffff;
     box-shadow: 0 0 10px rgba(134, 134, 134, 0.2);
     border-radius: 10px;
