@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.validatelogin, name='validatelogin'),
     path('accounts/', include('allauth.urls')),
     re_path(r'^validatelogin/$', views.validatelogin, name='validatelogin'),
     re_path(r'^register$', views.register, name='register'),
@@ -92,7 +92,8 @@ urlpatterns = [
     re_path(r'^bhw/book_healthServiceform/(?P<HealthService_id>\d+)/$', views.book_healthServiceform, name='book_healthServiceform'),
     re_path(r'^bhw/book_healthService/(?P<HealthService_id>\d+)/(?P<resident_id>\d+)/$', views.book_healthService, name='book_healthService'),
     re_path(r'^bhw/book_immunize/(?P<HealthService_id>\d+)/(?P<resident_id>\d+)/$', views.book_immunize, name='book_immunize'),#immunize service type
-    re_path(r'^bhw/book_maintenance/(?P<HealthService_id>\d+)/(?P<resident_id>\d+)/$', views.book_maintenance, name='book_maintenance'),
+    re_path(r'^bhw/book_maintenance/(?P<HealthService_id>\d+)/(?P<resident_id>\d+)/$', views.book_maintenance, name='book_maintenance'),#maintenance service type
+    re_path(r'^bhw/book_otherService/(?P<HealthService_id>\d+)/(?P<resident_id>\d+)/$', views.book_otherService, name='book_otherService'),#other service type
     re_path(r'^residentHistory/$', views.residentHistory, name='residentHistory'),
     
     

@@ -366,7 +366,29 @@ def book_maintenance(request, HealthService_id, resident_id):
          
         )
 
-        # Redirect to the 'bhwServices' page after successful booking
+       
+        return redirect(reverse('bhwServices'))
+
+#Other Service type
+@login_required
+def book_otherService(request, HealthService_id, resident_id): 
+    bhwService = get_object_or_404(HealthService, id=HealthService_id)
+    resident = get_object_or_404(Residents, id=resident_id)
+
+    if request.method == 'POST':
+        date= request.POST.get('date')
+        time= request.POST.get('time')
+     
+
+        Schedule.objects.create(
+            user=request.user, 
+            resident=resident, 
+            bhwService=bhwService,
+            date=date,
+            time=time,
+         
+        )
+
         return redirect(reverse('bhwServices'))
 
 
@@ -384,8 +406,11 @@ def book_healthServiceform(request, HealthService_id):
         return render(request, 'resident/residentImmunize.html', {'bhwService': bhwService, 'resident': resident})
     elif bhwService.service_type == "maintenance":
         return render(request, 'resident/residentTB.html', {'bhwService': bhwService, 'resident': resident})
+    elif bhwService.service_type == "other":
+        return render(request, 'resident/OtherForm.html', {'bhwService': bhwService, 'resident': resident})
     else:
         return render(request, 'resident/Hsapplication.html', {'bhwService': bhwService, 'resident': resident})
+
 
 
 

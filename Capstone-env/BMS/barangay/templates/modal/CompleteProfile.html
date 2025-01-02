@@ -40,17 +40,38 @@
 
               <div>
                 <label for="zone">Zone:</label>
-                <input type="text" id="zone" name="zone" value="{{ resident.zone }}" required>
+                <select id="zone" name="zone" required>
+                    <option value="" disabled selected>Select Purok</option>
+                    <option value="1A">1A</option>
+                    <option value="1B">1B</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                </select>
               </div>
 
               <div>
                 <label for="civil_status">Civil Status:</label>
-                <input type="text" id="civil_status" name="civil_status" value="{{ resident.civil_status }}" required>
+                <select id="civil_status" name="civil_status" value="{{ resident.civil_status }}" required>
+                  <option value="" disabled selected>Select Civil Status</option>
+                  <option value="Single">Single</option>
+                  <option value="Married">Married</option>
+                  <option value="Widowed">Widowed</option>
+              </select>
               </div>
 
               <div>
                 <label for="occupation">Occupation:</label>
-                <input type="text" id="occupation" name="occupation" value="{{ resident.occupation }}" required>
+                <select id="occupation" name="occupation" value="{{ resident.occupation }}" required>
+                  <option value="" disabled selected>Select Occupation</option>
+                  <option value="Student">Student</option>
+                  <option value="Employee">Employee</option>
+                  <option value="Unemployed">Unemployed</option>
+              </select>
               </div>
 
               <div>

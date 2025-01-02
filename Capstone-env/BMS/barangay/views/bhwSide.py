@@ -289,10 +289,12 @@ def bhwEvents(request):
 #fetch Health records in bhw side
 @login_required
 def bhwRecord(request):
-    all_schedules = Schedule.objects.all()
-    highblood_schedules = Schedule.objects.filter(bhwService__service_name="HighBlood")
-    tb_schedules = Schedule.objects.filter(bhwService__service_name="TB")
-    immunize_schedules = Schedule.objects.filter(bhwService__service_type="immunnization")
+    all_schedules = Schedule.objects.all().order_by('-date')
+    highblood_schedules = Schedule.objects.filter(bhwService__service_name="HighBlood").order_by('-date')
+    tb_schedules = Schedule.objects.filter(bhwService__service_name="TB").order_by('-date')
+    immunize_schedules = Schedule.objects.filter(bhwService__service_type="immunnization").order_by('-date')
+    immunize_schedules = Schedule.objects.filter(bhwService__service_type="immunnization").order_by('-date')
+    
     return render(request, 'bhw/bhwHealthrecords.html', {
         'all_schedules': all_schedules,
         'highblood_schedules': highblood_schedules,
