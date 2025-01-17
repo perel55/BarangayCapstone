@@ -1,59 +1,147 @@
 {% load static %}
 {% block css %}
-<link rel="stylesheet" href="{% static 'css/residentHS.css' %}">
+<link rel="stylesheet" href="{% static 'css/residentHR.css' %}">
+<script type="module" src="{% static 'js/historyList.js' %}"></script>
 {% endblock %}
+
 <body>
-    {% load account %}
-    {% load account %}
     {% block content %}
- 
     <div class="adminContainer">
-        {% include 'resident/residentTopnav.html' %} 
-        <div class="MC-Bottom"> 
-            {% include 'resident/residentNav1.html' %} 
-
-
+        {% include 'resident/residentTopnav.html' %}
+        <div class="MC-Bottom">
+            {% include 'resident/residentNav1.html' %}
 
             <div class="contents">
                 <section id="content">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Username</th>
-                                <th>Full Name</th>
-                                <th>Service</th>
-                                <th>Purok</th>
-                                <th>Date</th>
-                                <th>Phone Number</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for schedule in schedules %}
-                            <tr>
-                                <td>{{ schedule.user.username }}</td>
-                                <td>{{ schedule.user.first_name }} {{ schedule.user.last_name }}</td>
-                                <td>{{ schedule.bhwService.service_name }}</td>
-                                <td>{{ schedule.resident.zone }}</td>
-                                <td>{{ schedule.date }}</td>
-                                <td>{{ schedule.resident.phone_number }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    </table>
-                </section>  
-            
+
+                    <!-- Buttons for toggling -->
+                    <div class="Left">
+                        <button id="history-request" class="active-btn">Administrative Services</button>
+                        <button id="history-schedule">Health Services</button> 
+                    </div>    
+
+                    <br>
+                    <!-- Schedule History -->
+                    <div id="schedule-history">
+                        <h2>Schedule History</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Full Name</th>
+                                    <th>Service</th>
+                                    <th>Purok</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Phone Number</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for schedule in schedules %}
+                                <tr>
+                                    <td>{{ schedule.user.username }}</td>
+                                    <td>{{ schedule.user.first_name }} {{ schedule.user.last_name }}</td>
+                                    <td>{{ schedule.service.service_name }}</td>
+                                    <td>{{ resident.zone }}</td>
+                                    <td>{{ schedule.date }}</td>
+                                    <td>{{ schedule.start_time }}</td>
+                                    <td>{{ resident.phone_number }}</td>
+                                    <td>{{ schedule.status }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="8">No schedules found.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div> 
+
+                    <!-- Request History -->
+                   <!-- Request History -->
+                    <div id="request-history" style="display: none;">
+                        <h2>Request History</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Full Name</th>
+                                    <th>Service</th>
+                                    <th>Purok</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Phone Number</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for request in requests %}
+                                <tr>
+                                    <td>{{ request.user.username }}</td>
+                                    <td>{{ request.user.first_name }} {{ request.user.last_name }}</td>
+                                    <td>{{ request.service_id.service_name }}</td>
+                                    <td>{{ resident.zone }}</td>
+                                    <td>{{ request.schedule_date }}</td>
+                                    <td>{{ request.schedule_start_time }}</td>
+                                    <td>{{ resident.phone_number }}</td>
+                                    <td>{{ request.status }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="8">No requests found.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </section>
             </div>
         </div>
     </div>
     {% endblock %}
-
-
-
-
-
-
-
-
-
 </body>
+
+<style>
+
+/* Style the container holding the buttons */
+.Left {
+    display: flex;
+    gap: 10px; /* Space between the buttons */
+    margin-top: 20px;
+}
+
+/* Base button style */
+.Left button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    background-color: #3498db; /* Default blue background */
+    color: white;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Active button style */
+.Left button.active-btn {
+    background-color: #2980b9; /* Darker blue when active */
+}
+
+/* Button hover effects */
+.Left button:hover {
+    background-color: #2980b9; /* Slightly darker blue on hover */
+}
+
+/* Focus effect for accessibility */
+.Left button:focus {
+    outline: none;
+    box-shadow: 0 0 5px 2px rgba(41, 128, 185, 0.7);
+}
+
+
+</style>

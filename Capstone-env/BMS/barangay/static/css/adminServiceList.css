@@ -1,0 +1,315 @@
+/* General Layout and Container Styling */
+.content-container {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* Full viewport height */
+}
+
+.main-content {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+    background-color: #f4f4f9; /* Light background */
+}
+
+.add-service.Add-Service {
+    margin-bottom: auto;
+}
+
+
+.add-service {
+    text-align: center;
+}
+
+.Add-Service {
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    background-color: #197a97;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+
+
+.Add-Service:hover {
+    background-color: #0d817b;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+    margin-bottom: auto;
+}
+
+/* Services List Styling */
+.services-container {
+    margin-top: 50px;
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.services-title {
+    text-align: center;
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+}
+
+/* List Styling - Replacing Table */
+.services-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.services-item {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fafafa;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.services-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.service-info {
+    flex: 2;
+    margin-right: 1rem;
+}
+
+.service-info h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.service-info p {
+    margin: 0.3rem 0;
+    color: #555;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.service-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.service-img:hover {
+    transform: scale(1.1);
+}
+
+.service-actions {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.btn {
+    text-decoration: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.2s, opacity 0.3s;
+}
+
+.update-btn {
+    background-color: #28a745; /* Green */
+}
+
+.delete-btn {
+    background-color: #dc3545; /* Red */
+}
+
+.btn:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+}
+
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    width: 500px;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #333;
+    transition: color 0.2s ease;
+}
+
+.close:hover {
+    color: #dc3545;
+}
+
+
+/* -------------------------------   UPDATE SERVICE --------------------------- */
+
+/* Scoped Styles for Update Service Page */
+.main-contents {
+    padding: 2rem;
+    background: #ffffff;
+    margin: 2rem auto;
+    width: 100%;
+    height: 950px;
+    max-width: 700px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
+
+.main-contents h1 {
+    font-size: 2rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+}
+
+/* Form Styling Scoped to main-content */
+.main-contents form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.main-contents form div {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-contents label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+    font-size: 1rem;
+}
+
+.main-contents input[type="text"],
+.main-contents input[type="number"],
+.main-contents input[type="file"],
+.main-contents textarea {
+    padding: 0.4rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.main-contents input:focus,
+.main-contents textarea:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+.main-contents textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Image Preview Scoped */
+.main-contents img {
+    align-self: center;
+    margin-top: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    max-width: 100%;
+    height: auto;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons Scoped */
+.main-contents button[type="submit"],
+.main-contents a.cancel {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+
+
+.main-contents button[type="submit"] {
+    background-color: #007BFF;
+    color: white;
+}
+
+.main-contents button[type="submit"]:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.main-contents a {
+    background-color: #6c757d;
+    color: white;
+    text-decoration: none;
+}
+
+.main-contents a:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+}
+
+/* Responsive Design Scoped */
+@media (max-width: 768px) {
+    .main-contents {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+
+    .main-contents h1 {
+        font-size: 1.5rem;
+    }
+}

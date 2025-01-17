@@ -53,7 +53,7 @@
                     
                         <div class="l-bot">
                             <p>
-                                Don't have an account? <a href="{{ signup_url }}">REGISTER</a>
+                                Don't have an account? <a href="{% url 'register' %}">REGISTER</a>
                             </p>
                         </div>
                     </form>
@@ -67,3 +67,11 @@
 
 </body>
 </html>
+
+{% block scripts %}
+    <script>
+        window.addEventListener("beforeunload", function () {
+            navigator.sendBeacon("/accounts/logout/");
+        });
+    </script>
+    {% endblock %}

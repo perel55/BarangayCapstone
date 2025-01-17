@@ -78,6 +78,25 @@ class HealthAdmin(models.Model):
 
     def __str__(self):
         return f"{self.auth_user}"
+    
+
+class Secretary(models.Model):
+    auth_user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE) 
+    mname = models.CharField(max_length=255)
+    zone = models.CharField(max_length=255)
+    civil_status = models.CharField(max_length=255)
+    occupation = models.CharField(max_length=255)
+    birthdate = models.DateField(max_length=255, null=True)
+    phone_number = models.CharField(max_length=255)
+    picture = models.ImageField(upload_to = 'images/', null=True)
+    position = models.CharField(max_length=255)
+    is_profile_complete = models.BooleanField(default=False)
+    status = models.CharField(max_length=50, default="Pending")
+
+    def __str__(self):
+        return f"{self.auth_user}"
+
+
 class Account_Type(models.Model):
     Account_type = models.CharField(max_length =255)
     
@@ -90,12 +109,10 @@ class Accounts(models.Model):
     bsi_id = models.ForeignKey(Bsi, on_delete=models.CASCADE, null=True)
     bhw_id = models.ForeignKey(Bhw, on_delete=models.CASCADE, null=True)
     admin_id = models.ForeignKey(Personnel, on_delete=models.CASCADE, null=True)
+    secretary_id = models.ForeignKey(Secretary, on_delete=models.CASCADE, null=True)
     account_typeid= models.ForeignKey(Account_Type, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return f"Resident: {self.resident_id} | Admin: {self.admin_id} | BHW: {self.bhw_id} | Account Type: {self.account_typeid}"
-    
- 
         return f"Resident: {self.resident_id} | Admin: {self.admin_id} | BHW: {self.bhw_id} | Account Type: {self.account_typeid}"
     
  
@@ -125,16 +142,20 @@ class Schedule(models.Model):
     bhwService = models.ForeignKey(HealthService, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)  
     resident = models.ForeignKey(Residents, on_delete=models.CASCADE, null=True)  
-    date = models.DateField(max_length=255)
     status = models.CharField(max_length=50, default="Pending")
     baby_name = models.CharField(max_length=255, null=True)
     father_name = models.CharField(max_length=255, null=True)   
     mother_name = models.CharField(max_length=255, null=True)
-    image = models.ImageField(upload_to='images/', null=True)
+    birth_place = models.CharField(max_length=255, null=True)
+    birthdate = models.DateField(max_length=255, null=True)
+    sex = models.CharField(max_length=255, null=True)
+    date = models.DateField(max_length=255, null=True)
+    time = models.CharField(max_length=100, null=True)
+
 
     
     def __str__(self):
-        return f"{self.date} {self.status} {self.baby_name} {self.father_name} {self.mother_name}"
+        return f"{self.status} {self.baby_name} {self.father_name} {self.mother_name}"
 
     
 class Outbreaks(models.Model):
@@ -160,19 +181,36 @@ class Outbreaks(models.Model):
     purok = models.CharField(max_length=100, null=True)
     def __str__(self):
         return f"{self.outbreak_name} {self.purok} "
+    
 class Request(models.Model):
+    PENDING = 'Pending'
+    APPROVED = 'Approved'
+    STATUS_CHOICES = [
+        (PENDING, 'Pending'),
+        (APPROVED, 'Approved'),
+    ]
+
     Resident_id = models.ForeignKey(Residents, on_delete=models.CASCADE, null=True)
     service_id = models.ForeignKey(Services, on_delete=models.CASCADE, null=True)
-    reason = models.CharField(max_length =255)
+    reason = models.CharField(max_length=255)
     total_price = models.IntegerField(null=True)
     schedule_date = models.DateField(null=True)
     schedule_start_time = models.TimeField(null=True)
-    schedule_end_time = models.TimeField(null=True)
-    
-    
-    def __str__(self):
-        return f"{self.Resident_id} {self.service_id} {self.schedule_date}"
+    request_requirements = models.ImageField(upload_to='images/', null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=PENDING)
 
+    def __str__(self):
+        return f"{self.Resident_id} - {self.service_id} - {self.schedule_date}"
+    
+class RequestHistory(models.Model):
+    request = models.ForeignKey(Request, on_delete=models.CASCADE, related_name="history")
+    status = models.CharField(max_length=20)  # e.g., Approved, Declined
+    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.request} - {self.status} at {self.updated_at}"
 
 class CommunityNotice(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
@@ -195,11 +233,13 @@ class Maintenance(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, null=True)
     resident_id = models.ForeignKey(Residents, on_delete=models.CASCADE, null=True)
+    week = models.CharField(max_length=100, null=True)
     date = models.DateField(null=True)
     week = models.CharField(max_length=100, null=True)
     kg = models.IntegerField(null=True)
     bp = models.CharField(max_length=100, null=True)
     status = models.CharField(max_length=100, default="Pending", null=True)
+    month = models.CharField(max_length=100, null=True)
 
     def __str__(self):
         return f"{self.date} {self.week} {self.kg} {self.bp} {self.status}"
@@ -222,17 +262,43 @@ class Medicine(models.Model):
         return f"{self.medicine_name} {self.medicine_description} {self.medicine_quantity} {self.expiration_date} {self.medicine_type} {self.picture} {self.released_quantity}"
 
 class Immunize(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, null=True)
-    resident_id = models.ForeignKey(Residents, on_delete=models.CASCADE, null=True)
-    vaccine_name = models.CharField(max_length=100)
-    vaccine_quantity = models.IntegerField(null=True)
-    vaccine_description = models.TextField(null=True)
+    vaccine_name = models.CharField(max_length=100, null=True)
     vaccine_dose = models.CharField(max_length=100, null=True)
-    age = models.CharField(max_length=100)
-    date = models.DateField(null=True)
     status = models.CharField(max_length=100, default="Pending", null=True)
-    
+    at_birth = models.CharField(max_length=100, null=True)  
+    status = models.CharField(max_length=100, default="Pending", null=True)
+    first_visit = models.DateField(null=True, blank=True)
+    second_visit = models.DateField(null=True, blank=True)
+    third_visit = models.DateField(null=True, blank=True)
+    fourth_visit = models.DateField(null=True, blank=True)
+    fifth_visit = models.DateField(null=True, blank=True)
 
     def __str__(self):
+        return f"{self.vaccine_name}"
+class ResidentImmunize(models.Model):
+    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, null=True)
+    immunize = models.ForeignKey(Immunize, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return f"{self.schedule} {self.immunize} "
+    
+    
         return f"{self.vaccine_name} {self.vaccine_description} "
+    
+class Household(models.Model):
+    name = models.CharField(max_length=255)  # Name of household
+    zone = models.CharField(max_length=255)  # Barangay zone
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.zone}"
+
+class Member(models.Model):
+    household = models.ForeignKey(Household, on_delete=models.CASCADE, related_name="members")
+    resident = models.OneToOneField('Residents', on_delete=models.CASCADE, null=True, blank=True)
+    relationship_to_head = models.CharField(max_length=100)
+    is_head_of_household = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.resident.auth_user.username} - {self.relationship_to_head} ({'Head' if self.is_head_of_household else 'Member'})"

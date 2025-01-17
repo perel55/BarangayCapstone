@@ -17,15 +17,15 @@
   
   nav {
     top: 5rem;
-    margin-top: 2.5rem;
+    margin-top: 2rem;
     width: 12%;
     position: fixed;
-    top: 2.5rem; 
+    top: 1.5rem; 
     display: flex;
     flex-direction: column;
     z-index: 1; 
-    height: 70vh;
-    margin-left: 0.5rem;
+    height: 100vh;
+    margin-left: 0.2rem;
   }
   
   .nav-content {
@@ -180,8 +180,8 @@
   }
   
   .content {
-    width: 86%;
-    margin-left: 13%; 
+    width: 94%;
+    margin-left: 5%; 
     background-color: #ffff;
     box-shadow: 0 0 10px rgba(134, 134, 134, 0.2);
     border-radius: 10px;

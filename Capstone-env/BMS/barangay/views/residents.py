@@ -9,6 +9,8 @@ from .models import *
 from datetime import datetime
 from django.http import HttpResponse
 
+
+
 @login_required
 def edit_profile(request):
     # Fetch the resident profile for the logged-in user
@@ -48,25 +50,30 @@ def edit_profile(request):
     birthdate_str = resident.birthdate.strftime('%Y-%m-%d') if resident.birthdate else ""
     return render(request, 'resident/residentEditProfile.html', {'resident': resident, 'birthdate_str': birthdate_str})
 
+def is_resident_approved(resident):
+    return resident.status == 'Verified'
 
 
-# View to render the calendar
+@login_required
 def calendar_view(request):
-    # Fetch all requests for the resident (use request.user if a resident is logged in)
-    resident = Residents.objects.get(auth_user=request.user)  # Assuming 'request.user' is the logged-in resident
-    requests = Request.objects.filter(Resident_id=resident)  # Filter requests by the logged-in resident
+    resident = get_object_or_404(Residents, auth_user=request.user)
     
+    # Check if the resident is approved
+    if not resident or resident.status.lower() != 'verified':
+        return redirect('pending_approval')  # Replace with your "Pending Approval" view name or URL
+
+    requests = Request.objects.filter(Resident_id=resident)
     events = []
 
-    # Convert the request data into event format for FullCalendar
     for req in requests:
         events.append({
-            'title': f"{req.service_id.service_name} - {req.reason}",  # Display service name and reason as event title
-            'start': req.schedule_date.isoformat(),  # Use the request date for the event start time
-            'end': (req.schedule_date + timezone.timedelta(hours=1)).isoformat(),  # Assume an event duration of 1 hour
+            'title': f"{req.service_id.service_name} - {req.reason}",
+            'start': req.schedule_date.isoformat(),
+            'end': (req.schedule_date + timezone.timedelta(hours=1)).isoformat(),
         })
 
     return render(request, 'resident/ResidentCalendar.html', {'events': events})
+
 
 # API endpoint to fetch events (if you're using Ajax to load data)
 def get_events(request):
@@ -120,9 +127,19 @@ def get_services(request):
 
 # ----------------------------> Community Notices <---------------------------
 
+def pending_approval(request):
+    return render(request, 'resident/pending.html')
+
+
 def view_events(request):
-    """Render the page with the calendar."""
+    resident = Residents.objects.filter(auth_user=request.user).first()
+    
+    # Check if the resident exists and is verified
+    if not resident or resident.status.lower() != 'verified':
+        return redirect('pending_approval')  # Replace with your "Pending Approval" view name or URL
+    
     return render(request, 'resident/residentEvents.html')
+
 
 def get_resident_notices(request):
     """Fetch the notices to display on the calendar."""
@@ -193,11 +210,6 @@ def fetch_notices(request):
 
 
 
-
-
-    
-
-
 # --------------------------> RESIDENT PROFILE <-------------------------------
 
 from datetime import datetime
@@ -238,10 +250,40 @@ def edit_profile(request):
 
 
 
-# ------------------------> MAP <---------------------------
+# ------------------------> OUTBREAKS <---------------------------
 
-def barangay_map(request):
+from django.http import JsonResponse
+from django.db.models import Count
+from .models import Outbreaks
+
+def resident_outbreaks_view(request):
     return render(request, 'resident/residentOutbreaks.html')
+
+
+def outbreak_chart_data(request):
+    # Group outbreaks by `purok` and collect outbreak names
+    data = (
+        Outbreaks.objects.values('purok')
+        .annotate(
+            count=Count('id'),  # Count the number of outbreaks in each purok
+            outbreak_names=Count('outbreak_name')  # Collect outbreak names for each purok
+        )
+        .order_by('purok')  # Optional: Order by purok
+    )
+
+    # Prepare the response structure
+    chart_data = {
+        "labels": [item['purok'] for item in data],  # Purok labels
+        "counts": [item['count'] for item in data],  # Outbreak counts
+        "names": {
+            item["purok"]: list(
+                Outbreaks.objects.filter(purok=item["purok"]).values_list("outbreak_name", flat=True)
+            )
+            for item in data
+        }  # Outbreak names grouped by purok
+    }
+
+    return JsonResponse(chart_data)
 
 
 # ------------------------> SERVICE LIST <-----------------------
@@ -250,23 +292,33 @@ def resident_services(request):
     services = Services.objects.all()  # Query all services
     return render(request, 'resident/residentServices.html', {'services': services})
 
-def get_resident_details(request, resident_id):
-    # Fetch the resident object by ID
-    resident = get_object_or_404(Residents, id=resident_id)
 
-    # Prepare the response data
-    data = {
-        'username': resident.auth_user.username,
-        'email': resident.auth_user.email,
-        'fname': resident.auth_user.first_name,
-        'mname': resident.auth_user.middle_name,
-        'lname': resident.auth_user.last_name,
-        'zone': resident.zone,
-        'civil_status': resident.civil_status,
-        'occupation': resident.occupation,
-        'phone_number': resident.phone_number,
-        'picture': resident.picture.url if resident.picture else None,
-        'id_image': resident.id_image.url if resident.id_image else None,
-        'status': resident.status,
-    }
-    return JsonResponse(data)
+@login_required
+def residentHealthRecords(request):
+    # Fetch all schedules for the logged-in user
+    schedules = Schedule.objects.filter(user=request.user, bhwService__service_type='immunnization')
+
+    # Initialize list to store immunizations per schedule
+    immunizations = []
+
+    # Loop through each schedule and filter immunizations based on schedule.id
+    for schedule in schedules:
+        pentavalent = Immunize.objects.filter(vaccine_name="Pentavalent Vaccine", schedule_id=schedule.id)
+        opv = Immunize.objects.filter(vaccine_name="Oral Polio Vaccine (OPV)", schedule_id=schedule.id)
+        ipv = Immunize.objects.filter(vaccine_name="Inactivated Polio Vaccine", schedule_id=schedule.id)
+        pcv = Immunize.objects.filter(vaccine_name="Pneumococcal Conjugate Vaccine", schedule_id=schedule.id)
+        mmr = Immunize.objects.filter(vaccine_name="Measles, Mumps, Rubella", schedule_id=schedule.id)
+
+        # Store the immunizations for each schedule
+        immunizations.append({
+            'schedule': schedule,
+            'pentavalent': pentavalent,
+            'opv': opv,
+            'ipv': ipv,
+            'pcv': pcv,
+            'mmr': mmr,
+        })
+
+    return render(request, 'resident/residentHealthRecords.html', {
+        'immunizations': immunizations,
+    })

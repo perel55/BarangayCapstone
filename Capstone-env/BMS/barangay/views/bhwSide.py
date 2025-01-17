@@ -289,8 +289,19 @@ def bhwEvents(request):
 #fetch Health records in bhw side
 @login_required
 def bhwRecord(request):
-    schedules = Schedule.objects.all()
-    return render(request, 'bhw/bhwHealthrecords.html', {'schedules': schedules})
+    all_schedules = Schedule.objects.all().order_by('-date')
+    highblood_schedules = Schedule.objects.filter(bhwService__service_name="HighBlood").order_by('-date')
+    tb_schedules = Schedule.objects.filter(bhwService__service_name="TB").order_by('-date')
+    immunize_schedules = Schedule.objects.filter(bhwService__service_type="immunnization").order_by('-date')
+    immunize_schedules = Schedule.objects.filter(bhwService__service_type="immunnization").order_by('-date')
+    
+    return render(request, 'bhw/bhwHealthrecords.html', {
+        'all_schedules': all_schedules,
+        'highblood_schedules': highblood_schedules,
+        'tb_schedules': tb_schedules,
+        'immunize_schedules': immunize_schedules,
+    })
+
 
 
 
@@ -310,3 +321,4 @@ def approve_sanitary(request, schedule_id):
     schedule.status = "Verified"
     schedule.save()
     return redirect('bhwSanitary')  
+

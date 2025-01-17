@@ -1,66 +1,139 @@
 {% load static %}
+
 {% block css %}
 <link rel="stylesheet" href="{% static './css/admin.css' %}">
 <link rel="stylesheet" href="{% static './css/accounts.css' %}">
+<script type="module" src="{% static 'js/bhw.js' %}"></script>
+<script type="module" src="{% static 'js/resident.js' %}"></script>
 {% endblock %}
 
 {% block content %}
+{% include 'modal/resident.html' %}
 
 <div class="adminContainer">
-    <div class="ac-top">
-        <div class="ac-Left">
-            <img src="{% static 'images/lala-logo.jpg' %}" alt="">
-            <h3>Barangay Lala Proper Management System</h3>
-        </div>
 
-        <div class="ac-middle">
-            <div class="button-group">
-                <!-- Buttons to filter by account type -->
-                <a href="?type=Residents" class="filter-btn">Residents</a>
-                <a href="?type=Bhw" class="filter-btn">Bhw</a>
-                <a href="?type=Personnel" class="filter-btn">Personnel</a>
-                <a href="?type=all" class="filter-btn">All</a>
-            </div>
+    {% include './adminheader.html' %}
 
-            <div class="accounts-list">
-                <h2>Accounts - {{ account_type|title }}</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Full Name</th>
-                            <th>Zone</th>
-                            <th>Occupation</th>
-                            <th>Position</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for account in accounts %}
-                            <tr>
-                                <td>{{ account.resident_id }} {{ account.mname }} {{ account.lname }}</td>
-                                <td>{{ account.zone }}</td>
-                                <td>{{ account.occupation }}</td>
-                                <td>{{ account.position }}</td>
-                            </tr>
-                        {% empty %}
-                            <tr>
-                                <td colspan="4">No {{ account_type|lower }} accounts available.</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    
 
-        <div class="ac-right">
-            <input type="text" id="HomeSearch" placeholder="Search">
-            <div class="NotifAdmin">
-                <img src="{% static 'images/Bell-Notification--Streamline-Flex.png' %}" alt="">
-            </div>
-        </div>
-    </div>
+    <!-- Main Content Section -->
+    {% include './adminNav.html' %}
     <div class="MC-Bottom">
-        {% include './adminNav.html' %}
+        
+            <div class="both-container">
+            
+                <div class="Left">
+                    <button id="Residents-Accounts">Residents</button> 
+                    <button id="Bhw-Accounts">Bhw</button>
+                    <button id="Officials-Accounts">Officials</button>
+                </div>
+            
+                <div class="contents">
+                    <div class="content">
+                        <!-- Residents Accounts -->
+                        <div id="ResidentsAcc-Area" class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>  
+                                        <th>Profile</th>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>Name</th>
+                                        <th>Phone</th>
+                                        <th>Purok</th>
+                                        <th>Civil Status</th>
+                                        <th>Occupation</th>   
+                                        <th>Status</th>  
+                                        <th>Action</th>       
+                                    </tr>
+                                </thead>    
+                                <tbody>
+                                    {% for resident in residents %}
+                                    <tr>
+                                        <td>   
+                                            {% if resident.picture %}
+                                            <img src="{{ resident.picture.url }}" alt="Profile Picture" style="width: 40px; height: 40px; border-radius: 50%;">
+                                            {% else %}
+                                            <span>No Image</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ resident.auth_user.username }}</td>
+                                        <td>{{ resident.auth_user.email }}</td>        
+                                        <td>{{ resident.auth_user.first_name }} {{ resident.auth_user.last_name }}</td>
+                                        <td>{{ resident.phone_number }}</td>
+                                        <td>{{ resident.zone }}</td>
+                                        <td>{{ resident.civil_status }}</td>
+                                        <td>{{ resident.occupation }}</td>
+                                        <td>
+                                            {% if resident.status == "Pending" %}
+                                                <span class="status-pending">Pending</span>
+                                            {% elif resident.status == "Verify" %}
+                                                <span class="status-verified">Verify</span>
+                                            {% elif resident.status == "Decline" %}
+                                                <span class="status-declined">Decline</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'approved_resident' resident.id %}" class="btn-approve">Verify</a>
+                                            <a href="{% url 'declined_resident' resident.id %}" class="btn-declined">Decline</a>
+                                        </td>    
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div> 
+
+                        <!-- Bhw Accounts -->
+                        <div id="BhwAcc-Area" class="table-container" style="display: none;">
+                            <table>
+                                <thead>
+                                    <tr>  
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>First Name</th>  
+                                        <th>Last Name</th>      
+                                    </tr>
+                                </thead>    
+                                <tbody>
+                                    {% for bhw in bhws %}
+                                    <tr>    
+                                        <td>{{ bhw.auth_user.username }}</td>
+                                        <td>{{ bhw.auth_user.email }}</td>        
+                                        <td>{{ bhw.auth_user.first_name }} </td>
+                                        <td>{{ bhw.auth_user.last_name }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>  
+
+                        <!-- Officials Accounts -->
+                        <div id="OfficialsAcc-Area" class="table-container" style="display: none;">
+                            <table>
+                                <thead>
+                                    <tr>  
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>First Name</th>  
+                                        <th>Last Name</th>      
+                                    </tr>
+                                </thead>    
+                                <tbody>
+                                    {% for official in officials %}
+                                    <tr>    
+                                        <td>{{ official.auth_user.username }}</td>
+                                        <td>{{ official.auth_user.email }}</td>        
+                                        <td>{{ official.auth_user.first_name }} </td>
+                                        <td>{{ official.auth_user.last_name }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div> 
+
+                    </div>         
+                </div>
+            </div>
     </div>
 </div>
-
 {% endblock %}

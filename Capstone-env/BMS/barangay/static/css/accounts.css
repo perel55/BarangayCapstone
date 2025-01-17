@@ -1,0 +1,140 @@
+body {
+    overflow-y:hidden ;
+}
+
+
+/* Container for the sidebar, header, and main content */
+.adminContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Full viewport height */
+}
+
+/* Flexbox for the main content and sidebar */
+.MC-Bottom {
+    display: flex;
+    flex: 1; /* Take up remaining space */
+    flex-direction: column;
+}
+
+.both-container {
+    position: relative;
+    bottom: 80%;
+    left: 20px;
+}
+
+
+/* Left buttons container */
+.Left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    background-color: #f3f4f7;
+    padding: 1rem;
+    margin-left: 15%; /* Respect sidebar width */
+    width: calc(100% - 13%);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #ddd;
+}
+
+/* Left buttons */
+.Left button {
+    width: 100px;
+    padding: 10px 15px;
+    background-color: #0084ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.Left button:hover {
+    background-color: #0179e8;
+    transform: scale(1.05);
+}
+
+/* Main contents container */
+.contents {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: flex-start; /* Align to the top */
+    margin-left: 13%; /* Respect sidebar width */
+    padding: 2rem;
+    width: calc(100% - 13%);
+    box-sizing: border-box;
+}
+
+.content {
+    width: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Table styling */
+.table-container {
+    width: 100%;
+    overflow-x: auto; /* Make table responsive */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th,
+table td {
+    border-bottom: 1px solid #e9e6e6;
+    padding: 1rem;
+    text-align: left;
+}
+
+table th {
+    background: linear-gradient(to bottom, #7BC9FF, #7EA1FF);
+    color: white;
+    font-weight: bold;
+}
+
+table td img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 1200px) {
+    .Left {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem 0.5rem;
+    }
+    
+    .Left button {
+        width: 100%;
+    }
+    
+    .contents {
+        padding: 1rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .adminNav {
+        width: 100%;
+        position: relative;
+        height: auto;
+    }
+    
+    .Left, .contents {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .contents {
+        padding: 1rem 0.5rem;
+    }
+}

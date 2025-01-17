@@ -19,16 +19,15 @@
                                 <!-- Check if picture exists, then display it -->
                                 <p>
                                     {% if x.picture %}
-                                        <img src="{{ x.picture.url }}" width="120" alt="{{ x.service_name }}"/>
+                                        <img src="{{ x.picture.url }}" width="100" alt="{{ x.service_name }}"/>
                                     {% else %}
-                                        <img src="{% static 'images/default_image.jpg' %}" width="200" alt="No image available"/>
+                                        <img src="{% static 'images/default_image.jpg' %}" width="120" alt="No image available"/>
                                     {% endif %}
                                 </p>
                                 <h3>{{ x.service_name }}</h3>
                                 <p>Description: {{ x.service_description }}</p>
                                 <p>Requirements: {{ x.service_requirements }}</p>
-                                <p>Service Type: {{ x.service_type }}</p>
-                                <a href="{% url 'book_healthServiceform' x.id %}" class="btn">Avail</a>
+                                <a href="{% url 'book_healthServiceform' x.id %}" class="btn">Avail Now</a>
                             </div> 
                         </div>  
                     {% empty %}

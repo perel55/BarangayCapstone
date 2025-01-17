@@ -21,6 +21,7 @@ def addMaintenance(request, schedule_id):
         date = request.POST.get('date')
         kg = request.POST.get('kg')
         bp = request.POST.get('bp')
+        month = request.POST.get('month')
 
        
         maintenance = Maintenance.objects.create(
@@ -28,6 +29,7 @@ def addMaintenance(request, schedule_id):
             date=date,
             kg=kg,
             bp=bp,
+            month=month,
             schedule=schedule
         )
 

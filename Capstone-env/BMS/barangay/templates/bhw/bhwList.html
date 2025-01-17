@@ -1,9 +1,8 @@
 {% load static %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static './css/bhwlist.css' %}">
-<link rel="stylesheet" href="{% static './css/verificationBtn.css' %}">
-<link rel="stylesheet" href="{% static './css/residentVerification.css' %}">
+<link rel="stylesheet" href="{% static 'css/bhwlist.css' %}">
+<link rel="stylesheet" href="{% static 'css/verificationBtn.css' %}">
 <script type="module" src="{% static 'js/bhw.js' %}"></script>
 <script type="module" src="{% static 'js/resident.js' %}"></script>
 {% endblock %}
@@ -21,7 +20,7 @@
         </div>
 
         <div class="MC-Bottom">
-            {% include 'bhw/bhwNav.html' %}
+            {% include 'bhw/bhwNav2.html' %}
             
             <div class="contents">
                 <div class="content">
@@ -38,8 +37,7 @@
                                         <th>Purok</th>
                                         <th>Civil Status</th>
                                         <th>Occupation</th>   
-                                        <th>Status</th>  
-                                        <th>Action</th>       
+                                        <th>Status</th>        
                                     </tr>
                                 </thead>    
                                 <tbody>
@@ -59,19 +57,17 @@
                                         <td>{{ resident.zone }}</td>
                                         <td>{{ resident.civil_status }}</td>
                                         <td>{{ resident.occupation }}</td>
+                                         
                                         <td>
                                             {% if resident.status == "Pending" %}
                                                 <span class="status-pending">Pending</span>
-                                            {% elif resident.status == "Verify" %}
-                                                <span class="status-verified">Verify</span>
-                                            {% elif resident.status == "Decline" %}
-                                                <span class="status-declined">Decline</span>
+                                            {% elif resident.status == "Verified" %}
+                                                <span class="status-verified">Verified</span>
+                                            {% elif resident.status == "Declined" %}
+                                                <span class="status-declined">Declined</span>
                                             {% endif %}
                                         </td>
-                                        <td>
-                                            <a href="{% url 'approved_resident' resident.id %}" class="btn-approve">Verify</a>
-                                            <a href="{% url 'declined_resident' resident.id %}" class="btn-declined">Decline</a>
-                                        </td>    
+
                                     </tr>
                                     {% endfor %}
                                     

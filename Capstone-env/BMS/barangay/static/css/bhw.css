@@ -17,15 +17,15 @@ body {
 
 nav {
   top: 5rem;
-  margin-top: 2.5rem;
+  margin-top: 2rem;
   width: 12%;
   position: fixed;
-  top: 2.5rem; 
+  top: 1.5rem; 
   display: flex;
   flex-direction: column;
   z-index: 1; 
-  height: 70vh;
-  margin-left: 0.5rem;
+  height: 100vh;
+  margin-left: 0.2rem;
 }
 
 .nav-content {
@@ -97,7 +97,7 @@ nav ul a {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 2; 
+  z-index: 5; 
   background-color: #fff;
   box-shadow: 0 0 10px rgba(80, 79, 79, 0.1);
 }
@@ -183,8 +183,8 @@ background: linear-gradient(#7BC9FF,#7EA1FF);
 #content {
   top: 5rem;
   margin-top: 5rem;
-  width: 86%;
-  margin-left: 13%; 
+  width: 94%;
+  margin-left: 5%; 
   background-color: #ffff;
   box-shadow: 0 0 10px rgba(134, 134, 134, 0.2);
   border-radius: 10px;
@@ -197,7 +197,7 @@ table {
 }
 
 table th, table td {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #dedddd;
   padding: 0.5rem;
   
 }

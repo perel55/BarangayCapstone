@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.validatelogin, name='validatelogin'),
     path('accounts/', include('allauth.urls')),
     re_path(r'^validatelogin/$', views.validatelogin, name='validatelogin'),
     re_path(r'^register$', views.register, name='register'),
@@ -23,9 +23,9 @@ urlpatterns = [
     re_path(r'^adminregister$', views.adminregister, name='adminregister'),
 
 
-
-
-
+    re_path('accounts/bhwlogout/', views.bhwlogout, name='bhwlogout'),
+    re_path('accounts/adminlogout/', views.adminlogout, name='adminlogout'),
+    re_path('accounts/secretarylogout/', views.secretarylogout, name='secretarylogout'),
 
     #----------------------------------------Bhw------------------------------------------------
     re_path(r'^bhwDashboard/$', views.bhwDashboard, name='bhwDashboard'),
@@ -49,8 +49,9 @@ urlpatterns = [
     re_path('bhwMaintenance/', views.bhwMaintenance, name = 'bhwMaintenance'),
     re_path(r'^approve-schedule/(?P<schedule_id>\d+)/$', views.approve_schedule, name='approve_schedule'),
     re_path(r'^reject-schedule/(?P<schedule_id>\d+)/$', views.reject_schedule, name='reject_schedule'),
-    re_path(r'^approve-resident/(?P<resident_id>\d+)/$', views.approved_resident, name='approved_resident'),
-    re_path(r'^declined-resident/(?P<resident_id>\d+)/$', views.declined_resident, name='declined_resident'),
+    
+    #re_path(r'^approve-resident/(?P<resident_id>\d+)/$', views.approved_resident, name='approved_resident'),
+    #re_path(r'^declined-resident/(?P<resident_id>\d+)/$', views.declined_resident, name='declined_resident'),
 
     re_path(r'^releasedMaintenance/(?P<schedule_id>\d+)/$', views.releasedMaintenance, name='releasedMaintenance'),
     re_path(r'^addMaintenance/(?P<schedule_id>\d+)/$', views.addMaintenance, name='addMaintenance'),
@@ -67,11 +68,14 @@ urlpatterns = [
     re_path(r'^incomplete_maintenance/(?P<maintenance_id>\d+)/$', views.incomplete_maintenance, name='incomplete_maintenance'),
 
     #immunize
-    re_path('bhwImmunize/', views.bhwImmunize, name = 'bhwImmunize'),
+    
     re_path(r'^Vaccine/(?P<schedule_id>\d+)/$', views.Vaccine, name='Vaccine'),
-    re_path(r'^addImmunize/(?P<schedule_id>\d+)/$', views.addImmunize, name='addImmunize'),
-    re_path(r'^complete_immunize/(?P<immunize_id>\d+)/$', views.complete_immunize, name='complete_immunize'),
-    re_path(r'^incomplete_immunize/(?P<immunize_id>\d+)/$', views.incomplete_immunize, name='incomplete_immunize'),
+    re_path(r'^add_immunize/(?P<schedule_id>\d+)/$', views.add_immunize, name='add_immunize'),
+    
+
+    re_path('bhwReport/', views.bhwReport, name = 'bhwReport'),
+    re_path('residentHealthRecords/', views.residentHealthRecords, name = 'residentHealthRecords'),
+    
  #----------------------------------------BIS------------------------------------------------
      re_path(r'^addBSI/$', views.addBSI, name='addBSI'),
      re_path(r'^bsiDashboard/$', views.bsiDashboard, name='bsiDashboard'),
@@ -89,8 +93,10 @@ urlpatterns = [
     re_path(r'^bhw/book_healthServiceform/(?P<HealthService_id>\d+)/$', views.book_healthServiceform, name='book_healthServiceform'),
     re_path(r'^bhw/book_healthService/(?P<HealthService_id>\d+)/(?P<resident_id>\d+)/$', views.book_healthService, name='book_healthService'),
     re_path(r'^bhw/book_immunize/(?P<HealthService_id>\d+)/(?P<resident_id>\d+)/$', views.book_immunize, name='book_immunize'),#immunize service type
+    re_path(r'^bhw/book_maintenance/(?P<HealthService_id>\d+)/(?P<resident_id>\d+)/$', views.book_maintenance, name='book_maintenance'),#maintenance service type
+    re_path(r'^bhw/book_otherService/(?P<HealthService_id>\d+)/(?P<resident_id>\d+)/$', views.book_otherService, name='book_otherService'),#other service type
     re_path(r'^residentHistory/$', views.residentHistory, name='residentHistory'),
-    re_path(r'^get_resident_details/(?P<resident_id>\d+)/$', views.get_resident_details, name='get_resident_details'),
+    
     
 
 
@@ -125,8 +131,9 @@ urlpatterns = [
     path('resident/view_events', views.view_events, name='view_events'),
 
 # -------------> TRY <------------
-    # re_path(r'^ScheduleView/$', views.ScheduleView.as_view(), name='ScheduleView'),
     path('resident/schedule/', views.residentSchedule, name='residentSchedule'),
+
+    path('pending-approval/', views.pending_approval, name='pending_approval'),
 
     path('schedule/', views.ScheduleView, name='ScheduleView'),
     path('api/schedules/', views.get_events, name='GetEvents'),
@@ -141,14 +148,63 @@ urlpatterns = [
 
     path('notices/<int:notice_id>/details/', views.notice_details_view, name='notice_details'),
 
-
     path('edit-profile/', views.edit_profile, name='edit_profile'),
-    path('barangay-maps', views.barangay_map, name='barangay_map'),
+
+    path('api/chart-data/', views.outbreak_chart_data, name='outbreak-chart-data'),
+    path('resident-outbreaks/', views.resident_outbreaks_view, name='resident_outbreaks_view'),
 
     path('fetch-services/', views.fetch_services, name='fetch-services'),
 
     path('resident_services/', views.resident_services, name='resident_services'),
 
+    path('schedules/delete/<int:schedule_id>/', views.delete_request, name='delete_schedule'),
 
+    path('requests/<int:request_id>/details/', views.get_request_details, name='get_request_details'),
+    
+    path('edit_request/<int:schedule_id>/', views.edit_resident_request, name='edit_resident_request'),
+
+    path('update_status/<int:request_id>/', views.update_request_status, name='update_status'),
+
+    path('profile-check/', views.profile_check, name='profile_check'),
+
+    path('admin/accounts_view/', views.accounts_view, name='accounts_view'),
+
+
+
+
+
+
+
+    # ------------------ SECRETARY -----------------------
+    path('secretary/', views.secretarydashboard, name='secretarydashboard'),
+    path('households/', views.household_list, name='household_list'),
+    path('households/create/', views.household_create, name='household_create'),
+    path('households/<int:pk>/update/', views.household_update, name='household_update'),
+    path('households/<int:pk>/delete/', views.household_delete, name='household_delete'),
+    path('households/<int:household_id>/members/', views.member_list, name='member_list'),
+    path('member/<int:member_id>/delete/', views.member_delete, name='member_delete'),
+    path('households/members/<int:member_id>/', views.member_detail, name='member_detail'),
+    path('households/<int:household_id>/members/create/', views.member_create, name='member_create'),
+
+    path('secVerifyAccounts/', views.secVerifyAccounts, name='secVerifyAccounts'),
+    path('approve_resident/<int:resident_id>/', views.approve_resident, name='approve_resident'),
+    path('decline_resident/<int:resident_id>/', views.decline_resident, name='decline_resident'),
+
+    path('services/', views.secretary_service_list, name='secretary_service_list'),
+    path('services/add/', views.secretary_AddService, name='secretary_AddService'),
+    path('services/update/<int:service_id>/', views.secretary_update_service, name='update_service'),
+    path('services/delete/<int:service_id>/', views.secretary_delete_service, name='delete_service'),
+
+    path('certificates/', views.secretary_Certificates, name='secretary_Certificates'),
+    path('certificates/update/<int:request_id>/', views.secretary_update_request_status, name='secretary_update_request_status'),
+
+    path('requests/<int:request_id>/', views.request_details, name='request_details'),
+    path('requests/<int:request_id>/update-status/', views.secretary_update_request_status, name='secretary_update_request_status'),
+
+    path('requests/history/', views.secretary_request_history, name='secretary_request_history'),
+
+    path('secretary/edit-profile/', views.edit_secretary_profile, name='edit_secretary_profile'),
+
+    path('resident-autocomplete/', views.resident_autocomplete, name='resident_autocomplete'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

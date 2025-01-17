@@ -1,0 +1,51 @@
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static './css/household.css' %}">
+{% endblock %}
+
+<div class="members-details-container">
+    {% include 'secretary/secNavbar.html' %}
+
+    <div class="member-details-name">
+    <h1>Details for {{ member.resident.auth_user.get_full_name }}</h1>
+    </div>
+
+    <div class="member-details-info">
+        <ul>
+            <li>
+                Picture: 
+                {% if member.resident.picture %}
+                    <img src="{{ member.resident.picture.url }}" alt="Picture" width="200">
+                {% else %}
+                    No picture attached
+                {% endif %}
+            
+                ID Image: 
+                {% if member.resident.id_image %}
+                    <img src="{{ member.resident.id_image.url }}" alt="ID Image" width="200">
+                {% else %}
+                    No ID image attached
+                {% endif %}
+            </li>
+
+            <li>Full Name: {{ member.resident.auth_user.first_name }} {{ member.resident.mname }} {{ member.resident.auth_user.last_name }}</li>
+            <li>Zone: {{ member.resident.zone }}</li>
+            <li>Civil Status: {{ member.resident.civil_status }}</li>
+            <li>Occupation: {{ member.resident.occupation }}</li>
+            <li>Birthdate: {{ member.resident.birthdate }}</li>
+            <li>Phone Number: {{ member.resident.phone_number }}</li>
+            <li>Position: {{ member.resident.position }}</li>
+            <li>Status: {{ member.resident.status }}</li>
+            <li>Relationship to Head: {{ member.relationship_to_head }}</li>
+            
+            
+        </ul>
+    </div>
+
+
+    <div class="member-return-btn">
+        <a href="{% url 'member_list' member.household.id %}">Back to Members List</a>
+    </div>
+
+</div>
