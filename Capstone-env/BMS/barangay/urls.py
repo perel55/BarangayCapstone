@@ -23,9 +23,9 @@ urlpatterns = [
     re_path(r'^adminregister$', views.adminregister, name='adminregister'),
 
 
-
-
-
+    re_path('accounts/bhwlogout/', views.bhwlogout, name='bhwlogout'),
+    re_path('accounts/adminlogout/', views.adminlogout, name='adminlogout'),
+    re_path('accounts/secretarylogout/', views.secretarylogout, name='secretarylogout'),
 
     #----------------------------------------Bhw------------------------------------------------
     re_path(r'^bhwDashboard/$', views.bhwDashboard, name='bhwDashboard'),
@@ -49,8 +49,9 @@ urlpatterns = [
     re_path('bhwMaintenance/', views.bhwMaintenance, name = 'bhwMaintenance'),
     re_path(r'^approve-schedule/(?P<schedule_id>\d+)/$', views.approve_schedule, name='approve_schedule'),
     re_path(r'^reject-schedule/(?P<schedule_id>\d+)/$', views.reject_schedule, name='reject_schedule'),
-    re_path(r'^approve-resident/(?P<resident_id>\d+)/$', views.approved_resident, name='approved_resident'),
-    re_path(r'^declined-resident/(?P<resident_id>\d+)/$', views.declined_resident, name='declined_resident'),
+    
+    #re_path(r'^approve-resident/(?P<resident_id>\d+)/$', views.approved_resident, name='approved_resident'),
+    #re_path(r'^declined-resident/(?P<resident_id>\d+)/$', views.declined_resident, name='declined_resident'),
 
     re_path(r'^releasedMaintenance/(?P<schedule_id>\d+)/$', views.releasedMaintenance, name='releasedMaintenance'),
     re_path(r'^addMaintenance/(?P<schedule_id>\d+)/$', views.addMaintenance, name='addMaintenance'),

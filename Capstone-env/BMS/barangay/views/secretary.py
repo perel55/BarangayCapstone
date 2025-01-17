@@ -161,7 +161,7 @@ def secretary_AddService(request):
             image=image,
         )
         new_service.save()
-
+    
         return redirect('secretary_service_list')
 
     return render(request, 'secretary/secServices.html')

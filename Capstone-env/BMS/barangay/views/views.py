@@ -208,12 +208,41 @@ def validatelogin(request):
 def index(request):
     return render(request, 'index.html')
 
-from django.contrib.auth import logout as django_logout
+from django.contrib.auth import logout as auth_logout
 
 @login_required
 def logout(request):
-    django_logout(request)
-    return JsonResponse({'message': 'Logged out successfully'})
+    if request.method == 'POST':
+        auth_logout(request)  # Logs the user out
+        return JsonResponse({'message': 'Logged out successfully'})
+    else:
+        return render(request, 'account/logout.html')
+
+@login_required
+def bhwlogout(request):
+    if request.method == 'POST':
+        auth_logout(request)  # Logs the user out
+        return JsonResponse({'message': 'Logged out successfully'})
+    else:
+        return render(request, 'account/bhwlogout.html')    
+
+@login_required
+def secretarylogout(request):
+    if request.method == 'POST':
+        auth_logout(request)  # Logs the user out
+        return JsonResponse({'message': 'Logged out successfully'})
+    else:
+        return render(request, 'account/secretarylogout.html')  
+
+@login_required
+def adminlogout(request):
+    if request.method == 'POST':
+        auth_logout(request)  # Logs the user out
+        return JsonResponse({'message': 'Logged out successfully'})
+    else:
+        return render(request, 'account/adminlogout.html')          
+    
+
 
 def signup(request):
   template = loader.get_template('accounts/signup.html')
@@ -280,7 +309,7 @@ def addAdmin(request):
 def bhwServices(request): #display the available services for verified status
     try:
         resident = Residents.objects.get(auth_user=request.user)
-        if resident.status == "Verify":
+        if resident.status == "Verified":
             bhwServices = HealthService.objects.all()
         else:
             bhwServices = HealthService.objects.none()

@@ -5,11 +5,11 @@
   <p class="txt">Are you sure you want to sign out?</p>
   <div class="logout-form">
 
-    <form method="post" action="{% url 'logout' %}">
+    <form method="post" action="{% url 'bhwlogout' %}">
       {% csrf_token %}
       <div class="buttons-container">
         <button type="submit" class="button">Sign Out</button>
-        <a class="Cancel" href="{% url 'residentdashboard' %}">Cancel</a>
+        <a class="Cancel" href="{% url 'bhwDashboard' %}">Cancel</a>
       </div>
     </form>
   </div>

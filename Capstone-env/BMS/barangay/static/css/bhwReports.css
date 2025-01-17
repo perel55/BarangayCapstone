@@ -155,7 +155,7 @@
     margin-top: 5rem;
     background-color: #f3f4f7;
     height: 3rem;
-    width: 86%;
+    width: 90%;
     margin-left: 13%;
     padding-left: 1rem; 
   }
@@ -183,8 +183,8 @@
   #content {
     top: 5rem;
     margin-top: 5rem;
-    width: 86%;
-    margin-left: 13%; 
+    width: 94%;
+    margin-left: 5%; 
     background-color: #ffff;
     box-shadow: 0 0 10px rgba(134, 134, 134, 0.2);
     border-radius: 10px;
