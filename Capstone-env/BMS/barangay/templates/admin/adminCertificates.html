@@ -2,13 +2,14 @@
 
 {% block css %}
 <link rel="stylesheet" href="{% static './css/adminCertificates.css' %}">
+<link rel="stylesheet" href="{% static './css/admin.css' %}">
 {% endblock %}
 
 {% block content %}
     <div class="admin-certificates-page">
-        {% include './adminheader.html' %}
+        {% include 'admin/adminTopnav.html' %}
         <div class="content-container">
-            {% include 'admin/AdminNav.html' %}
+            {% include './adminNav2.html' %}  
             
             <!-- Main Content Wrapper -->
             <div class="admin-certificates-main-content">

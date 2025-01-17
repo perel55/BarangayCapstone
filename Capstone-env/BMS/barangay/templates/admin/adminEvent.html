@@ -2,28 +2,25 @@
 
 {% block css %}
     <link rel="stylesheet" href="{% static './css/admin.css' %}">
-    <link rel="stylesheet" href="{% static './css/residentSchedule.css' %}">
+    <link rel="stylesheet" href="{% static './css/adminschedule.css' %}">
     <script type="module" src="{% static 'js/adminEvents.js' %}"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/common@6.1.15/main.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.15/main.min.css" rel="stylesheet" />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
 {% endblock %}
 
-
+{% include 'modal/adminAddEvent.html' %}
+{% include 'modal/adminEditEvent.html' %}
 {% block content %}
 
     <div class="adminContainer">
-        <div class="ac-top">
-            <div class="ac-Left">
-                <img src="../../static/images/lala-logo.jpg" alt="">
-                <h3>Barangay Management System</h3>
-            </div>
+      
+        {% include 'admin/adminTopnav.html' %}
 
-            <div class="ac-middle">
+        
+        <div class="MC-Bottom">
+            {% include './adminNav2.html' %}      
 
-                {% include 'modal/adminAddEvent.html' %}
-                {% include 'modal/adminEditEvent.html' %}
-   
              <div id="Schedule-Content">
                  <div class="SC-Top">
                    <div class="SCT-Left">
@@ -57,19 +54,7 @@
                  <div id='calendar'></div>
              </div>
             
-            </div>
 
-            <div class="ac-right">
-                <input type="" name="" id="HomeSearch" placeholder="Search"> 
-                <div class="NotifAdmin">
-                  <img src="../../static/images/Bell-Notification--Streamline-Flex.png" alt="">
-                </div>
-            </div>
-        </div>
-
-        
-        <div class="MC-Bottom">
-        {% include './adminNav.html' %}      
         </div>
 
     </div>

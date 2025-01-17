@@ -2,14 +2,15 @@
 
 {% block css %}
 <link rel="stylesheet" href="{% static './css/adminServiceList.css' %}">
+<link rel="stylesheet" href="{% static './css/admin.css' %}">
 
 {% endblock %}
 
 {% block content %}
 
-    {% include './adminheader.html' %} 
+{% include 'admin/adminTopnav.html' %}
     <div class="content-container">
-        {% include 'admin/AdminNav.html' %}
+        {% include './adminNav2.html' %}    
         
         <div class="main-content">
             <div class="add-service">

@@ -214,34 +214,33 @@ from django.contrib.auth import logout as auth_logout
 @login_required
 def logout(request):
     if request.method == 'POST':
-        auth_logout(request)  # Logs the user out
-        return JsonResponse({'message': 'Logged out successfully'})
-    else:
-        return render(request, 'account/logout.html')
+        logout(request)  
+        return redirect('validatelogin')  
+    return render(request, 'account/logout.html')
 
 @login_required
 def bhwlogout(request):
     if request.method == 'POST':
-        auth_logout(request)  # Logs the user out
-        return JsonResponse({'message': 'Logged out successfully'})
-    else:
-        return render(request, 'account/bhwlogout.html')    
+        logout(request)  
+        return redirect('validatelogin')  #
+    return render(request, 'account/bhwlogout.html')  
+          
 
 @login_required
 def secretarylogout(request):
     if request.method == 'POST':
-        auth_logout(request)  # Logs the user out
-        return JsonResponse({'message': 'Logged out successfully'})
-    else:
-        return render(request, 'account/secretarylogout.html')  
+        logout(request)  
+        return redirect('validatelogin')  
+    return render(request, 'account/secretarylogout.html') 
+         
 
 @login_required
 def adminlogout(request):
     if request.method == 'POST':
-        auth_logout(request)  # Logs the user out
-        return JsonResponse({'message': 'Logged out successfully'})
-    else:
-        return render(request, 'account/adminlogout.html')          
+        logout(request)  
+        return redirect('validatelogin')  #
+    return render(request, 'account/adminlogout.html') 
+                 
     
 
 

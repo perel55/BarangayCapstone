@@ -1,8 +1,8 @@
 {% load static %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static './css/admin.css' %}">
-<link rel="stylesheet" href="{% static './css/accounts.css' %}">
+<link rel="stylesheet" href="{% static 'css/bhwnav2.css' %}">
+<link rel="stylesheet" href="{% static 'css/accounts.css' %}">
 <script type="module" src="{% static 'js/bhw.js' %}"></script>
 <script type="module" src="{% static 'js/resident.js' %}"></script>
 {% endblock %}
@@ -12,22 +12,19 @@
 
 <div class="adminContainer">
 
-    {% include './adminheader.html' %}
-
+    {% include 'admin/adminTopnav.html' %}
     
+    <div class="Left">
+        <button id="Residents-Accounts">Residents</button> 
+        <button id="Bhw-Accounts">Bhw</button>
+        <button id="Officials-Accounts">Officials</button>
+    </div>
 
-    <!-- Main Content Section -->
-    {% include './adminNav.html' %}
     <div class="MC-Bottom">
+        {% include './adminNav2.html' %}
         
-            <div class="both-container">
-            
-                <div class="Left">
-                    <button id="Residents-Accounts">Residents</button> 
-                    <button id="Bhw-Accounts">Bhw</button>
-                    <button id="Officials-Accounts">Officials</button>
-                </div>
-            
+    
+        
                 <div class="contents">
                     <div class="content">
                         <!-- Residents Accounts -->
@@ -44,7 +41,7 @@
                                         <th>Civil Status</th>
                                         <th>Occupation</th>   
                                         <th>Status</th>  
-                                        <th>Action</th>       
+                                          
                                     </tr>
                                 </thead>    
                                 <tbody>
@@ -73,10 +70,7 @@
                                                 <span class="status-declined">Decline</span>
                                             {% endif %}
                                         </td>
-                                        <td>
-                                            <a href="{% url 'approved_resident' resident.id %}" class="btn-approve">Verify</a>
-                                            <a href="{% url 'declined_resident' resident.id %}" class="btn-declined">Decline</a>
-                                        </td>    
+                                      
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -133,7 +127,7 @@
 
                     </div>         
                 </div>
-            </div>
+         
     </div>
 </div>
 {% endblock %}

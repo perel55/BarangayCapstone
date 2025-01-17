@@ -19,7 +19,7 @@
         
         <ul class="nav-links">
             <li>
-                <a href="{% url 'bhwDashboard' %}">
+                <a href="{% url 'admindashboard' %}">
                     <i class='bx bx-grid-alt' ></i>
                     <span class="link_name">Dashboard</span>
                 </a>
@@ -28,7 +28,7 @@
             <li>
     
                 <div class="icon-links">
-                    <a href="{% url 'bhwList' %}">
+                    <a href="{% url 'accounts_view' %}">
                         <i class='bx bx-edit' ></i>
                         <span class="link_name">Accounts</span>
                     </a>
@@ -38,48 +38,53 @@
 
             
             <li>
-                <a href="{% url 'bhwService' %}">
+                <a href="{% url 'service_list' %}">
                     <i class='bx bx-history'></i>
-                    <span class="link_name">Health Services</span>
+                    <span class="link_name">Services</span>
                 </a>
             </li>
 
             <li>
-                <a href="{% url 'bhwOutbreak' %}">
+                <a href="{% url 'adminCertificates' %}">
                     <i class='bx bx-calendar' ></i>
-                    <span class="link_name">Outbreaks</span>
+                    <span class="link_name">Certificates</span>
                 </a>
             </li>
 
             <li>
-                <a href="{% url 'bhwRecord' %}">
+                <a href="{% url 'adminEvent' %}">
                     <i class='bx bx-shield-plus' ></i>
-                    <span class="link_name">Record Verification</span>
+                    <span class="link_name">Events</span>
                 </a>
             </li>
 
            
             <li>
-                <a href="{% url 'bhwReport' %}">
+                <a href="{% url 'adminPayment' %}">
                     <i class='bx bx-shield-plus' ></i>
-                    <span class="link_name">Immunize Report</span>
+                    <span class="link_name">Payment</span>
                 </a>
             </li>
 
             <li>
-                <a href="{% url 'bhwMaintenance' %}">
+                <a href="{% url 'adminResident' %}">
                     <i class='bx bx-shield-plus' ></i>
-                    <span class="link_name">Maintenance</span>
+                    <span class="link_name">Residents</span>
                 </a>
             </li>
           
+            <li>
+                <a href="{% url 'addAdmin' %}">
+                    <i class='bx bx-shield-plus' ></i>
+                    <span class="link_name">Add Admin</span>
+                </a>
+            </li>
 
             <li>
-                <a href="{% url 'bhwlogout' %}">
+                <a href="{% url 'adminlogout' %}">
                     <i class='bx bx-log-out' ></i>
                     <span class="link_name">Logout</span>
                 </a>
-
             </li>
 
   

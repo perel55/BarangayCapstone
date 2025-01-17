@@ -1,65 +1,149 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  overflow-x: hidden;
-  font-family: "Montserrat", sans-serif;
+  background-color: #f8f8fa;
+  font-family: Arial, sans-serif;
   height: 90vh;
+} 
+
+
+nav {
+  top: 5rem;
+  margin-top: 2rem;
+  width: 12%;
+  position: fixed;
+  top: 1.5rem; 
+  display: flex;
+  flex-direction: column;
+  z-index: 1; 
+  height: 100vh;
+  margin-left: 0.2rem;
 }
 
-.adminContainer {
-  width: 100%;
+.nav-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   height: 100%;
+  border-radius: 10px;
   background-color: #ffffff;
+  box-shadow: 0 0 10px rgba(134, 134, 134, 0.3);
 }
 
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+nav ul li {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.NavContainer {
+  padding: 0.6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  margin-right: 0.8rem;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+}
+
+nav ul li img {
+  width: 1.5rem;
+  height: 1.5rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+nav ul li p {
+  font-weight: 560;
+  color: #0a0a0a;
+}
+
+nav ul li:hover {
+  cursor: pointer;
+  background-color: #f3f3f3;
+  color: black;
+}
+
+.active {
+  background: linear-gradient(#7BC9FF,#7EA1FF);
+  color: #fffeff;
+}
+
+nav ul a {
+  text-decoration: none;
+}
 
 .ac-top {
-  border-top: 1px solid #857b7b;
-  border-bottom: 1px solid#857b7b;
-  height: 2rem;
+  height: 3.5rem;
   display: flex;
-  justify-content: center;
-  padding: 0.5rem;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 5; 
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(80, 79, 79, 0.1);
 }
 
-.ac-Bottom {
-  height: 100%;
-  padding: 0.5rem;
-}
-
-.ac-Left {
-  width: 20%;
+.ac-left {
   display: flex;
   align-items: center;
 }
 
-
-.ac-Middle {
-  width: 85%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.ac-Right {
-  width: 20%;
-  display: flex;
-  justify-content: space-evenly;
-}
-.ac-Left img {
+.ac-left img {
   width: 2.6rem;
   height: 2.6rem;
   margin-right: 1rem;
 }
 
-.ac-Left h3 {
+.ac-left h3 {
   color: #07192a;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
+.ac-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* space between search bar and welcome message */
+}
+
+.ac-right input {
+  padding: 0.2rem;
+  width: 15rem;
+  font-size: 1rem; /* Adjust if needed */
+}
+.Accounts a {
+display: inline-block;
+padding: 0.5rem 1rem; /* Adjust padding as needed */
+box-shadow: 0 0 10px rgba(134, 134, 134, 0.2);
+color: #111111; /* Text color */
+border-radius: 5px;
+text-decoration: none;
+font-size: 1rem;
+font-weight: 600;
+white-space: nowrap; /* Prevents text from breaking onto new lines */
+overflow: hidden;
+text-overflow: ellipsis; /* Adds '...' if text is too long */
+max-width: 15rem; /* Set a maximum width to control size */
+background: linear-gradient(#7BC9FF,#7EA1FF);
+} 
 .admin-content {
 padding: 1rem; /* Add some padding for better spacing */
 background-color: #f9f9f9; /* Light background for contrast */
