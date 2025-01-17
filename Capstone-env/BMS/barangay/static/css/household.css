@@ -1,171 +1,187 @@
-/* Centering the dashboard-section */
-.dashboard-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    text-align: center;
+/* General Styling */
+body {
     font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
 }
 
-/* Title styling */
-.dashboard-section h1 {
-    margin-bottom: 20px;
-    font-size: 2em;
+.household-section {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: 8px;
+}
+
+h1 {
+    font-size: 24px;
     color: #333;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
-/* Form styling */
-.dashboard-section form {
+/* Search Form */
+form {
     display: flex;
+    justify-content: center;
     gap: 10px;
     margin-bottom: 20px;
 }
 
-.dashboard-section input[type="text"] {
+form input[type="text"] {
+    width: 300px;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 250px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
 }
 
-.dashboard-section button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
+form input[type="text"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+form button {
+    padding: 10px 20px;
+    font-size: 14px;
     color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
 }
 
-.dashboard-section button:hover {
+form button:hover {
     background-color: #0056b3;
 }
 
-/* Add Household button */
+/* Add Button */
 .add-btn {
-    display: inline-block;
-    margin-bottom: 20px;
-    padding: 10px 15px;
+    display: block;
+    margin: 0 auto 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
     background-color: #28a745;
-    color: white;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: background-color 0.3s;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .add-btn:hover {
     background-color: #218838;
 }
 
-/* Household list */
+/* Household List */
 .household-list {
-    list-style: none;
+    list-style-type: none;
     padding: 0;
     margin: 0;
-    width: 100%;
-    max-width: 600px;
 }
 
 .household-item {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: 15px;
+    align-items: center;
+    padding: 15px 20px;
     margin-bottom: 10px;
-    background-color: #f8f9fa;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.household-item:hover {
+    transform: scale(1.02);
+    background-color: #e9f5ff;
 }
 
 .household-item span {
-    flex: 2; /* Gives more space for the text */
-    font-size: 1em;
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
 }
 
-.household-item .button-group {
+/* Button Group */
+.button-group {
     display: flex;
-    gap: 10px; /* Add spacing between buttons */
+    gap: 10px;
 }
 
-/* Buttons in the household item */
-.view-btn,
-.edit-btn,
-.delete-btn {
-    padding: 5px 10px;
-    border-radius: 5px;
-    color: white;
-    text-decoration: none;
-    font-size: 0.9em;
+.button-group form {
+    margin: 0;
+}
+
+button.view-btn,
+button.edit-btn,
+button.delete-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    color: #fff;
     border: none;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
 }
 
-/* Specific styles for buttons in the household item */
-.household-item .button-group .view-btn {
-    background-color: #0b6cdb; /* Green */
-    color: white;
+button.view-btn {
+    background-color: #17a2b8;
 }
 
-.household-item .button-group .view-btn:hover {
-    background-color: #0c3d75; /* Darker green */
+button.view-btn:hover {
+    background-color: #138496;
 }
 
-.household-item .button-group .edit-btn {
-    background-color: #ffc107; /* Yellow */
-    color: black; /* Black text for contrast */
+button.edit-btn {
+    background-color: #ffc107;
 }
 
-.household-item .button-group .edit-btn:hover {
-    background-color: #d39e00; /* Darker yellow */
+button.edit-btn:hover {
+    background-color: #e0a800;
 }
 
-.household-item .button-group .delete-btn {
-    background-color: #dc3545; /* Red */
-    color: white;
+button.delete-btn {
+    background-color: #dc3545;
 }
 
-.household-item .button-group .delete-btn:hover {
-    background-color: #c82333; /* Darker red */
+button.delete-btn:hover {
+    background-color: #c82333;
 }
 
-
-
-/* Pagination styling */
+/* Pagination */
 .pagination {
     display: flex;
     justify-content: center;
-    align-items: center;
-    gap: 5px;
     margin-top: 20px;
-    padding: 10px;
+    gap: 5px;
 }
 
-.pagination a, .pagination span {
+.pagination a,
+.pagination span {
+    display: inline-block;
     padding: 10px 15px;
+    font-size: 14px;
     text-decoration: none;
-    border-radius: 50%;
-    background-color: #ffffff;
     color: #007bff;
-    font-weight: bold;
-    transition: background-color 0.3s, color 0.3s;
-    border: 1px solid #007bff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .pagination a:hover {
     background-color: #007bff;
-    color: #ffffff;
+    color: #fff;
 }
 
-.pagination span.current {
+.pagination .current {
     background-color: #007bff;
-    color: #ffffff;
-    border: 1px solid #007bff;
+    color: #fff;
+    border-color: #007bff;
 }
-
 
 /* ----------------------- MODAL ------------------- */
 
@@ -570,3 +586,38 @@
         font-size: 14px;
     }
 }
+
+/* Households */
+
+/* Zone Buttons */
+.filter-section {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.zone-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.zone-btn {
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #007bff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.zone-btn:hover {
+    background-color: #0056b3;
+}
+
+.zone-btn.active {
+    background-color: #28a745;
+    font-weight: bold;
+}
+

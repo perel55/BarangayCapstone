@@ -1,7 +1,10 @@
 {% load static %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/household.css' %}">
-
+<script type="module" src="{% static 'js/HouseholdMembers.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
 {% endblock %}
 
 <body class="household-page">
@@ -45,8 +48,16 @@
             {% csrf_token %}
             <div>
                 <label for="id_resident">Resident:</label>
-                {{ form.resident }}
+                <select id="id_resident" class="autocomplete-resident" name="resident">
+                    <option value="" selected disabled>Search for a resident...</option>
+                    {% for resident in form.fields.resident.queryset %}
+                    <option value="{{ resident.id }}">
+                        {{ resident.auth_user.first_name }} {{ resident.auth_user.last_name }}
+                    </option>
+                    {% endfor %}
+                </select>
             </div>
+            
 
             <div>
                 <label for="id_relationship_to_head">Relationship to Head:</label>
