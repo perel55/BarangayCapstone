@@ -192,8 +192,10 @@ urlpatterns = [
     path('certificates/', views.secretary_Certificates, name='secretary_Certificates'),
     path('certificates/update/<int:request_id>/', views.secretary_update_request_status, name='secretary_update_request_status'),
 
+    path('requests/<int:request_id>/', views.request_details, name='request_details'),
+    path('requests/<int:request_id>/update-status/', views.secretary_update_request_status, name='secretary_update_request_status'),
 
-    
+    path('requests/history/', views.secretary_request_history, name='secretary_request_history'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

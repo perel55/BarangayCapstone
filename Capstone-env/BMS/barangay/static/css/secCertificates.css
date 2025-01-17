@@ -139,3 +139,228 @@ body {
         margin-top: 0.5rem;
     }
 }
+
+tr {
+    background-color: red;
+}
+
+/* clickable row */
+
+/* Clickable Row Styling */
+.clickable-row {
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* Enhanced Clickable Row Hover Styling */
+.clickable-row:hover {
+    background-color: #08375e; /* Lighter shade for hover effect */
+    color: #000; /* Optional: change text color for better contrast */
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for a lifted effect */
+    transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+
+.clickable-row td {
+    position: relative;
+}
+
+/* Prevent form elements inside the row from inheriting the click */
+.clickable-row select,
+.clickable-row button {
+    pointer-events: auto;
+}
+
+.history-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.history-button:hover {
+    background-color: #0056b3;
+}
+
+
+/* history */
+
+/* General Styling */
+.admin-certificates-page {
+    padding: 20px;
+    background-color: #f4f4f9;
+    min-height: 100vh;
+}
+
+/* Action Buttons */
+.action-buttons {
+    margin-bottom: 20px;
+}
+
+.return-button, .history-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.return-button:hover, .history-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* History Table Styling */
+.historyTable h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #333;
+    text-align: center;
+}
+
+.historyTable table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.historyTable th, .historyTable td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 1rem;
+}
+
+.historyTable th {
+    background-color: #f1f1f1;
+    color: #333;
+}
+
+.historyTable tr:hover {
+    background-color: #f9f9f9;
+}
+
+.historyTable td {
+    background-color: #fff;
+    word-wrap: break-word;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .historyTable h2 {
+        font-size: 1.5rem;
+    }
+
+    .historyTable table {
+        font-size: 0.9rem;
+    }
+
+    .return-button, .history-button {
+        width: 100%;
+        text-align: center;
+        margin-top: 10px;
+    }
+}
+
+/* request details */
+
+/* Basic styling for request details container */
+.request-details-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f4f4f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Styling for individual request details */
+.request-detail {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.request-detail p {
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+strong {
+    color: #333;
+}
+
+/* Link for downloading request requirements */
+.download-link {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+.download-link:hover {
+    text-decoration: underline;
+}
+
+/* Styling for image container */
+.request-image-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.request-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+/* Download button for image */
+.download-image-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #0066cc;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.download-image-btn:hover {
+    background-color: #005bb5;
+}
+
+/* Return button */
+.return-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ff5733;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.return-btn:hover {
+    background-color: #e74c3c;
+}
+
+  

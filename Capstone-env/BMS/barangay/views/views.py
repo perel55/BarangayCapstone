@@ -19,6 +19,7 @@ from django.db.models import Prefetch
 from django.db.models import Sum
 from django.http import JsonResponse
 from django.utils import timezone
+from datetime import date, timedelta
 
 
 
@@ -214,11 +215,6 @@ def signup(request):
   template = loader.get_template('accounts/signup.html')
   return HttpResponse(template.render())
 
-@login_required
-def residentdashboard(request):
-    return render(request, 'resident/userd.html')
-
-
 
 #-------------------Admin-------------------
 def admindashboard(request):
@@ -381,6 +377,10 @@ def residentHistory(request):
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.utils.timezone import now
+from django.db.models import Count
+
+from datetime import date, timedelta
+from django.db.models import Count
 
 @login_required
 def residentdashboard(request):
@@ -394,6 +394,14 @@ def residentdashboard(request):
     # Automatically fetch first and last name from the auth_user model
     user_first_name = request.user.first_name
     user_last_name = request.user.last_name
+
+    # Fetch additional data for the dashboard
+    today = date.today()
+    recent_schedules = Schedule.objects.filter(date__gte=today - timedelta(days=7)).order_by('-date')
+    upcoming_notices = CommunityNotice.objects.filter(notice_StartDate__gte=today).order_by('notice_StartDate')
+    recent_requests = Request.objects.filter(schedule_date__gte=today - timedelta(days=7)).order_by('-schedule_date')
+    outbreaks_data = Outbreaks.objects.values('outbreak_name').annotate(count=Count('id')).order_by('-count')
+    popular_services = Services.objects.annotate(request_count=Count('request')).order_by('-request_count')[:5]
 
     if resident and not resident.is_profile_complete:
         if request.method == 'POST':
@@ -420,11 +428,26 @@ def residentdashboard(request):
             'show_modal': True,
             'user_first_name': user_first_name,
             'user_last_name': user_last_name,
+            'recent_schedules': recent_schedules,
+            'upcoming_notices': upcoming_notices,
+            'recent_requests': recent_requests,
+            'outbreaks_data': outbreaks_data,
+            'popular_services': popular_services,
         }
 
         return render(request, 'resident/userd.html', context)
 
-    return render(request, 'resident/userd.html', {'show_modal': False})
+    # Context when the resident profile is already complete
+    context = {
+        'show_modal': False,
+        'recent_schedules': recent_schedules,
+        'upcoming_notices': upcoming_notices,
+        'recent_requests': recent_requests,
+        'outbreaks_data': outbreaks_data,
+        'popular_services': popular_services,
+    }
+
+    return render(request, 'resident/userd.html', context)
 
 
 
@@ -437,40 +460,73 @@ def profile_check(request):
 
 
 
+@login_required
 def secretarydashboard(request):
-    # Count of pending residents
+    secretary = Secretary.objects.filter(auth_user=request.user).first()
+
+    # Automatically fetch first and last name from the auth_user model
+    user_first_name = request.user.first_name
+    user_last_name = request.user.last_name
+
+    # Dashboard statistics
     pending_residents_count = Residents.objects.filter(status='Pending').count()
-
-    # Count of pending requests
     pending_requests_count = Request.objects.filter(status='Pending').count()
-
-    # Count of upcoming community notices
     today = timezone.now().date()
     upcoming_notices_count = CommunityNotice.objects.filter(notice_EndDate__gte=today).count()
-
-    # Count of active outbreaks
-    active_outbreaks = Outbreaks.objects.filter(status="Active")
-
-    # Data for the active outbreaks to display in the chart
-    # Corrected the field name to 'outbreak_name' and 'date'
-    outbreaks_data = active_outbreaks.values('outbreak_name', 'status', 'date')  # 'date' used instead of 'date_reported'
-    outbreaks_names = [outbreak['outbreak_name'] for outbreak in outbreaks_data]
-    outbreaks_dates = [outbreak['date'] for outbreak in outbreaks_data]  # Use 'date' here
-
-    # Total residents count
+    active_outbreaks_count = Outbreaks.objects.filter(status="Active").count()
     total_residents_count = Residents.objects.count()
 
+    # Check if secretary profile is incomplete
+    show_modal = secretary and not all([
+        secretary.mname,
+        secretary.zone,
+        secretary.civil_status,
+        secretary.occupation,
+        secretary.birthdate,
+        secretary.phone_number,
+        secretary.picture,
+        secretary.position
+    ])
+
+    if request.method == 'POST':
+        # Update the secretary profile
+        if secretary:
+            secretary.mname = request.POST.get('mname', secretary.mname)
+            secretary.zone = request.POST.get('zone', secretary.zone)
+            secretary.civil_status = request.POST.get('civil_status', secretary.civil_status)
+            secretary.occupation = request.POST.get('occupation', secretary.occupation)
+            secretary.birthdate = request.POST.get('birthdate', secretary.birthdate)
+            secretary.phone_number = request.POST.get('phone_number', secretary.phone_number)
+
+            # Handle file uploads
+            if request.FILES.get('picture'):
+                secretary.picture = request.FILES['picture']
+            if request.FILES.get('id_image'):
+                secretary.id_image = request.FILES['id_image']
+
+            secretary.position = request.POST.get('position', secretary.position)
+            secretary.is_profile_complete = True
+            secretary.save()
+
+            return redirect('secretarydashboard')
+
     context = {
+        'secretary': secretary,
         'pending_residents_count': pending_residents_count,
         'pending_requests_count': pending_requests_count,
         'upcoming_notices_count': upcoming_notices_count,
-        'active_outbreaks_count': active_outbreaks.count(),
-        'outbreaks_names': outbreaks_names,
-        'outbreaks_dates': outbreaks_dates,
-        'total_residents_count': total_residents_count
+        'active_outbreaks_count': active_outbreaks_count,
+        'total_residents_count': total_residents_count,
+        'show_modal': show_modal,
+        'user_first_name': user_first_name,
+        'user_last_name': user_last_name,
     }
 
     return render(request, 'secretary/secDashboard.html', context)
+
+
+
+
 
 
 

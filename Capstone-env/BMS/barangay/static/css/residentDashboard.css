@@ -1,0 +1,95 @@
+/* Center the dashboard content */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px; /* Limit the width for larger screens */
+    margin: 0 auto; /* Center the content horizontally */
+  }
+  
+  /* Styles for the Dashboard */
+  .dashboard-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center; /* Center the row */
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  
+  .dashboard-card {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 600px; /* Reduced width to make the cards smaller */
+    box-sizing: border-box;
+    text-align: center; /* Center text within cards */
+  }
+  
+  .dashboard-card h2 {
+    font-size: 1.3rem; /* Slightly smaller font size */
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  .dashboard-card ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  .dashboard-card li {
+    font-size: 0.9rem; /* Slightly smaller font size */
+    margin-bottom: 8px;
+    color: #666;
+  }
+  
+  .outbreak-chart {
+    width: 100%;
+    height: 150px; /* Reduced height for the chart */
+    margin-bottom: 15px;
+  }
+  
+  .outbreak-list {
+    margin-top: 2px;
+    display: grid; /* Use grid for layout */
+    grid-template-columns: repeat(7, 1fr); /* Create 2 equal columns */
+    gap: 2px; /* Space between the items */
+  }
+  
+  .outbreak-list li {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    color: #666;
+  }
+  
+  /* Specific Styling for Each Section */
+  .outbreak-card {
+    background-color: #FFECF1; /* Soft pink for outbreaks */
+  }
+  
+  .schedule-card {
+    background-color: #E8F4FD; /* Soft blue for schedules */
+  }
+  
+  .notices-card {
+    background-color: #F9F9F9; /* Light gray for notices */
+  }
+  
+  .requests-card {
+    background-color: #FFF4E6; /* Light orange for requests */
+  }
+  
+  .services-card {
+    background-color: #E6F7FF; /* Soft light blue for services */
+  }
+  
+  /* Make sure it is responsive */
+  @media (max-width: 768px) {
+    .dashboard-card {
+      width: 90%; /* Adjust width to 90% for mobile */
+    }
+  }
+  

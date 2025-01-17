@@ -193,8 +193,8 @@ def secretary_delete_service(request, service_id):
 # ------------------------------ Request ---------------------------
 
 def secretary_Certificates(request):
-    requests = Request.objects.all()  
-
+    # Fetch only pending requests
+    requests = Request.objects.filter(status='Pending')
     return render(request, 'secretary/secretaryRequest.html', {'requests': requests})
 
 def secretary_update_request_status(request, request_id):
@@ -210,6 +210,41 @@ def secretary_update_request_status(request, request_id):
         return redirect('secretary_Certificates')  
 
     return redirect('secretary_Certificates')  
+
+def secretary_update_request_status(request, request_id):
+    req = get_object_or_404(Request, id=request_id)
+
+    if request.method == 'POST':
+        new_status = request.POST.get('status')
+        if req.status != new_status:  # Only act if the status has changed
+            # Update the status
+            req.status = new_status
+            req.save()
+
+            # Log the change in RequestHistory
+            RequestHistory.objects.create(
+                request=req,
+                status=new_status,
+                updated_by=request.user  # Assuming you track who made the change
+            )
+
+            messages.success(request, f"Request status updated to {new_status}.")
+
+        return redirect('secretary_Certificates')
+
+    return redirect('secretary_Certificates')
+
+def request_details(request, request_id):
+    req = Request.objects.get(id=request_id)
+    history = req.history.all().order_by('-updated_at')  # Get request history
+
+    return render(request, 'Secretary/SecretaryRequestDetails.html', {'request': req, 'history': history})
+
+def secretary_request_history(request):
+    # Fetch all requests that are either Approved or Declined
+    history_requests = Request.objects.filter(status__in=['Approved', 'Declined']).order_by('-schedule_date')
+    return render(request, 'secretary/requestHistory.html', {'history_requests': history_requests})
+
 
 # ------------------ DASHBOARD VIEW -----------------------------
 
