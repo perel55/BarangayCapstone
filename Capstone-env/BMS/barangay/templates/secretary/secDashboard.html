@@ -1,6 +1,7 @@
 {% load static %}
-{% block css %}
 
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
 {% endblock %}
 
 {% include 'secretary/secNavbar.html' %}
@@ -10,6 +11,23 @@
     <div class="dashboard-header">
         <h1>Dashboard</h1>
     </div>
+
+    {% include 'modal/CompleteProfile.html' %}
+
+    {% if show_modal %}
+    <div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="profileModalLabel">Complete Your Profile</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+        </div>
+        </div>
+    </div>
+    {% endif %}
 
     <div class="dashboard-reports">
         <div class="dashboard-report">
@@ -34,6 +52,17 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const modalElement = document.getElementById("profileModal");
+      if ({{ show_modal|yesno:"true,false" }}) {
+        $(modalElement).modal('show');
+      }
+    });
+</script>
+
 {% endblock %}
 
 <style>

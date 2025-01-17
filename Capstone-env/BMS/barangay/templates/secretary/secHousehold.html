@@ -32,7 +32,7 @@
     <ul class="household-list">
         {% for household in households %}
         <li class="household-item">
-            <span>{{ household.name }} ({{ household.zone }})</span>
+            <span>{{ household.name }} Family  (zone: {{ household.zone }})</span>
             <div class="button-group">
                 <form method="GET" action="{% url 'member_list' household.id %}" class="view-form">
                     <button type="submit" class="view-btn">View Members</button>

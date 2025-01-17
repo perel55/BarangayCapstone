@@ -1,0 +1,50 @@
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static './css/secCertificates.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-certificates-page">
+    <div class="content-container">
+        {% include 'secretary/secNavbar.html' %}
+        
+        <!-- Return Button -->
+        <div class="action-buttons" style="text-align: left; margin-bottom: 20px;">
+            <a href="{% url 'secretary_Certificates' %}" class="return-button">Return to Requests</a>
+        </div>
+
+        <div class="historyTable">
+            <h2>Request History</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Full Name</th>
+                        <th>Service</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in history_requests %}
+                    <tr>
+                        <td>{{ request.user.username }}</td>
+                        <td>{{ request.user.first_name }} {{ request.user.last_name }}</td>
+                        <td>{{ request.service_id.service_name }}</td>
+                        <td>{{ request.schedule_date }}</td>
+                        <td>{{ request.schedule_start_time }}</td>
+                        <td>{{ request.status }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6">No history found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

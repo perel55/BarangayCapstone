@@ -19,8 +19,6 @@ class Residents(models.Model):
     is_profile_complete = models.BooleanField(default=False)
     status = models.CharField(max_length=50, default="Pending")
 
-    def full_name(self):
-        return f"{self.auth_user.first_name} {self.mname} {self.auth_user.last_name}"
 
     def __str__(self):
         return f"{self.auth_user}"
@@ -92,6 +90,8 @@ class Secretary(models.Model):
     phone_number = models.CharField(max_length=255)
     picture = models.ImageField(upload_to = 'images/', null=True)
     position = models.CharField(max_length=255)
+    is_profile_complete = models.BooleanField(default=False)
+    status = models.CharField(max_length=50, default="Pending")
 
     def __str__(self):
         return f"{self.auth_user}"
@@ -202,7 +202,15 @@ class Request(models.Model):
 
     def __str__(self):
         return f"{self.Resident_id} - {self.service_id} - {self.schedule_date}"
+    
+class RequestHistory(models.Model):
+    request = models.ForeignKey(Request, on_delete=models.CASCADE, related_name="history")
+    status = models.CharField(max_length=20)  # e.g., Approved, Declined
+    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"{self.request} - {self.status} at {self.updated_at}"
 
 class CommunityNotice(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)

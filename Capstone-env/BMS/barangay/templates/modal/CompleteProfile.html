@@ -1,12 +1,11 @@
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+{% block css %}
   <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
   
-</head>
+
+{% block content %}
 
 {% if show_modal %}
   <div class="modal fade show" id="profileModal" tabindex="-1" role="dialog" style="display: block;">
@@ -145,3 +144,5 @@
 
   
 </script>
+
+{% endblock %}
