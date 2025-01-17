@@ -7,11 +7,22 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
 from .models import Residents, Request, CommunityNotice
+from django.contrib.auth.decorators import login_required
+from datetime import datetime
+from django.http import JsonResponse
+
 
 def household_list(request):
     query = request.GET.get('q', '')  # Get the search query from the URL
-    households_list = Household.objects.filter(name__icontains=query) if query else Household.objects.all()
-    
+    zone = request.GET.get('zone', '')  # Get the zone filter from the URL
+
+    households_list = Household.objects.all()
+
+    if query:
+        households_list = households_list.filter(name__icontains=query)
+    if zone:
+        households_list = households_list.filter(zone=zone)
+
     paginator = Paginator(households_list, 10)  # Display 10 households per page
     page = request.GET.get('page')
 
@@ -22,10 +33,17 @@ def household_list(request):
     except EmptyPage:
         households = paginator.page(paginator.num_pages)
 
-    # Pass the form to the template
-    form = HouseholdForm()
-    
-    return render(request, 'secretary/secHousehold.html', {'households': households, 'query': query, 'form': form})
+    # Define the list of zones
+    zones = ['1A', '1B', '2', '3', '4', '5', '6', '7', '8']
+
+    return render(request, 'secretary/secHousehold.html', {
+        'households': households,
+        'query': query,
+        'form': HouseholdForm(),
+        'zone': zone,  # Pass the selected zone to the template
+        'zones': zones,  # Pass the zone list to the template
+    })
+
 
 
 def household_create(request):
@@ -92,6 +110,26 @@ def member_create(request, household_id):
     else:
         form = MemberForm()
     return render(request, 'secretary/secMemberList.html', {'form': form, 'household': household})
+
+
+@login_required
+def resident_autocomplete(request):
+    if 'term' in request.GET:  # Fetch the search term
+        query = request.GET['term']
+        qs = Residents.objects.filter(
+            auth_user__first_name__icontains=query
+        ) | Residents.objects.filter(auth_user__last_name__icontains=query)
+
+        # Prepare results for Select2
+        results = [
+            {"id": resident.id, "text": f"{resident.auth_user.first_name} {resident.auth_user.last_name}"}
+            for resident in qs
+        ]
+        return JsonResponse(results, safe=False)
+
+    return JsonResponse([], safe=False)
+
+
 
 def member_delete(request, member_id):
     member = get_object_or_404(Member, pk=member_id)
@@ -248,3 +286,35 @@ def secretary_request_history(request):
 
 # ------------------ DASHBOARD VIEW -----------------------------
 
+
+
+
+# ------------------- Edit Profile ---------------------------------
+@login_required
+def edit_secretary_profile(request):
+    secretary = get_object_or_404(Secretary, auth_user=request.user)
+
+    if request.method == "POST":
+        secretary.mname = request.POST.get('mname', secretary.mname)
+        secretary.zone = request.POST.get('zone', secretary.zone)
+        secretary.civil_status = request.POST.get('civil_status', secretary.civil_status)
+        secretary.occupation = request.POST.get('occupation', secretary.occupation)
+
+        birthdate_str = request.POST.get('birthdate', secretary.birthdate)
+        if birthdate_str:
+            secretary.birthdate = datetime.strptime(birthdate_str, '%Y-%m-%d').date()
+
+        secretary.phone_number = request.POST.get('phone_number', secretary.phone_number)
+        if 'picture' in request.FILES:
+            secretary.picture = request.FILES['picture']
+
+        secretary.is_profile_complete = True
+        secretary.save()
+
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'message': 'Profile updated successfully'}, status=200)
+
+        return redirect('edit_secretary_profile')
+
+    birthdate_str = secretary.birthdate.strftime('%Y-%m-%d') if secretary.birthdate else ""
+    return render(request, 'secretary/secEditProfile.html', {'secretary': secretary, 'birthdate_str': birthdate_str})

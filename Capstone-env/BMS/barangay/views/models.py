@@ -288,7 +288,6 @@ class ResidentImmunize(models.Model):
     
 class Household(models.Model):
     name = models.CharField(max_length=255)  # Name of household
-    address = models.TextField()
     zone = models.CharField(max_length=255)  # Barangay zone
     created_at = models.DateTimeField(auto_now_add=True)
 

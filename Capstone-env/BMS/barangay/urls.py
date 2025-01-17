@@ -203,5 +203,8 @@ urlpatterns = [
 
     path('requests/history/', views.secretary_request_history, name='secretary_request_history'),
 
+    path('secretary/edit-profile/', views.edit_secretary_profile, name='edit_secretary_profile'),
+
+    path('resident-autocomplete/', views.resident_autocomplete, name='resident_autocomplete'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

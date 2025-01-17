@@ -5,70 +5,86 @@
 
 {% include 'secretary/secNavbar.html' %}
 
-<div class="dashboard-section">
-    <h1>Barangay Lala Proper Households</h1>
-    <form method="GET" action="">
-        <input type="text" name="q" placeholder="Search households..." value="{{ query }}">
-        <button type="submit">Search</button>
-    </form>
+<div class="household-section">
 
-    <button class="add-btn" onclick="openModal()">Add Household</button>
+    <div class="dashboard-section">
+        <h1>Barangay Lala Proper Households</h1>
+        <form method="GET" action="">
+            <input type="text" name="q" placeholder="Search households..." value="{{ query }}">
+            <button type="submit">Search</button>
+        </form>
 
-    <!-- Modal Structure -->
-    <div id="addServiceModal" class="modal">
-        <div class="modal-content">
-            <button class="close" onclick="closeModal()">&times;</button>
-            <form method="POST" action="{% url 'household_create' %}">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-primary">Create Household</button>
-                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-            </form>
+        <div class="filter-section">
+            <h2>Filter by Purok</h2>
+            <div class="zone-buttons">
+                {% for zone in zones %}
+                <a href="?zone={{ zone }}" class="zone-btn {% if zone == zone %}active{% endif %}">
+                    {{ zone }}
+                </a>
+                {% endfor %}
+            </div>
         </div>
-    </div>
-    
+        
+        
 
+        <button class="add-btn" onclick="openModal()">Add Household</button>
 
-    <ul class="household-list">
-        {% for household in households %}
-        <li class="household-item">
-            <span>{{ household.name }} Family  (zone: {{ household.zone }})</span>
-            <div class="button-group">
-                <form method="GET" action="{% url 'member_list' household.id %}" class="view-form">
-                    <button type="submit" class="view-btn">View Members</button>
-                </form>
-                <form method="GET" action="{% url 'household_update' household.id %}" class="edit-form">
-                    <button type="submit" class="edit-btn">Edit</button>
-                </form>
-                <form method="POST" action="{% url 'household_delete' household.id %}" class="delete-form">
+        <!-- Modal Structure -->
+        <div id="addServiceModal" class="modal">
+            <div class="modal-content">
+                <button class="close" onclick="closeModal()">&times;</button>
+                <form method="POST" action="{% url 'household_create' %}">
                     {% csrf_token %}
-                    <button type="submit" class="delete-btn">Delete</button>
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Create Household</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
                 </form>
             </div>
-        </li>
-        {% empty %}
-        <li>No households found.</li>
-        {% endfor %}
-    </ul>
+        </div>
+        
 
-    <div class="pagination">
-        {% if households.has_previous %}
-        <a href="?q={{ query }}&page={{ households.previous_page_number }}">‹ Prev</a>
-        {% endif %}
-        {% for num in households.paginator.page_range %}
-        {% if households.number == num %}
-        <span class="current">{{ num }}</span>
-        {% elif num > households.number|add:'-3' and num < households.number|add:'3' %}
-        <a href="?q={{ query }}&page={{ num }}">{{ num }}</a>
-        {% elif num == 1 or num == households.paginator.num_pages %}
-        <a href="?q={{ query }}&page={{ num }}">{{ num }}</a>
-        {% elif num == households.number|add:'-4' or num == households.number|add:'3' %}
-        ...
-        {% endif %}
-        {% endfor %}
-        {% if households.has_next %}
-        <a href="?q={{ query }}&page={{ households.next_page_number }}">Next ›</a>
-        {% endif %}
+
+        <ul class="household-list">
+            {% for household in households %}
+            <li class="household-item">
+                <span>{{ household.name }} ({{ household.zone }})</span>
+                <div class="button-group">
+                    <form method="GET" action="{% url 'member_list' household.id %}" class="view-form">
+                        <button type="submit" class="view-btn">View Members</button>
+                    </form>
+                    <form method="GET" action="{% url 'household_update' household.id %}" class="edit-form">
+                        <button type="submit" class="edit-btn">Edit</button>
+                    </form>
+                    <form method="POST" action="{% url 'household_delete' household.id %}" class="delete-form">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-btn">Delete</button>
+                    </form>
+                </div>
+            </li>
+            {% empty %}
+            <li>No households found.</li>
+            {% endfor %}
+        </ul>
+
+        <div class="pagination">
+            {% if households.has_previous %}
+            <a href="?zone={{ zone }}&q={{ query }}&page={{ households.previous_page_number }}">‹ Prev</a>
+            {% endif %}
+            {% for num in households.paginator.page_range %}
+            {% if households.number == num %}
+            <span class="current">{{ num }}</span>
+            {% elif num > households.number|add:'-3' and num < households.number|add:'3' %}
+            <a href="?zone={{ zone }}&q={{ query }}&page={{ num }}">{{ num }}</a>
+            {% elif num == 1 or num == households.paginator.num_pages %}
+            <a href="?zone={{ zone }}&q={{ query }}&page={{ num }}">{{ num }}</a>
+            {% elif num == households.number|add:'-4' or num == households.number|add:'3' %}
+            ...
+            {% endif %}
+            {% endfor %}
+            {% if households.has_next %}
+            <a href="?zone={{ zone }}&q={{ query }}&page={{ households.next_page_number }}">Next ›</a>
+            {% endif %}
+        </div>        
     </div>
 </div>
 
