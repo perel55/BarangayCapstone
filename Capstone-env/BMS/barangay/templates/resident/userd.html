@@ -1,0 +1,175 @@
+{% load static %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/residentHS.css' %}">
+  <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+  <link rel="stylesheet" href="{% static 'css/residentDashboard.css' %}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+{% endblock %}
+
+<body>
+  {% block content %}
+
+  <div class="adminContainer">
+    {% include 'resident/residentTopnav.html' %}
+    <div class="MC-Bottom"></div>
+    {% include 'resident/residentNav1.html' %}
+
+    <h1>Dashboard</h1>
+
+<div class="dashboard-row">
+  <div class="dashboard-card outbreak-card">
+    <h2>Outbreaks</h2>
+    <canvas id="outbreakChart" class="outbreak-chart"></canvas>
+    <ul class="outbreak-list">
+        {% for outbreak in outbreaks_data %}
+            <li>{{ outbreak.outbreak_name }}: {{ outbreak.count }}</li>
+        {% empty %}
+            <li>No outbreaks recorded.</li>
+        {% endfor %}
+    </ul>
+  </div>
+
+  <div class="dashboard-card schedule-card">
+    <h2>Recent Schedules</h2>
+    <ul>
+        {% for schedule in recent_schedules %}
+            <li>{{ schedule.date }} - {{ schedule.status }}</li>
+        {% empty %}
+            <li>No recent schedules.</li>
+        {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<div class="dashboard-row">
+  <div class="dashboard-card notices-card">
+    <h2>Upcoming Notices</h2>
+    <ul>
+        {% for notice in upcoming_notices %}
+            <li>{{ notice.notice_name }} - {{ notice.notice_StartDate }}</li>
+        {% empty %}
+            <li>No upcoming notices.</li>
+        {% endfor %}
+    </ul>
+  </div>
+
+  <div class="dashboard-card requests-card">
+    <h2>Recent Requests</h2>
+    <ul>
+        {% for request in recent_requests %}
+            <li>{{ request.service_id.service_name }} - {{ request.schedule_date }}</li>
+        {% empty %}
+            <li>No recent requests.</li>
+        {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<div class="dashboard-row">
+  <div class="dashboard-card services-card">
+    <h2>Popular Services</h2>
+    <ul>
+        {% for service in popular_services %}
+            <li>{{ service.service_name }} - {{ service.request_count }} requests</li>
+        {% empty %}
+            <li>No popular services yet.</li>
+        {% endfor %}
+    </ul>
+  </div>
+</div>
+
+{% include 'modal/CompleteProfile.html' %}
+
+{% if show_modal %}
+  <div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="profileModalLabel">Complete Your Profile</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+
+  {% endblock %}
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const modalElement = document.getElementById("profileModal");
+      if (modalElement) {
+        $('#profileModal').modal('show');
+      }
+    });
+
+    function previewImage(event) {
+      const imagePreview = document.getElementById('imagePreview');
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          imagePreview.src = e.target.result;
+          imagePreview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    window.addEventListener("beforeunload", function () {
+        navigator.sendBeacon("/accounts/logout/");
+    });
+
+    // Manually passing outbreak data to JavaScript
+    const outbreaks = [
+      {% for outbreak in outbreaks_data %}
+        { name: "{{ outbreak.outbreak_name }}", count: {{ outbreak.count }} },
+      {% endfor %}
+    ];
+
+    const labels = outbreaks.map(data => data.name);
+    const values = outbreaks.map(data => data.count);
+
+    // Initialize Chart.js
+    const ctx = document.getElementById('outbreakChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: values,
+          backgroundColor: [
+            '#FF6384',
+            '#36A2EB',
+            '#FFCE56',
+            '#4BC0C0',
+            '#9966FF',
+            '#FF9F40'
+          ],
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                return `${context.label}: ${context.raw}`;
+              }
+            }
+          }
+        }
+      }
+    });
+  </script>
+</body>

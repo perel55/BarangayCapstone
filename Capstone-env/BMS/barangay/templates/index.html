@@ -1,0 +1,56 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block content %}
+<body>
+  {% include "nav.html" %}
+  
+  <div class="main-div">
+    <h2>Welcome to Barangay Lala Proper Management System</h2>
+    <br>
+    <br>
+    
+    <div class="services-container mt-5">
+      <div class="row">
+        <!-- Administrative Services Card -->
+        <div class="col-md-6 mb-4">
+          <div class="custom-card h-100 text-center">
+            <div class="icon-section admin-icon"></div>
+            <div class="card-body">
+              <h5 class="card-title">Administrative Services</h5>
+              <p class="card-text">Explore all available administrative services, such as barangay clearance, ID issuance, and more.</p>
+              <a href="{% url 'administrative_services_list' %}" class="btn btn-primary">View Administrative Services</a>
+            </div>
+          </div>
+        </div>
+
+        
+        
+        <!-- Health Services Card -->
+        <div class="col-md-6 mb-4">
+          <div class="custom-card h-100 text-center">
+            <div class="icon-section health-icon"></div>
+            <div class="card-body">
+              <h5 class="card-title">Health Services</h5>
+              <p class="card-text">Explore all available health services, including immunizations, health check-ups, and outbreak monitoring.</p>
+              <a href="{% url 'health_services_list' %}" class="btn btn-success">View Health Services</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        window.addEventListener("beforeunload", function () {
+            navigator.sendBeacon("/accounts/logout/");
+        });
+    </script>
+    {% endblock %}

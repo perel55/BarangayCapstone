@@ -1,0 +1,44 @@
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static './css/bhw.css' %}">
+<link rel="stylesheet" href="{% static './css/verificationBtn.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include 'bhw/bhwTopnav.html' %}
+
+    <div class="MC-Bottom">
+        {% include 'bhw/bhwNav2.html' %}
+        <div class="contents">
+            <section id="content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Service</th>
+                            <th>Purok</th>
+                            <th>Date</th>
+                            <th>Phone Number</th>
+                            <th>View More</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for schedule in schedules %}
+                        <tr>
+                            <td>{{ schedule.user.first_name }} {{ schedule.user.last_name }}</td>
+                            <td>{{ schedule.bhwService.service_name }}</td>
+                            <td>{{ schedule.resident.zone }}</td>
+                            <td>{{ schedule.date }}</td>
+                            <td>{{ schedule.resident.phone_number }}</td>
+                            <td>
+                                <a href="{% url 'releasedMaintenance' schedule.id %}" class="view-more-link">View More</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+    
+{% endblock %}

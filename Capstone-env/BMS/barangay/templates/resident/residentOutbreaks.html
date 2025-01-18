@@ -1,0 +1,88 @@
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static './css/residentHS.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+<div class="MainContainer">
+    {% include './residentTopnav.html' %}
+    <div class="MC-Bottom">
+        {% include './residentNav1.html' %}
+
+        <div style="width: 80%; margin: auto; margin-top: 6rem;">
+            <h2 style="text-align: center;">Outbreak Counts by Purok</h2>
+            <canvas id="outbreakChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Fetch data from the backend
+    fetch("{% url 'outbreak-chart-data' %}")
+        .then(response => response.json())
+        .then(data => {
+            const ctx = document.getElementById('outbreakChart').getContext('2d');
+
+            // Create the chart
+            const outbreakChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.labels, // Purok names
+                    datasets: [{
+                        label: 'Number of Outbreaks',
+                        data: data.counts, // Outbreak counts
+                        backgroundColor: [
+                            '#FF6384',
+                            '#36A2EB',
+                            '#FFCE56',
+                            '#4BC0C0',
+                            '#9966FF',
+                            '#FF9F40'
+                        ],
+                        borderColor: 'rgba(75, 192, 192, 1)', // Border color
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    const purok = data.labels[tooltipItem.dataIndex];
+                                    const names = data.names[purok];
+                                    const nameList = names.join(', ');
+                                    return `Count: ${tooltipItem.raw}\nOutbreaks: ${nameList}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Outbreaks',
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Purok',
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Calculate and display the total outbreaks
+            const totalOutbreaks = data.counts.reduce((a, b) => a + b, 0);
+            const totalOutbreaksElement = document.getElementById('totalOutbreaks');
+            const showTotalBtn = document.getElementById('showTotalBtn');
+
+            showTotalBtn.addEventListener('click', () => {
+                totalOutbreaksElement.innerText = `Total Outbreaks: ${totalOutbreaks}`;
+            });
+        });
+</script>
+

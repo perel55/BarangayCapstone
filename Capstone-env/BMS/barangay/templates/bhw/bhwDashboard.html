@@ -1,0 +1,174 @@
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/bhw.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="adminContainer">
+    {% include 'bhw/bhwTopnav.html' %}
+    <div class="MC-Bottom"> 
+        {% include 'bhw/bhwNav2.html' %} 
+
+        <div class="contents">
+            <section id="content">
+
+                <div class="box-container">
+                    <div class="box">
+                        <img src="{% static 'images/hworker.png' %}" alt="BHWs">    
+                        <h1>Total BHW</h1>
+                        <p>{{ total_bhw }}</p>
+                    </div>
+                
+                    <div class="box">
+                        <img src="{% static 'images/residents.png' %}" alt="Residents">    
+                        <h1>Total Resident</h1>
+                        <p>{{ total_resident }}</p>
+                    </div>
+                
+                    <div class="box">
+                        <img src="{% static 'images/residents.png' %}" alt="Residents">    
+                        <h1>Verified Resident</h1>
+                        <p>{{ verified_resident }}</p>
+                    </div>
+
+                    <div class="box">
+                        <img src="{% static 'images/accounts.png' %}" alt="Officials">    
+                        <h1>Total Official</h1>
+                        <p>{{ total_admin }}</p>
+                    </div>
+
+                    <div class="box">
+                        <img src="{% static 'images/hservice.png' %}" alt="Officials">    
+                        <h1>Health Services</h1>
+                        <p>{{ total_healthService }}</p>
+                    </div>
+
+                    <div class="box">
+                        <img src="{% static 'images/health.png' %}" alt="Officials">    
+                        <h1>Active Outbreaks</h1>
+                        <p>{{ active_outbreaks }}</p>
+                    </div>
+                    
+                    <div class="box">
+                        <img src="{% static 'images/health.png' %}" alt="Officials">    
+                        <h1>Inactive Outbreaks</h1>
+                        <p>{{ inactive_outbreaks }}</p>
+                    </div>
+
+                    <div class="box">
+                        <img src="{% static 'images/health.png' %}" alt="Officials">    
+                        <h1>Total Maintenance</h1>
+                        <p>{{ total_maintenance }}</p>
+                    </div>
+
+                    <div class="box">
+                        <img src="{% static 'images/health.png' %}" alt="Officials">    
+                        <h1>Total Immunization</h1>
+                        <p>{{ total_immunization }}</p>
+                    </div>
+
+                    <div class="box">
+                        <img src="{% static 'images/health.png' %}" alt="Officials">    
+                        <h1>Total Medicine</h1>
+                        <p>{{ total_medicine }}</p>
+                    </div>
+                </div>
+
+                <!-- Chart.js Graph -->
+                <canvas id="dashboardChart" width="400" height="90"></canvas>
+
+                <script>
+                    // Get context of canvas
+                    const ctx = document.getElementById('dashboardChart').getContext('2d');
+
+                    // Chart data
+                    const data = {
+                        labels: [
+                            'Total BHWs',
+                            'Total Admins',
+                            'Total Residents',
+                            'Verified Residents',
+                            'Health Services',
+                            'Active Outbreaks',
+                            'Inactive Outbreaks',
+                            'Total Maintenance',
+                            'Total Immunization',
+                            'Total Medicine'
+                        ],
+                        datasets: [{
+                            label: 'Dashboard Overview',
+                            data: [
+                                {{ total_bhw }},
+                                {{ total_admin }},
+                                {{ total_resident }},
+                                {{ verified_resident }},
+                                {{ total_healthService }},
+                                {{ active_outbreaks }},
+                                {{ inactive_outbreaks }},
+                                {{ total_maintenance }},
+                                {{ total_immunization }},
+                                {{ total_medicine }}
+                            ],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)',
+                                'rgba(99, 255, 132, 0.2)',
+                                'rgba(132, 99, 255, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',  // for Total Immunization
+                                'rgba(255, 159, 64, 0.2)'   // for Total Medicine
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)',
+                                'rgba(99, 255, 132, 1)',
+                                'rgba(132, 99, 255, 1)',
+                                'rgba(54, 162, 235, 1)',  // for Total Immunization
+                                'rgba(255, 159, 64, 1)'   // for Total Medicine
+                            ],
+                            borderWidth: 1
+                        }]
+                    };
+
+                    // Chart configuration
+                    const config = {
+                        type: 'bar', // Change to 'pie', 'line', or others as needed
+                        data: data,
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Dashboard Data Overview'
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    };
+
+                    // Render chart
+                    const dashboardChart = new Chart(ctx, config);
+                </script>
+
+            </section>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

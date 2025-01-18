@@ -1,0 +1,121 @@
+{% load static %}
+{% block css %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/bhwnav2.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+{% endblock %}
+
+<body>
+    <div class="sidebar">
+        <div class="logo-details">
+            <i class='bx bxs-castle'></i>
+            <span class="logo_name">Barangay Lala</span>
+        </div>
+        
+        <ul class="nav-links">
+            <li>
+                <a href="{% url 'admindashboard' %}">
+                    <i class='bx bx-grid-alt' ></i>
+                    <span class="link_name">Dashboard</span>
+                </a>
+            </li>
+
+            <li>
+    
+                <div class="icon-links">
+                    <a href="{% url 'accounts_view' %}">
+                        <i class='bx bx-edit' ></i>
+                        <span class="link_name">Accounts</span>
+                    </a>
+                        
+                </div>                
+            </li>
+
+            
+            <li>
+                <a href="{% url 'service_list' %}">
+                    <i class='bx bx-history'></i>
+                    <span class="link_name">Services</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'adminCertificates' %}">
+                    <i class='bx bx-calendar' ></i>
+                    <span class="link_name">Certificates</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'adminEvent' %}">
+                    <i class='bx bx-shield-plus' ></i>
+                    <span class="link_name">Events</span>
+                </a>
+            </li>
+
+           
+            <li>
+                <a href="{% url 'adminPayment' %}">
+                    <i class='bx bx-shield-plus' ></i>
+                    <span class="link_name">Payment</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'adminResident' %}">
+                    <i class='bx bx-shield-plus' ></i>
+                    <span class="link_name">Residents</span>
+                </a>
+            </li>
+          
+            <li>
+                <a href="{% url 'addAdmin' %}">
+                    <i class='bx bx-shield-plus' ></i>
+                    <span class="link_name">Add Admin</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'adminlogout' %}">
+                    <i class='bx bx-log-out' ></i>
+                    <span class="link_name">Logout</span>
+                </a>
+            </li>
+
+  
+
+        </ul>
+    </div>
+
+
+    <script>
+
+        let arrow = document.querySelectorAll(".arrow");
+        for (var i = 0; i < arrow.length; i++) {
+            arrow[i].addEventListener("click", (e)=>{
+        let arrowParent = e.target.parentElement.parentElement;
+            console.log(arrowParent);
+            arrowParent.classList.toggle("showMenu");
+            });
+        }
+
+        let sidebar = document.querySelector(".sidebar");
+        let sidebarBtn = document.querySelector(".bx-menu");
+
+        sidebarBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
+        });
+
+
+        
+    
+    </script>
+    
+</body>
+</html>
+

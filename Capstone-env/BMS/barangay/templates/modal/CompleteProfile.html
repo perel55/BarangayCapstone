@@ -1,0 +1,144 @@
+{% load static %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+  
+
+{% block content %}
+
+{% if show_modal %}
+  <div class="modal fade show" id="profileModal" tabindex="-1" role="dialog" style="display: block;">
+    <div class="modal-dialog modal-lg" role="document"> <!-- Add 'modal-lg' for a wider modal -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Complete Your Profile</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="post" enctype="multipart/form-data" id="profileForm">
+            {% csrf_token %}
+            
+            <div class="form-grid">
+              <div>
+                <label for="fname">First Name:</label>
+                <input type="text" id="fname" name="fname" value="{{ user_first_name }}" required>
+              </div>
+
+              <div>
+                <label for="lname">Last Name:</label>
+                <input type="text" id="lname" name="lname" value="{{ user_last_name }}" required>
+              </div>
+
+              <div>
+                <label for="mname">Middle Name:</label>
+                <input type="text" id="mname" name="mname" value="{{ resident.mname }}" required>
+              </div>
+
+              <div>
+                <label for="zone">Zone:</label>
+                <select id="zone" name="zone" required>
+                    <option value="" disabled selected>Select Purok</option>
+                    <option value="1A">1A</option>
+                    <option value="1B">1B</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="civil_status">Civil Status:</label>
+                <select id="civil_status" name="civil_status" value="{{ resident.civil_status }}" required>
+                  <option value="" disabled selected>Select Civil Status</option>
+                  <option value="Single">Single</option>
+                  <option value="Married">Married</option>
+                  <option value="Widowed">Widowed</option>
+              </select>
+              </div>
+
+              <div>
+                <label for="occupation">Occupation:</label>
+                <select id="occupation" name="occupation" value="{{ resident.occupation }}" required>
+                  <option value="" disabled selected>Select Occupation</option>
+                  <option value="Student">Student</option>
+                  <option value="Employee">Employee</option>
+                  <option value="Unemployed">Unemployed</option>
+              </select>
+              </div>
+
+              <div>
+                <label for="birthdate">Birthdate:</label>
+                <input type="date" id="birthdate" name="birthdate" value="{{ resident.birthdate }}" required>
+                <!-- Error message placeholder -->
+                <span id="birthdate-error" style="color: red; display: none; font-size: 0.9rem;">
+                  You must be at least 18 years old.
+                </span>
+              </div>
+
+              <div>
+                <label for="phone_number">Phone Number:</label>
+                <input type="text" id="phone_number" name="phone_number" value="{{ resident.phone_number }}" required>
+              </div>
+
+              <div>
+                <label for="picture">Profile Picture:</label>
+                <input type="file" id="picture" name="picture">
+              </div>
+
+              <div>
+                <label for="id_image">Valid ID Image:</label>
+                <input type="file" id="id_image" name="id_image">
+              </div>
+
+
+              <div class="form-footer">
+                <button type="submit" class="btn btn-primary">Save Profile</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<script>
+  document.getElementById("profileForm").addEventListener("submit", function(event) {
+    const birthdateInput = document.getElementById("birthdate");
+    const birthdateError = document.getElementById("birthdate-error");
+    const birthdateValue = new Date(birthdateInput.value);
+    const today = new Date();
+    let age = today.getFullYear() - birthdateValue.getFullYear();
+    const monthDiff = today.getMonth() - birthdateValue.getMonth();
+    const dayDiff = today.getDate() - birthdateValue.getDate();
+
+    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+      age--;
+    }
+
+    if (age < 18) {
+      event.preventDefault();
+      birthdateError.style.display = "block";
+    } else {
+      birthdateError.style.display = "none";
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const modalElement = document.getElementById("profileModal");
+    if (modalElement) {
+      $(modalElement).modal('show');
+    }
+  });
+
+  
+</script>
+
+{% endblock %}

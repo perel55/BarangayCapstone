@@ -1,0 +1,99 @@
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static './css/secretaryProfile.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="messages" class="messages"></div>
+
+{% include 'secretary/secNavbar.html' %}
+
+<h2>Edit Secretary Profile</h2>
+<form method="post" enctype="multipart/form-data" id="edit-secretary-profile-form">
+    {% csrf_token %}
+
+    <label for="fname">First Name:</label>
+    <input type="text" name="fname" value="{{ secretary.auth_user.first_name }}" required>
+
+    <label for="mname">Middle Name:</label>
+    <input type="text" name="mname" value="{{ secretary.mname }}">
+
+    <label for="lname">Last Name:</label>
+    <input type="text" name="lname" value="{{ secretary.auth_user.last_name }}" required>
+
+    <label for="zone">Zone:</label>
+    <input type="text" name="zone" value="{{ secretary.zone }}">
+
+    <label for="civil_status">Civil Status:</label>
+    <input type="text" name="civil_status" value="{{ secretary.civil_status }}">
+
+    <label for="occupation">Occupation:</label>
+    <input type="text" name="occupation" value="{{ secretary.occupation }}">
+
+    <label for="birthdate">Birthdate:</label>
+    <input type="date" name="birthdate" value="{{ birthdate_str }}" id="birthdate" required>
+
+    <label for="phone_number">Phone Number:</label>
+    <input type="text" name="phone_number" value="{{ secretary.phone_number }}">
+
+   
+    <label for="picture">Profile Picture:</label>
+    <div>
+        {% if secretary.picture %}
+        <img id="current-picture" src="{{ secretary.picture.url }}" alt="Current Profile Picture" style="max-width: 400px; max-height: 400px; display: block; margin-bottom: 10px;">
+        {% else %}
+        <p>No picture uploaded.</p>
+        {% endif %}
+        <img id="preview-picture" style="max-width: 400px; max-height: 400px; display: none; margin-bottom: 10px;">
+        <input type="file" name="picture" id="picture-input" accept="image/*">
+    </div>
+    <br>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+
+<script>
+    // Preview uploaded image
+    document.getElementById('picture-input').addEventListener('change', function(event) {
+        const preview = document.getElementById('preview-picture');
+        const currentPicture = document.getElementById('current-picture');
+
+        if (event.target.files && event.target.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(event.target.files[0]);
+            if (currentPicture) currentPicture.style.display = 'none';
+        }
+    });
+
+    // Validate birthdate
+    document.getElementById('edit-secretary-profile-form').addEventListener('submit', function(event) {
+        const birthdateInput = document.getElementById('birthdate');
+        const birthdate = new Date(birthdateInput.value);
+        const today = new Date();
+        const messages = document.getElementById('messages');
+
+        const age = today.getFullYear() - birthdate.getFullYear();
+        const monthDiff = today.getMonth() - birthdate.getMonth();
+
+        if (age < 18 || (age === 18 && monthDiff < 0)) {
+            messages.textContent = "Must be at least 18 years old.";
+            messages.className = "messages error-message";
+            messages.style.display = "block";
+            event.preventDefault();
+        } else {
+            messages.textContent = "Changes saved successfully.";
+            messages.className = "messages success-message";
+            messages.style.display = "block";
+        }
+
+        setTimeout(() => {
+            messages.style.display = "none";
+        }, 3000);
+    });
+</script>
+{% endblock %}

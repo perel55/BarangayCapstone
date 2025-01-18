@@ -1,0 +1,129 @@
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static './css/bhw.css' %}">
+<link rel="stylesheet" href="{% static 'css/maintenance.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include 'healthAdmin/healthTopnav.html' %}
+
+<div class="MaintenanceProfile">
+    <section id="maintenance-content">
+        <div class="profile-card">
+            <h2>User Profile</h2>
+            <div class="profile-details">
+                <p><strong>Username:</strong> {{ schedule.user.username }}</p>
+                <p><strong>Full Name:</strong> {{ schedule.user.first_name }} {{ schedule.user.last_name }}</p>
+                <p><strong>Purok:</strong> {{ schedule.resident.zone }}</p>
+                <p><strong>Date:</strong> {{ schedule.date }}</p>
+                <p><strong>Phone Number:</strong> {{ schedule.resident.phone_number }}</p>
+            </div>
+            <div class="maintenance-button">
+                <a href="{% url 'bhwImmunize' %}" class="back-btn">Back</a>
+                <button id="releasedButton" class="released-btn">Released</button>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="released-record">
+    <table>
+        <thead>
+            <tr>
+                <th>Baby Name</th>
+                <th>Age</th>
+                <th>Bakuna</th>
+                <th>Vaccine Description</th>
+                <th>Vaccine Quantity</th>
+                <th>Vaccine Dose</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thea
+        <tbody>
+            {% for immunize in immunize_entries %}
+            <tr>
+                <td>{{ immunize.schedule.baby_name }}</td>
+                <td>{{ immunize.age}}</td>
+                <td>{{ immunize.vaccine_name }}</td>
+                <td>{{ immunize.vaccine_description}}</td>
+                <td>{{ immunize.vaccine_quantity}}</td>
+                <td>{{ immunize.vaccine_dose}}</td>
+                <td>{{ immunize.date }}</td>
+                <td>
+                    {% if immunize.status == "Pending" %}
+                        <span class="status-pending">Pending</span>
+                    {% elif immunize.status == "Complete" %}
+                        <span class="status-verified">Complete</span>
+                    {% elif immunize.status == "Incomplete" %}
+                        <span class="status-declined">Incomplete</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'complete_immunize' immunize.id %}" class="btn-approve">Complete</a>
+                    <a href="{% url 'incomplete_immunize' immunize.id %}" class="btn-declined">Incomplete</a>
+                </td>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>  
+</div>
+
+<div id="popupModal" class="modal">
+    <div class="modal-content"> 
+        <span id="closeButton" class="close-btn">&times;</span>
+        <h2>Vaccine Details</h2>
+        <form method="POST" action="{% url 'addImmunize' schedule.id %}">
+            {% csrf_token %}
+            <input type="hidden" name="schedule_id" value="{{ schedule.id }}">
+
+            <label for="vaccine_name">Vaccine Name:</label>
+            <input type="text" id="vaccine_name" name="vaccine_name" placeholder="Enter Vaccine Name" required>
+            <br>
+            <label for="vaccine_quantity">Vaccine Quantity:</label>
+            <input type="number" id="vaccine_quantity" name="vaccine_quantity" placeholder="Enter Quantity" required>
+            <br>
+            <label for="vaccine_description">Description:</label>
+            <textarea id="vaccine_description" name="vaccine_description" placeholder="Enter Description" column="10" required></textarea>
+            <br>
+            <label for="vaccine_dose">Dose:</label>
+            <input type="text" id="vaccine_dose" name="vaccine_dose" placeholder="Enter Dose" required>
+            <br>
+            <label for="age">Age:</label>
+            <input type="text" id="age" name="age" placeholder="Enter Age" required>
+            <br>
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+            <br>
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Modal functionality
+    document.addEventListener("DOMContentLoaded", function() {
+        const releasedButton = document.getElementById("releasedButton");
+        const popupModal = document.getElementById("popupModal");
+        const closeButton = document.getElementById("closeButton");
+
+        // Open modal when the "Released" button is clicked
+        releasedButton.addEventListener("click", function() {
+            popupModal.style.display = "block";
+        });
+
+        // Close modal when the "x" button is clicked
+        closeButton.addEventListener("click", function() {
+            popupModal.style.display = "none";
+        });
+
+        // Close modal when clicking outside of it
+        window.addEventListener("click", function(event) {
+            if (event.target === popupModal) {
+                popupModal.style.display = "none";
+            }
+        });
+    });
+</script>
+{% endblock %}

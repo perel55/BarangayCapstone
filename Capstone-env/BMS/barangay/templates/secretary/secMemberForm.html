@@ -1,0 +1,26 @@
+<h1>Add Member to {{ household.name }}</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    
+    <div>
+        <label for="id_resident">Resident:</label>
+        {{ form.resident }}
+    </div>
+    
+    <div>
+        <label for="id_relationship_to_head">Relationship to Head:</label>
+        {{ form.relationship_to_head }}
+    </div>
+    
+    <div>
+        <label for="id_is_head_of_household">Is Head of Household:</label>
+        {{ form.is_head_of_household }}
+    </div>
+    
+    <button type="submit" class="btn btn-primary">
+        Add Member
+    </button>
+    
+    <a href="{% url 'member_list' household.id %}" class="btn btn-secondary">Cancel</a>
+</form>

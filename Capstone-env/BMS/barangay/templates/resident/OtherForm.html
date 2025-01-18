@@ -1,0 +1,70 @@
+
+{% load static %}
+{% block css %}
+
+<link rel="stylesheet" href="{% static 'css/bookingform.css' %}">
+{% endblock %}
+<body>
+    {% block content %}
+    <form method="post" action="{% url 'book_otherService' bhwService.id resident.id %}" enctype="multipart/form-data">
+
+        {% csrf_token %}
+        
+        <div class="ext">
+            <a href="{% url 'bhwServices' %}">&times;</a>
+        </div>
+    
+        <h1>Immunize Form</h1>
+    
+        <div class="service_details">
+            <div class="details">
+                <label for="service_name">Service Name:</label>
+                <input type="service" id="service_name" name="service_name" value="{{ bhwService.service_name }}" readonly>
+            </div>
+            <div class="details">
+                <label for="service_description">Service Description:</label>
+                <input type="service" id="service_description" name="service_description" value="{{ bhwService.service_description }}" readonly>
+            </div>
+            <div class="details">
+                <label for="service_requirements">Service Requirements:</label>
+                <input type="service" id="service_requirements" name="service_requirements" value="{{ bhwService.service_requirements}}" readonly>
+            </div>
+            <div class="details">
+                <label for="service_type">Service Type:</label>
+                <input type="service" id="service_type" name="service_type" value="{{ bhwService.service_type }}" readonly>
+            </div>
+        </div>
+    
+        <hr>
+    
+        <div class="service_form">
+
+            <div class="form">
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+
+            
+            <div class="form">
+                <label for="time">Time:</label>
+                <select id="time" name="time" required>
+                    <option value="8-9AM">8-9 AM</option>
+                    <option value="9-10AM">9-10 AM</option>
+                    <option value="10-11AM">10-11 AM</option>
+                    <option value="11-12PM">11-12 PM</option>
+                    <option value="1-2PM">1-2 PM</option>
+                    <option value="2-3PM">2-3 PM</option>
+                    <option value="3-4:30PM">3-4:30 PM</option>
+                </select>
+            </div>
+
+            <input type="hidden" name="service_id" value="{{ bhwService.id }}">
+        </div>
+        </div>
+        <input type="submit" value="Submit">
+    </form>
+    
+    {% endblock %}
+
+    
+</body>

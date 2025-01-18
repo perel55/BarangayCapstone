@@ -1,0 +1,40 @@
+<div id="Modal-Category-Overlay">
+    <div id="CO-Container">
+        <div class="CO-Top">
+            <h3>Add New Service</h3>
+        </div>
+        <form method="POST" action="{% url 'addHealthservice' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="CO-Bottom">
+                <!-- Service Name -->
+                <div class="input-group">
+                    <label for="service_name">Service Name:</label>
+                    <input type="text" id="service_name" name="service_name" placeholder="Enter service name" required>
+                </div>
+    
+                <!-- Service Description -->
+                <div class="input-group">
+                    <label for="service_description">Service Description:</label>
+                    <textarea id="service_description" name="service_description" placeholder="Enter service description" rows="4" required></textarea>
+                </div>
+    
+                <!-- Service Requirements -->
+                <div class="input-group">
+                    <label for="service_requirements">Service Requirements:</label>
+                    <textarea id="service_requirements" name="service_requirements" placeholder="Enter service requirements" rows="4" required></textarea>
+                </div>
+    
+                <!-- Service Picture -->
+                <div class="input-group">
+                    <label for="picture">Service Picture:</label>
+                    <input type="file" id="picture" name="picture" accept="image/*" required>
+                </div>
+            </div>
+            
+            <div class="CO-Bottom2">
+                <button type="button" id="cancel-category">Cancel</button>
+                <button type="submit" id="add-category">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>

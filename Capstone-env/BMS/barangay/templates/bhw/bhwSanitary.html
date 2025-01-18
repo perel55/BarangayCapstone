@@ -1,0 +1,61 @@
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static './css/bhw.css' %}">
+<link rel="stylesheet" href="{% static './css/verificationBtn.css' %}">
+
+{% endblock %}
+
+
+ 
+{% block content %}  
+{% include 'bhw/bhwTopnav.html' %}
+
+    
+    <div class="MC-Bottom"> 
+        {% include 'bhw/bhwNav2.html' %}
+        <div class="contents">
+            <section id="content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Full Name</th>
+                            <th>Service</th>
+                            <th>Service Type</th>
+                            <th>Purok</th>
+                            <th>Date</th>
+                            <th>Phone Number</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for schedule in schedules %}
+                        <tr>
+                            <td>{{ schedule.user.username }}</td>
+                            <td>{{ schedule.user.first_name }} {{ schedule.user.last_name }}</td>
+                            <td>{{ schedule.bhwService.service_name }}</td>
+                            <td>{{ schedule.bhwService.service_type }}</td>
+                            <td>{{ schedule.resident.zone }}</td>
+                            <td>{{ schedule.date }}</td>
+                            <td>{{ schedule.resident.phone_number}}</td>
+                            <td>
+                                {% if schedule.status == "Pending" %}
+                                    <span class="status-pending">Pending</span>
+                                    <a href="{% url 'approve_sanitary' schedule.id %}" class="btn-approve">Verify</a>
+                                {% else %}
+                                    <span class="status-verified">Verified</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    
+                </table>
+                </table>
+            </section>  
+        
+        </div>
+
+    </div>
+
+{% endblock %}

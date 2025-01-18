@@ -1,0 +1,208 @@
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/bhwOutbreak.css' %}">
+<script type="module" src="{% static 'js/outbreak.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}  
+        {% include 'bhw/bhwTopnav.html' %} 
+    <div class="adminContainer">
+
+        <div class="MC-Top">
+            <div class="TopContainer">
+                <div class="Right">
+                    <button id="Outbreak-btn">Outbreak</button>
+                    <button id="totalCases-btn">Total Cases</button>
+                </div>
+        
+                <div class="Left">
+                    <button id="openModalButton">Add Outbreak</button>
+                </div>
+            </div>
+        </div>
+        
+
+        
+        <div class="MC-Bottom"> 
+            {% include './bhwNav2.html' %} 
+            <div class="contents">
+                <section id="content">
+                    <div class="Outbreak" id="Outbreak-area">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Outbreak Name</th>
+                                    <th>Resident Name</th>
+                                    <th>Purok</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for outbreak in outbreaks %}
+                                <tr>
+                                    <td>{{ outbreak.outbreak_name }}</td>
+                                    <td>{{ outbreak.fname }} {{ outbreak.lname }}</td>
+                                    <td>{{ outbreak.purok }}</td>                         
+                                    <td>{{ outbreak.date }}</td>
+                                   
+                                    
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div class="Total Cases" id="Cases-area" style="display: none;">
+                       
+                        <div class="purok-container">
+                            {% for item in active_outbreak_counts %}
+                            <div class="purok-box">
+                                <div class="purok-name">Purok:  {{ item.purok }}</div>
+                                <div class="outbreak-count">Active Outbreaks: {{ item.total_active_cases }}</div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        
+                    </div>
+                    
+                        
+                </section>  
+            
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Outbreak Modal form structure -->
+    <div id="Modal-Category-Overlay">
+        <div id="CO-Container">
+            <div class="CO-Top">
+                <h3>Add Outbreak</h3>
+            </div>
+            <form method="POST" action="{% url 'addOutbreak' %}">
+                {% csrf_token %}
+                <div class="CO-Bottom">
+                    <div class="input-group">
+                        <label for="outbreak_name">Outbreak Name:</label>
+                        <input type="text" id="outbreak_name" name="outbreak_name" placeholder="Enter outbreak name" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="fname">First Name:</label>
+                        <input type="text" id="fname" name="fname" placeholder="Enter first name" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="lname">Last  Name:</label>
+                        <input type="text" id="lname" name="lname" placeholder="Enter last name" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="purok">Purok:</label>
+                        <select id="purok" name="purok" required>
+                            <option value="1A" {% if reserve.purok == '1A' %} selected {% endif %}>1A</option>
+                            <option value="1B" {% if reserve.purok == '1B' %} selected {% endif %}>1B</option>
+                            <option value="2" {% if reserve.purok == '2' %} selected {% endif %}>2</option>
+                            <option value="3" {% if reserve.purok == '3' %} selected {% endif %}>3</option>
+                            <option value="4" {% if reserve.purok == '4' %} selected {% endif %}>4</option>
+                            <option value="5" {% if reserve.purok == '5' %} selected {% endif %}>5</option>
+                            <option value="6" {% if reserve.purok == '6' %} selected {% endif %}>6</option>
+                            <option value="7" {% if reserve.purok == '7' %} selected {% endif %}>7</option>
+                            <option value="8" {% if reserve.purok == '8' %} selected {% endif %}>8</option>
+                        </select>
+                        
+                    </div>
+                    <div class="input-group">
+                        <label for="date">Date:</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                <div class="CO-Bottom2">
+                    <button type="button" id="cancel-category">Cancel</button>
+                    <button type="submit" id="add-category">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Update Outbreak Modal form structure -->
+    <div id="Update-Modal-Overlay">
+        <div id="CO-Container">
+            <div class="CO-Top">
+                <h3>Update Outbreak</h3>
+            </div>
+            <form method="POST" action="{% url 'updateOutbreak' %}">
+                {% csrf_token %}
+                <input type="hidden" id="update_outbreak_id" name="outbreak_id">
+                <div class="CO-Bottom">
+                    <div class="input-group">
+                        <label for="update_outbreak_name">Outbreak Name:</label>
+                        <input type="text" id="update_outbreak_name" name="outbreak_name" placeholder="Enter outbreak name"value="{{ outbreak.outbreak_name }}" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="update_fname">First Name:</label>
+                        <input type="text" id="update_fname" name="update_fname" placeholder="Enter first name" value="{{ outbreak.fname }}" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="update_lname">Last  Name:</label>
+                        <input type="text" id="update_lname" name="update_lname" placeholder="Enter last name" value="{{ outbreak.lname }}"required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="update_purok">Purok:</label>
+                        <select id="update_purok" name="update_purok" value="{{ outbreak.purok}}" required>
+                            <option value="1A">1A</option>
+                            <option value="1B">1B</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                        </select>
+                        <div class="input-group">
+                            <label for="update_date">Date:</label>
+                            <input type="date" id="update_date" name="update_date">
+                        </div>
+                </div>
+                <div class="CO-Bottom2">
+                    <button type="button" id="cancel-update">Cancel</button>
+                    <button type="submit" id="update-category">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<script>
+    // Add Outbreak Modal
+    document.getElementById('openModalButton').onclick = function() {
+        document.getElementById('Modal-Category-Overlay').style.display = 'flex';
+    };
+    document.getElementById('cancel-category').onclick = function() {
+        document.getElementById('Modal-Category-Overlay').style.display = 'none';
+    };
+
+    // Update Modal
+    document.querySelectorAll('.update-btn').forEach(button => {
+    button.onclick = function() {
+        // Debugging
+        console.log("First Name:", this.getAttribute('data-fname'));
+        console.log("Last Name:", this.getAttribute('data-lname'));
+
+        document.getElementById('Update-Modal-Overlay').style.display = 'flex';
+        document.getElementById('update_outbreak_id').value = this.getAttribute('data-id');
+        document.getElementById('update_outbreak_name').value = this.getAttribute('data-outbreak_name');
+        document.getElementById('update_fname').value = this.getAttribute('data-fname');
+        document.getElementById('update_lname').value = this.getAttribute('data-lname');
+        document.getElementById('update_purok').value = this.getAttribute('data-purok');
+        document.getElementById('update_date').value = this.getAttribute('data-date');
+    };
+});
+
+
+    document.getElementById('cancel-update').onclick = function() {
+        document.getElementById('Update-Modal-Overlay').style.display = 'none';
+    };
+
+
+</script>
+{% endblock %}

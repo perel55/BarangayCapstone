@@ -1,0 +1,140 @@
+<div id="eModalScheduleOverlay" class="modal-overlay">
+    <div class="modal-content">
+        <span id="eCancelSchedButton" class="close-button">&times;</span>
+        <h2>Edit Notice</h2>
+        <form id="edit-schedule-form" method="POST">
+            <label for="edit-notice-name">Notice Name:</label>
+            <input type="text" id="edit-notice-name" name="notice_name" required>
+
+            <label for="edit-notice-description">Description:</label>
+            <textarea id="edit-notice-description" name="notice_description"></textarea>
+
+            <label for="edit-notice-StartDate">Start Date:</label>
+            <input type="date" id="edit-notice-StartDate" name="notice_StartDate" required>
+
+            <label for="edit-notice-EndDate">End Date:</label>
+            <input type="date" id="edit-notice-EndDate" name="notice_EndDate">
+
+            <label for="edit-notice-StartTime">Start Time:</label>
+            <input type="time" id="edit-notice-StartTime" name="notice_StartTime" required>
+
+            <label for="edit-notice-EndTime">End Time:</label>
+            <input type="time" id="edit-notice-EndTime" name="notice_EndTime">
+
+            <label for="edit-notice-type">Type:</label>
+            <select id="edit-notice-type" name="notice_type">
+                <option value="Event">Event</option>
+                <option value="Meeting">Meeting</option>
+            </select>
+
+            <button type="submit">Save Changes</button>
+            <button type="button" id="eDeleteSchedButton" style="background-color: red; color: white; margin-top: 10px;">Delete Notice</button>
+        </form>
+    </div>
+</div>
+
+<style>
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* Modal Content */
+.modal-content {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 500px;
+    padding: 20px 30px;
+    text-align: left;
+    animation: fadeIn 0.3s ease-out;
+    position: relative;
+}
+
+/* Close Button */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+}
+
+.close-button:hover {
+    color: #000;
+}
+
+/* Form Labels */
+.modal-content label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    display: block;
+    margin-top: 15px;
+}
+
+/* Form Inputs */
+.modal-content input,
+.modal-content textarea,
+.modal-content select {
+    width: 100%;
+    padding: 8px 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus,
+.modal-content select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Submit Button */
+.modal-content button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    width: 100%;
+}
+
+.modal-content button:hover {
+    background-color: #0056b3;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+</style>

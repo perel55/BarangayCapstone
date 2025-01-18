@@ -1,0 +1,121 @@
+/* Remove extra space below the modal */
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent unnecessary vertical scrolling */
+}
+
+.modal.fade.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%; /* Ensure modal centers in full height */
+  margin: 0; /* Remove any default margins */
+}
+
+.modal-dialog {
+  margin: 0 auto; /* Center the modal horizontally */
+}
+
+.modal-content {
+  border-radius: 25px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(135deg, #f0f4ff, #dbdfe7);
+  position: relative;
+  top: 60px; /* Remove top offset */
+}
+
+
+.modal-header {
+  background-color: #ffffff;
+  color: #020101;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+
+.modal-header .modal-title {
+  font-weight: 600;
+  
+}
+
+.modal-header .close {
+  color: #ffffff;
+}
+
+.modal-body label {
+  font-weight: 500;
+  color: #000000;
+  margin-top: 2px;
+}
+
+.modal-body input[type="text"],
+.modal-body input[type="number"],
+.modal-body input[type="date"],
+.modal-body input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 2px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  border: 1px solid #cccccc;
+  transition: border-color 0.3s ease;
+}
+
+.modal-body input:focus {
+  border-color: #4a90e2;
+  outline: none;
+}
+
+.modal-footer {
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  padding: 10px 20px;
+}
+
+/* Save button styling */
+.modal-footer .btn-primary {
+  background-color: #4a90e2;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.modal-footer .btn-primary:hover {
+  background-color: #043b72;
+}
+
+/* Make form fields landscape with a 2-column layout */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+  gap: 15px; /* Spacing between fields */
+  height: 720px;
+}
+
+.form-grid label {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.form-grid input, .form-grid select {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box; /* Ensures padding doesn't break layout */
+}
+
+/* Ensure the modal content doesn't scroll horizontally */
+.modal-body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Align submit button to full width */
+.form-footer {
+  grid-column: span 2; /* Full-width button */
+  text-align: center;
+  margin-top: 10px;
+}
