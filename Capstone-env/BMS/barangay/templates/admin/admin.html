@@ -1,15 +1,246 @@
 {% load static %}
+
 {% block css %}
-<link rel="stylesheet" href="{% static './css/admin.css' %}">
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
 
-
 {% block content %}
+<div class="adminContainer">
+    {% include 'admin/adminTopnav.html' %}
+    <div class="MC-Bottom">
+        {% include 'admin/adminNav2.html' %}
 
-    <div class="adminContainer">
-        {% include 'admin/adminTopnav.html' %}
-        <div class="MC-Bottom">
-        {% include './adminNav2.html' %}      
+        <div class="admin-containers">
+            <div class="titles-admin">
+                <h1>Admin Dashboard</h1>
+            </div>
+
+            <div class="dashboardCounters">
+                <div class="counter">
+                    <h3>Total Residents</h3>
+                    <p>{{ total_residents }}</p>
+                </div>
+                <div class="counter">
+                    <h3>Active Requests</h3>
+                    <p>{{ total_requests }}</p>
+                </div>
+                <div class="counter">
+                    <h3>Active Outbreaks</h3>
+                    <p>{{ total_outbreaks }}</p>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="requestGraph"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="requestStatusPie"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="outbreaksByZoneBar"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="serviceRequestsBar"></canvas>
+            </div>
         </div>
     </div>
+</div>
+
+<script id="requestData" type="application/json">
+    {{ request_data|json_script }}
+</script>
+
+<script id="requestStatusData" type="application/json">
+    {{ request_status_data|json_script }}
+</script>
+
+<script id="outbreaksByZone" type="application/json">
+    {{ outbreaks_by_zone|json_script }}
+</script>
+
+<script id="serviceRequestsData" type="application/json">
+    {{ service_requests_data|json_script }}
+</script>
+
+<script>
+    const requestData = JSON.parse(document.getElementById('requestData').textContent);
+    const dates = requestData.map(item => item.schedule_date);
+    const counts = requestData.map(item => item.count);
+
+    const ctxRequestGraph = document.getElementById('requestGraph').getContext('2d');
+    new Chart(ctxRequestGraph, {
+        type: 'line',
+        data: {
+            labels: dates,
+            datasets: [{
+                label: 'Number of Requests',
+                data: counts,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Requests'
+                    }
+                }
+            }
+        }
+    });
+
+    // Request Status Pie Chart
+    const requestStatusData = JSON.parse(document.getElementById('requestStatusData').textContent);
+    const statusLabels = requestStatusData.map(item => item.status);
+    const statusCounts = requestStatusData.map(item => item.count);
+
+    const ctxStatusPie = document.getElementById('requestStatusPie').getContext('2d');
+    new Chart(ctxStatusPie, {
+        type: 'pie',
+        data: {
+            labels: statusLabels,
+            datasets: [{
+                data: statusCounts,
+                backgroundColor: ['#FF9999', '#66B3FF'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return `${tooltipItem.label}: ${tooltipItem.raw} requests`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Outbreaks by Zone Bar Chart
+    const outbreaksByZone = JSON.parse(document.getElementById('outbreaksByZone').textContent);
+    const zoneLabels = outbreaksByZone.map(item => item.purok);
+    const outbreakCounts = outbreaksByZone.map(item => item.count);
+
+    const ctxOutbreaksBar = document.getElementById('outbreaksByZoneBar').getContext('2d');
+    new Chart(ctxOutbreaksBar, {
+        type: 'bar',
+        data: {
+            labels: zoneLabels,
+            datasets: [{
+                label: 'Active Outbreaks by Zone',
+                data: outbreakCounts,
+                backgroundColor: '#FF6347',
+                borderColor: '#FF6347',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Service Requests Bar Chart
+    const serviceRequestsData = JSON.parse(document.getElementById('serviceRequestsData').textContent);
+    const serviceLabels = serviceRequestsData.map(item => item.service_id);
+    const serviceCounts = serviceRequestsData.map(item => item.count);
+
+    const ctxServiceRequestsBar = document.getElementById('serviceRequestsBar').getContext('2d');
+    new Chart(ctxServiceRequestsBar, {
+        type: 'bar',
+        data: {
+            labels: serviceLabels,
+            datasets: [{
+                label: 'Number of Service Requests',
+                data: serviceCounts,
+                backgroundColor: '#98FB98',
+                borderColor: '#98FB98',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+<style>
+    .MC-Bottom {
+        display: flex;
+        flex-direction: row;
+        justify-content: center; 
+        align-items: center; 
+        flex-wrap: wrap; 
+    }
+
+    .dashboardCounters {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+        margin-top: 200px;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .counter {
+        text-align: center;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        width: 200px;
+        background-color: #f9f9f9;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .counter h3 {
+        margin-bottom: 10px;
+        font-size: 1.2em;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .counter p {
+        font-size: 2em;
+        font-weight: bold;
+        color: #4CAF50;
+    }
+
+    .chart-container {
+        width: 100%;
+        height: 400px;
+        margin-top: 40px;
+    }
+</style>
+
 {% endblock %}

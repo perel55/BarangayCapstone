@@ -227,7 +227,7 @@ class CommunityNotice(models.Model):
     notice_color = models.CharField(max_length=7, default='#007bff')
 
     def __str__(self):
-        return f"{self.announcement_name} {self.announcement_description} {self.announcement_date} {self.announcement_time} {self.announcement_type}"
+        return f"{self.notice_name} {self.announcement_description} {self.announcement_date} {self.announcement_time} {self.announcement_type}"
     
 class Maintenance(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)

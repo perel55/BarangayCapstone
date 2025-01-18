@@ -250,8 +250,40 @@ def signup(request):
 
 
 #-------------------Admin-------------------
+
 def admindashboard(request):
-    return render(request, 'admin/admin.html')
+    total_residents = Residents.objects.count()
+    total_requests = Request.objects.filter(status='Pending').count()
+    total_outbreaks = Outbreaks.objects.filter(status='Active').count()
+
+
+    request_data = Request.objects.values('schedule_date').annotate(count=Count('id')).order_by('schedule_date')
+
+
+    request_status_data = Request.objects.values('status').annotate(count=Count('id'))
+
+
+    outbreaks_by_zone = Outbreaks.objects.values('purok').annotate(count=Count('id'))
+
+ 
+    service_requests_data = Request.objects.values('service_id').annotate(count=Count('id'))
+
+    
+    for entry in request_data:
+        entry['schedule_date'] = entry['schedule_date'].strftime('%Y-%m-%d')  
+
+    context = {
+        'total_residents': total_residents,
+        'total_requests': total_requests,
+        'total_outbreaks': total_outbreaks,
+        'request_data': list(request_data),  
+        'request_status_data': list(request_status_data),
+        'outbreaks_by_zone': list(outbreaks_by_zone),
+        'service_requests_data': list(service_requests_data),
+    }
+
+    return render(request, 'admin/admin.html', context)
+
 
 def adminAccounts(request):
     return render(request, 'admin/adminAccounts.html')
@@ -260,14 +292,13 @@ def adminService(request):
     return render(request, 'admin/adminService.html')
 
 def adminCertificates(request):
-    # Query the Request model to get all requests
-    requests = Request.objects.all()  # You can adjust the query to filter by status, date, etc.
+    
+    requests = Request.objects.all()  
 
-    # Pass the requests to the template
     return render(request, 'admin/adminCertificates.html', {'requests': requests})
 
 def update_request_status(request, request_id):
-    # Get the request object
+    
     req = Request.objects.get(id=request_id)
 
     if request.method == 'POST':
@@ -275,12 +306,12 @@ def update_request_status(request, request_id):
         req.status = new_status
         req.save()
 
-        # Provide feedback to the admin
+        
         messages.success(request, f"Request status updated to {new_status}.")
 
-        return redirect('adminCertificates')  # Adjust the redirect to the appropriate page
+        return redirect('adminCertificates')  
 
-    return redirect('adminCertificates')  # Handle GET request, redirect as needed
+    return redirect('adminCertificates')  
 
 
 def adminEvent(request):
@@ -301,7 +332,7 @@ def addAdmin(request):
 #-------------------BHW Secretary & Nurse-------------------
 
 @login_required
-def bhwServices(request): #display the available services for verified status
+def bhwServices(request): 
     try:
         resident = Residents.objects.get(auth_user=request.user)
         if resident.status == "Verified":
@@ -312,7 +343,7 @@ def bhwServices(request): #display the available services for verified status
     except Residents.DoesNotExist:
         bhwServices = HealthService.objects.none()
 
-    # Load the template
+  
     template = loader.get_template('resident/residentHS.html')
     context = {
         'bhwServices': bhwServices,
@@ -336,11 +367,11 @@ def book_healthService(request, HealthService_id, resident_id):
             bhwService=bhwService,
         )
 
-        # Redirect to the 'bhwServices' page after successful booking
+      
         return redirect(reverse('bhwServices'))
 
 
-#immunization type of service
+
 @login_required
 def book_immunize(request, HealthService_id, resident_id): 
     bhwService = get_object_or_404(HealthService, id=HealthService_id)
@@ -366,7 +397,7 @@ def book_immunize(request, HealthService_id, resident_id):
             birth_place=birth_place, 
         )
 
-        # Redirect to the 'bhwServices' page after successful booking
+       
         return redirect(reverse('bhwServices'))
     
 
@@ -393,7 +424,7 @@ def book_maintenance(request, HealthService_id, resident_id):
        
         return redirect(reverse('bhwServices'))
 
-#Other Service type
+
 @login_required
 def book_otherService(request, HealthService_id, resident_id): 
     bhwService = get_object_or_404(HealthService, id=HealthService_id)

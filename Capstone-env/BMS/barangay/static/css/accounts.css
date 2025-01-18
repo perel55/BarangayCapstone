@@ -141,7 +141,7 @@
   white-space: nowrap; /* Prevents text from breaking onto new lines */
   overflow: hidden;
   text-overflow: ellipsis; /* Adds '...' if text is too long */
-  max-width: 15rem; /* Set a maximum width to control size */
+  max-width: 15rem; 
   background: linear-gradient(#7BC9FF,#7EA1FF);
   }
   
