@@ -322,3 +322,7 @@ def residentHealthRecords(request):
     return render(request, 'resident/residentHealthRecords.html', {
         'immunizations': immunizations,
     })
+
+
+def residentPayment(request):
+    return render(request, 'resident/residentPayment.html')

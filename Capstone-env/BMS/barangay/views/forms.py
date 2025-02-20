@@ -5,7 +5,7 @@ from .models import Residents, Member, Household
 class ResidentProfileForm(forms.ModelForm):
     class Meta:
         model = Residents
-        fields = ['mname',  'zone', 'civil_status', 'occupation','birthdate', 'phone_number', 'picture', 'id_image', 'position']
+        fields = ['mname',  'zone', 'civil_status', 'occupation','birthdate', 'phone_number', 'picture', 'id_image']
 
 class HouseholdForm(forms.ModelForm):
     ZONE_CHOICES = [

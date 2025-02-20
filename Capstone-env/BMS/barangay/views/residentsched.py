@@ -64,7 +64,7 @@ def ScheduleView(request):
         new_request.save()
 
         messages.success(request, "Your schedule has been successfully created.")
-        return redirect('ScheduleView')
+        return redirect('residentPayment')
 
     return render(request, 'resident/ResidentCalendar.html', {'services': services, 'selected_service': selected_service})
 

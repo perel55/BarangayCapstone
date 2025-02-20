@@ -129,8 +129,7 @@ def bhwDashboard(request):
     inactive_outbreaks = Outbreaks.objects.filter(status='Inactive').count()
     total_maintenance = Schedule.objects.filter(bhwService__service_type='maintenance' ).count()
     total_immunization = Schedule.objects.filter(bhwService__service_type='immunization' ).count()
-    total_medicine = Medicine.objects.all().count()
-
+    
 
 
     context = {
@@ -143,7 +142,7 @@ def bhwDashboard(request):
         'total_maintenance':  total_maintenance,
         'verified_resident':  verified_resident,
         'total_immunization':  total_immunization,
-        'total_medicine':  total_medicine,
+
     }
 
     return render(request, 'bhw/bhwDashboard.html', context)
@@ -168,23 +167,6 @@ def bhwList(request):
     total_bhws = bhws.count()
 
     # Query BSI accounts and count
-    bsi = Bsi.objects.filter(auth_user__isnull=False).prefetch_related(
-        Prefetch(
-            'accounts_set', 
-            queryset=Accounts.objects.filter(account_typeid__Account_type='BSI')
-        )
-    )
-    total_bsi = bsi.count()
-
-    # Query HealthAdmin accounts and count
-    healthadmin = HealthAdmin.objects.filter(auth_user__isnull=False).prefetch_related(
-        Prefetch(
-            'accounts_set', 
-            queryset=Accounts.objects.filter(account_typeid__Account_type='HealhAdmin')
-        )
-    )
-    total_healthadmins = healthadmin.count()
-
     # Query Residents accounts and count
     residents = Residents.objects.filter(auth_user__isnull=False).prefetch_related(
         Prefetch(
@@ -207,13 +189,9 @@ def bhwList(request):
     context = {
         'account_type': account_type,
         'bhws': bhws,
-        'bsis': bsi,
-        'healthadmins': healthadmin,
         'residents': residents,
         'officials': officials,
         'total_bhws': total_bhws,
-        'total_bsi': total_bsi,
-        'total_healthadmins': total_healthadmins,
         'total_residents': total_residents,
         'total_officials': total_officials,
     }
@@ -292,15 +270,18 @@ def bhwRecord(request):
     all_schedules = Schedule.objects.all().order_by('-date')
     highblood_schedules = Schedule.objects.filter(bhwService__service_name="HighBlood").order_by('-date')
     tb_schedules = Schedule.objects.filter(bhwService__service_name="TB").order_by('-date')
-    immunize_schedules = Schedule.objects.filter(bhwService__service_type="immunnization").order_by('-date')
-    immunize_schedules = Schedule.objects.filter(bhwService__service_type="immunnization").order_by('-date')
+    immunize_schedules = Schedule.objects.filter(bhwService__service_type="immunization").order_by('-date')
+    other_schedules = Schedule.objects.filter(bhwService__service_type="other").order_by('-date')
     
     return render(request, 'bhw/bhwHealthrecords.html', {
         'all_schedules': all_schedules,
         'highblood_schedules': highblood_schedules,
         'tb_schedules': tb_schedules,
-        'immunize_schedules': immunize_schedules,
+        'immunize_schedules': immunize_schedules, 
+        'other_schedules':  other_schedules, 
+        
     })
+
 
 
 

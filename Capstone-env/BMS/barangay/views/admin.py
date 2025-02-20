@@ -1,6 +1,7 @@
 # admin.py
 from django.contrib import admin
-from .models import Household, Member, Residents
+from .models import Household, Member, Residents, Schedule
+from django.shortcuts import render
 
 @admin.register(Household)
 class HouseholdAdmin(admin.ModelAdmin):
@@ -13,3 +14,5 @@ class MemberAdmin(admin.ModelAdmin):
 @admin.register(Residents)
 class ResidentsAdmin(admin.ModelAdmin):
     list_display = ('auth_user', 'mname', 'zone', 'civil_status', 'phone_number')
+
+

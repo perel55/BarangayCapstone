@@ -200,24 +200,6 @@ def accounts_view(request):
     )
     total_bhws = bhws.count()
 
-    # Query BSI accounts and count
-    bsi = Bsi.objects.filter(auth_user__isnull=False).prefetch_related(
-        Prefetch(
-            'accounts_set', 
-            queryset=Accounts.objects.filter(account_typeid__Account_type='BSI')
-        )
-    )
-    total_bsi = bsi.count()
-
-    # Query HealthAdmin accounts and count
-    healthadmin = HealthAdmin.objects.filter(auth_user__isnull=False).prefetch_related(
-        Prefetch(
-            'accounts_set', 
-            queryset=Accounts.objects.filter(account_typeid__Account_type='HealhAdmin')
-        )
-    )
-    total_healthadmins = healthadmin.count()
-
     # Query Residents accounts and count
     residents = Residents.objects.filter(auth_user__isnull=False).prefetch_related(
         Prefetch(
@@ -240,13 +222,9 @@ def accounts_view(request):
     context = {
         'account_type': account_type,
         'bhws': bhws,
-        'bsis': bsi,
-        'healthadmins': healthadmin,
         'residents': residents,
         'officials': officials,
         'total_bhws': total_bhws,
-        'total_bsi': total_bsi,
-        'total_healthadmins': total_healthadmins,
         'total_residents': total_residents,
         'total_officials': total_officials,
     }
@@ -258,3 +236,18 @@ def accounts_view(request):
 
 
 
+def adminRecord(request):
+    all_schedules = Schedule.objects.all().order_by('-date')
+    highblood_schedules = Schedule.objects.filter(bhwService__service_name="HighBlood").order_by('-date')
+    tb_schedules = Schedule.objects.filter(bhwService__service_name="TB").order_by('-date')
+    immunize_schedules = Schedule.objects.filter(bhwService__service_type="immunization").order_by('-date')
+    other_schedules = Schedule.objects.filter(bhwService__service_type="other").order_by('-date')
+    
+    return render(request, 'admin/adminHealthRecords.html', {
+        'all_schedules': all_schedules,
+        'highblood_schedules': highblood_schedules,
+        'tb_schedules': tb_schedules,
+        'immunize_schedules': immunize_schedules, 
+        'other_schedules':  other_schedules, 
+        
+    })

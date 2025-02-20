@@ -94,57 +94,45 @@ def adminregister(request):
         account_type = request.POST.get('account_type')
 
         if password1 == password2:
-            user = User.objects.create_user(
-                username=username,
-                email=email,
-                password=password1,
-                first_name=first_name,
-                last_name=last_name,
-            )
-
-            account_type_obj = Account_Type.objects.get(Account_type=account_type)
-
-            if account_type == "Admin":
-                personnel = Personnel.objects.create(auth_user=user)
-                Accounts.objects.create(
-                    admin_id=personnel,
-                    account_typeid=account_type_obj
-                )
-            elif account_type == "HealthAdmin":
-                health_admin = HealthAdmin.objects.create(auth_user=user)
-                Accounts.objects.create(
-                    ha_id=health_admin,
-                    account_typeid=account_type_obj
-                )
-            elif account_type == "BSI":
-                bsi = Bsi.objects.create(auth_user=user)
-                Accounts.objects.create(
-                    bsi_id=bsi,
-                    account_typeid=account_type_obj
-                )
-            elif account_type == "Bhw":
-                bhw = Bhw.objects.create(auth_user=user)
-                Accounts.objects.create(
-                    bhw_id=bhw,
-                    account_typeid=account_type_obj
-                )
-            elif account_type == "Secretary":
-                secretary = Secretary.objects.create(auth_user=user)
-                Accounts.objects.create(
-                    secretary_id=secretary,
-                    account_typeid=account_type_obj
-                )
-            elif account_type == "Resident":
-                resident = Residents.objects.create(auth_user=user)
-                Accounts.objects.create(
-                    resident_id=resident,
-                    account_typeid=account_type_obj
+            try:
+                # Create user
+                user = User.objects.create_user(
+                    username=username,
+                    email=email,
+                    password=password1,
+                    first_name=first_name,
+                    last_name=last_name,
                 )
 
-            user = authenticate(request, username=username, password=password1)
-            if user is not None:
-                login(request, user)
+                # Get account type object
+                account_type_obj = Account_Type.objects.get(Account_type=account_type)
+
+                # Assign user to appropriate model and create account entry
+                if account_type == "Admin":
+                    personnel = Personnel.objects.create(auth_user=user)
+                    Accounts.objects.create(
+                        admin_id=personnel,
+                        account_typeid=account_type_obj
+                    )
+                elif account_type == "Bhw":
+                    bhw = Bhw.objects.create(auth_user=user)
+                    Accounts.objects.create(
+                        bhw_id=bhw,
+                        account_typeid=account_type_obj
+                    )
+                elif account_type == "Secretary":
+                    secretary = Secretary.objects.create(auth_user=user)
+                    Accounts.objects.create(
+                        secretary_id=secretary,
+                        account_typeid=account_type_obj
+                    )
+
+                messages.success(request, f"Account for {username} has been successfully created.")
                 return redirect('admindashboard')
+            except Account_Type.DoesNotExist:
+                messages.error(request, "Invalid account type selected.")
+            except Exception as e:
+                messages.error(request, f"An error occurred: {e}")
         else:
             messages.error(request, "Passwords do not match.")
 
@@ -170,10 +158,6 @@ def validatelogin(request):
                 profile = Accounts.objects.get(bhw_id__auth_user=user)
             elif Accounts.objects.filter(admin_id__auth_user=user).exists():
                 profile = Accounts.objects.get(admin_id__auth_user=user)
-            elif Accounts.objects.filter(bsi_id__auth_user=user).exists():
-                profile = Accounts.objects.get(bsi_id__auth_user=user)
-            elif Accounts.objects.filter(ha_id__auth_user=user).exists():
-                profile = Accounts.objects.get(ha_id__auth_user=user)
             elif Accounts.objects.filter(secretary_id__auth_user=user).exists():
                 profile = Accounts.objects.get(secretary_id__auth_user=user)              
 
@@ -185,10 +169,6 @@ def validatelogin(request):
                     return redirect('admindashboard')
                 elif account_type == 'Bhw':
                     return redirect('bhwDashboard')
-                elif account_type == 'BSI':
-                    return redirect('bsiDashboard')
-                elif account_type == 'HealthAdmin':
-                    return redirect('healthDashboard')
                 elif account_type == 'Secretary':
                     return redirect('secretarydashboard')
                 else:
@@ -260,14 +240,14 @@ def adminService(request):
     return render(request, 'admin/adminService.html')
 
 def adminCertificates(request):
-    # Query the Request model to get all requests
-    requests = Request.objects.all()  # You can adjust the query to filter by status, date, etc.
+    
+    requests = Request.objects.all()  
 
-    # Pass the requests to the template
+   
     return render(request, 'admin/adminCertificates.html', {'requests': requests})
 
 def update_request_status(request, request_id):
-    # Get the request object
+ 
     req = Request.objects.get(id=request_id)
 
     if request.method == 'POST':
@@ -275,12 +255,12 @@ def update_request_status(request, request_id):
         req.status = new_status
         req.save()
 
-        # Provide feedback to the admin
+  
         messages.success(request, f"Request status updated to {new_status}.")
 
-        return redirect('adminCertificates')  # Adjust the redirect to the appropriate page
+        return redirect('adminCertificates')  
 
-    return redirect('adminCertificates')  # Handle GET request, redirect as needed
+    return redirect('adminCertificates')  
 
 
 def adminEvent(request):
@@ -301,7 +281,7 @@ def addAdmin(request):
 #-------------------BHW Secretary & Nurse-------------------
 
 @login_required
-def bhwServices(request): #display the available services for verified status
+def bhwServices(request): 
     try:
         resident = Residents.objects.get(auth_user=request.user)
         if resident.status == "Verified":
@@ -336,11 +316,11 @@ def book_healthService(request, HealthService_id, resident_id):
             bhwService=bhwService,
         )
 
-        # Redirect to the 'bhwServices' page after successful booking
+
         return redirect(reverse('bhwServices'))
 
 
-#immunization type of service
+
 @login_required
 def book_immunize(request, HealthService_id, resident_id): 
     bhwService = get_object_or_404(HealthService, id=HealthService_id)
@@ -365,8 +345,6 @@ def book_immunize(request, HealthService_id, resident_id):
             sex=sex,
             birth_place=birth_place, 
         )
-
-        # Redirect to the 'bhwServices' page after successful booking
         return redirect(reverse('bhwServices'))
     
 
@@ -426,7 +404,7 @@ def book_healthServiceform(request, HealthService_id):
     except Residents.DoesNotExist:
         resident = None
 
-    if bhwService.service_type == "immunnization": 
+    if bhwService.service_type == "immunization": 
         return render(request, 'resident/residentImmunize.html', {'bhwService': bhwService, 'resident': resident})
     elif bhwService.service_type == "maintenance":
         return render(request, 'resident/residentTB.html', {'bhwService': bhwService, 'resident': resident})
@@ -439,17 +417,16 @@ def book_healthServiceform(request, HealthService_id):
 
 
 
-#display the recent avail service to the resident sidecd 
+
 def residentHistory(request):
     user = request.user
 
-    # Get the logged-in resident
+ 
     resident = Residents.objects.get(auth_user=request.user)
 
-    # Fetch schedules and requests for the logged-in user
-    schedules = Schedule.objects.filter(user=user)  # Assuming 'user' field in Schedule links to auth user
-    requests = Request.objects.filter(user=user)  # Fetch only the requests of the logged-in user
-
+   
+    schedules = Schedule.objects.filter(user=user)  
+    requests = Request.objects.filter(user=user)  
     return render(request, 'resident/residentHistory.html', {
         'schedules': schedules,
         'requests': requests,
@@ -466,18 +443,17 @@ from django.db.models import Count
 
 @login_required
 def residentdashboard(request):
-    # Check if session is active
+
     if not request.user.is_authenticated:
         logout(request)
         return redirect('login')
 
     resident = Residents.objects.filter(auth_user=request.user).first()
 
-    # Automatically fetch first and last name from the auth_user model
+
     user_first_name = request.user.first_name
     user_last_name = request.user.last_name
 
-    # Fetch additional data for the dashboard
     today = date.today()
     recent_schedules = Schedule.objects.filter(date__gte=today - timedelta(days=7)).order_by('-date')
     upcoming_notices = CommunityNotice.objects.filter(notice_StartDate__gte=today).order_by('notice_StartDate')
@@ -519,7 +495,6 @@ def residentdashboard(request):
 
         return render(request, 'resident/userd.html', context)
 
-    # Context when the resident profile is already complete
     context = {
         'show_modal': False,
         'recent_schedules': recent_schedules,
@@ -534,11 +509,11 @@ def residentdashboard(request):
 
 
 def profile_check(request):
-    # Log the user out
+  
     logout(request)
     
-    # Redirect to the login page after logging out
-    return redirect('login')  # Make sure the 'login' URL pattern is correct in your urls.py
+ 
+    return redirect('login')  
 
 
 
@@ -546,7 +521,7 @@ def profile_check(request):
 def secretarydashboard(request):
     secretary = Secretary.objects.filter(auth_user=request.user).first()
 
-    # Automatically fetch first and last name from the auth_user model
+   
     user_first_name = request.user.first_name
     user_last_name = request.user.last_name
 
@@ -558,7 +533,7 @@ def secretarydashboard(request):
     active_outbreaks_count = Outbreaks.objects.filter(status="Active").count()
     total_residents_count = Residents.objects.count()
 
-    # Check if secretary profile is incomplete
+    
     show_modal = secretary and not all([
         secretary.mname,
         secretary.zone,
@@ -571,7 +546,7 @@ def secretarydashboard(request):
     ])
 
     if request.method == 'POST':
-        # Update the secretary profile
+    
         if secretary:
             secretary.mname = request.POST.get('mname', secretary.mname)
             secretary.zone = request.POST.get('zone', secretary.zone)
@@ -580,7 +555,7 @@ def secretarydashboard(request):
             secretary.birthdate = request.POST.get('birthdate', secretary.birthdate)
             secretary.phone_number = request.POST.get('phone_number', secretary.phone_number)
 
-            # Handle file uploads
+
             if request.FILES.get('picture'):
                 secretary.picture = request.FILES['picture']
             if request.FILES.get('id_image'):

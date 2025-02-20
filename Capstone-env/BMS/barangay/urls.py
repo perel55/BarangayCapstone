@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
-    path('', views.validatelogin, name='validatelogin'),
+    path('', views.index, name='index'),
     path('accounts/', include('allauth.urls')),
     re_path(r'^validatelogin/$', views.validatelogin, name='validatelogin'),
     re_path(r'^register$', views.register, name='register'),
@@ -53,7 +53,7 @@ urlpatterns = [
     #re_path(r'^approve-resident/(?P<resident_id>\d+)/$', views.approved_resident, name='approved_resident'),
     #re_path(r'^declined-resident/(?P<resident_id>\d+)/$', views.declined_resident, name='declined_resident'),
 
-    re_path(r'^releasedMaintenance/(?P<schedule_id>\d+)/$', views.releasedMaintenance, name='releasedMaintenance'),
+    re_path(r'^releasedMaintenance/(?P<schedule_id>\d+)/$', views.releasedMaintenance, name='releasedMaintenance'), 
     re_path(r'^addMaintenance/(?P<schedule_id>\d+)/$', views.addMaintenance, name='addMaintenance'),
     
 
@@ -98,7 +98,9 @@ urlpatterns = [
     re_path(r'^residentHistory/$', views.residentHistory, name='residentHistory'),
     
     
-
+    re_path(r'^residentHS/$', views.residentHS, name='residentHS'),
+    re_path(r'^residentAS/$', views.residentAS, name='residentAS'),
+    re_path(r'^residentPayment/$', views.residentPayment, name='residentPayment'),
 
 
 
@@ -207,4 +209,17 @@ urlpatterns = [
 
     path('resident-autocomplete/', views.resident_autocomplete, name='resident_autocomplete'),
 
+
+
+
+
+  # ------------------ Admin -----------------------
+    path('adminRecord/', views.adminRecord, name='adminRecord'),
+
+
+
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+

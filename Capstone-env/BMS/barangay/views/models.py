@@ -15,7 +15,6 @@ class Residents(models.Model):
     phone_number = models.CharField(max_length=255)
     picture = models.ImageField(upload_to = 'images/', null=True)
     id_image = models.ImageField(upload_to = 'images/', null=True)
-    position = models.CharField(max_length=255)
     is_profile_complete = models.BooleanField(default=False)
     status = models.CharField(max_length=50, default="Pending")
 
@@ -51,33 +50,9 @@ class Bhw(models.Model):
  
     def __str__(self):
         return f"{self.auth_user}"
-class Bsi(models.Model):
-    auth_user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE) 
-    mname = models.CharField(max_length=255)
-    zone = models.CharField(max_length=255)
-    civil_status = models.CharField(max_length=255)
-    occupation = models.CharField(max_length=255)
-    birthdate = models.DateField(max_length=255, null=True)
-    phone_number = models.CharField(max_length=255)
-    picture = models.ImageField(upload_to = 'images/', null=True)
-    position = models.CharField(max_length=255)
 
-    def __str__(self):
-        return f"{self.auth_user}"
 
-class HealthAdmin(models.Model):
-    auth_user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE) 
-    mname = models.CharField(max_length=255)
-    zone = models.CharField(max_length=255)
-    civil_status = models.CharField(max_length=255)
-    occupation = models.CharField(max_length=255)
-    birthdate = models.DateField(max_length=255, null=True)
-    phone_number = models.CharField(max_length=255)
-    picture = models.ImageField(upload_to = 'images/', null=True)
-    position = models.CharField(max_length=255)
 
-    def __str__(self):
-        return f"{self.auth_user}"
     
 
 class Secretary(models.Model):
@@ -104,9 +79,7 @@ class Account_Type(models.Model):
         return f"{self.Account_type}"
 
 class Accounts(models.Model):
-    ha_id = models.ForeignKey(HealthAdmin, on_delete=models.CASCADE, null=True)
     resident_id = models.ForeignKey(Residents, on_delete=models.CASCADE, null=True)
-    bsi_id = models.ForeignKey(Bsi, on_delete=models.CASCADE, null=True)
     bhw_id = models.ForeignKey(Bhw, on_delete=models.CASCADE, null=True)
     admin_id = models.ForeignKey(Personnel, on_delete=models.CASCADE, null=True)
     secretary_id = models.ForeignKey(Secretary, on_delete=models.CASCADE, null=True)
@@ -226,8 +199,7 @@ class CommunityNotice(models.Model):
     notice_type = models.CharField(max_length=100)
     notice_color = models.CharField(max_length=7, default='#007bff')
 
-    def __str__(self):
-        return f"{self.announcement_name} {self.announcement_description} {self.announcement_date} {self.announcement_time} {self.announcement_type}"
+ 
     
 class Maintenance(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
@@ -244,22 +216,6 @@ class Maintenance(models.Model):
     def __str__(self):
         return f"{self.date} {self.week} {self.kg} {self.bp} {self.status}"
 
-
-class Medicine(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, null=True)
-    resident_id = models.ForeignKey(Residents, on_delete=models.CASCADE, null=True)
-    maintenance = models.ForeignKey(Maintenance, on_delete=models.CASCADE, null=True)
-    medicine_name = models.CharField(max_length=100)
-    medicine_description = models.TextField(null=True)
-    medicine_quantity = models.IntegerField(null=True)
-    expiration_date = models.DateField(null=True)
-    medicine_type = models.CharField(max_length=100)
-    picture = models.ImageField(upload_to='images/', null=True)
-    released_quantity = models.PositiveIntegerField(blank=True, null=True)
-
-    def __str__(self):
-        return f"{self.medicine_name} {self.medicine_description} {self.medicine_quantity} {self.expiration_date} {self.medicine_type} {self.picture} {self.released_quantity}"
 
 class Immunize(models.Model):
     schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, null=True)
@@ -302,3 +258,17 @@ class Member(models.Model):
 
     def __str__(self):
         return f"{self.resident.auth_user.username} - {self.relationship_to_head} ({'Head' if self.is_head_of_household else 'Member'})"
+
+class Payment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    resident = models.ForeignKey(Residents, on_delete=models.CASCADE, null=True)
+    service = models.ForeignKey(Services, on_delete=models.CASCADE, null=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    date_paid = models.DateField()
+    sender_name = models.CharField(max_length=100)
+    reference_number = models.CharField(max_length=100)
+    proof = models.ImageField(upload_to='images/', null=True)
+    status = models.CharField(max_length=100, default="Pending")
+
+    def __str__(self):
+        return f"{self.resident} - {self.service} - {self.amount} - {self.date_paid} - {self.payment_method} - {self.status}"
