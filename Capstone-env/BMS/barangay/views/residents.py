@@ -8,6 +8,9 @@ from django.http import JsonResponse
 from .models import *
 from datetime import datetime
 from django.http import HttpResponse
+from django.http import JsonResponse
+from .models import Payment
+from django.views.decorators.csrf import csrf_exempt
 
 
 
@@ -323,6 +326,50 @@ def residentHealthRecords(request):
         'immunizations': immunizations,
     })
 
-
 def residentPayment(request):
-    return render(request, 'resident/residentPayment.html')
+    user = request.user  
+
+    
+    latest_request = Request.objects.filter(user=user).select_related('service_id').order_by('-id').first()
+
+    return render(request, 'resident/residentPayment.html', {'latest_request': latest_request})
+
+
+
+
+@csrf_exempt
+def save_payment(request):
+    if request.method == 'POST':
+      
+        if not request.user.is_authenticated:
+            return JsonResponse({'status': 'error', 'message': 'User not authenticated'}, status=401)
+        
+        # Retrieve form data from the request
+        sender_name = request.POST.get('sender_name')
+        reference_number = request.POST.get('reference_number')
+        proof = request.FILES.get('proof')  
+        status = request.POST.get('status', 'Pending')  
+        date_paid = request.POST.get('date_paid')
+  
+        user_id = request.user.id
+        
+        payment = Payment.objects.create(
+            user_id=user_id, 
+            sender_name=sender_name,
+            reference_number=reference_number,
+            proof=proof,
+            status=status,
+            date_paid=date_paid,  
+        )
+
+    
+        return redirect('resident_services')  
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+
+
+
+
+
+
+

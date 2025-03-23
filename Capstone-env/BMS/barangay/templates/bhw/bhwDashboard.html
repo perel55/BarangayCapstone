@@ -27,11 +27,6 @@
                         <p>{{ total_resident }}</p>
                     </div>
                 
-                    <div class="box">
-                        <img src="{% static 'images/residents.png' %}" alt="Residents">    
-                        <h1>Verified Resident</h1>
-                        <p>{{ verified_resident }}</p>
-                    </div>
 
                     <div class="box">
                         <img src="{% static 'images/accounts.png' %}" alt="Officials">    
@@ -47,18 +42,6 @@
 
                     <div class="box">
                         <img src="{% static 'images/health.png' %}" alt="Officials">    
-                        <h1>Active Outbreaks</h1>
-                        <p>{{ active_outbreaks }}</p>
-                    </div>
-                    
-                    <div class="box">
-                        <img src="{% static 'images/health.png' %}" alt="Officials">    
-                        <h1>Inactive Outbreaks</h1>
-                        <p>{{ inactive_outbreaks }}</p>
-                    </div>
-
-                    <div class="box">
-                        <img src="{% static 'images/health.png' %}" alt="Officials">    
                         <h1>Total Maintenance</h1>
                         <p>{{ total_maintenance }}</p>
                     </div>
@@ -69,11 +52,7 @@
                         <p>{{ total_immunization }}</p>
                     </div>
 
-                    <div class="box">
-                        <img src="{% static 'images/health.png' %}" alt="Officials">    
-                        <h1>Total Medicine</h1>
-                        <p>{{ total_medicine }}</p>
-                    </div>
+                    
                 </div>
 
                 <!-- Chart.js Graph -->
@@ -82,20 +61,17 @@
                 <script>
                     // Get context of canvas
                     const ctx = document.getElementById('dashboardChart').getContext('2d');
-
+                
                     // Chart data
                     const data = {
                         labels: [
                             'Total BHWs',
                             'Total Admins',
                             'Total Residents',
-                            'Verified Residents',
                             'Health Services',
-                            'Active Outbreaks',
-                            'Inactive Outbreaks',
                             'Total Maintenance',
                             'Total Immunization',
-                            'Total Medicine'
+                  
                         ],
                         datasets: [{
                             label: 'Dashboard Overview',
@@ -103,42 +79,31 @@
                                 {{ total_bhw }},
                                 {{ total_admin }},
                                 {{ total_resident }},
-                                {{ verified_resident }},
                                 {{ total_healthService }},
-                                {{ active_outbreaks }},
-                                {{ inactive_outbreaks }},
                                 {{ total_maintenance }},
                                 {{ total_immunization }},
-                                {{ total_medicine }}
+          
                             ],
                             backgroundColor: [
                                 'rgba(255, 99, 132, 0.2)',
                                 'rgba(54, 162, 235, 0.2)',
                                 'rgba(255, 206, 86, 0.2)',
-                                'rgba(75, 192, 192, 0.2)',
                                 'rgba(153, 102, 255, 0.2)',
-                                'rgba(255, 159, 64, 0.2)',
-                                'rgba(99, 255, 132, 0.2)',
-                                'rgba(132, 99, 255, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',  // for Total Immunization
-                                'rgba(255, 159, 64, 0.2)'   // for Total Medicine
+                                'rgba(54, 162, 235, 0.2)',
+                               
                             ],
                             borderColor: [
                                 'rgba(255, 99, 132, 1)',
                                 'rgba(54, 162, 235, 1)',
                                 'rgba(255, 206, 86, 1)',
-                                'rgba(75, 192, 192, 1)',
                                 'rgba(153, 102, 255, 1)',
-                                'rgba(255, 159, 64, 1)',
-                                'rgba(99, 255, 132, 1)',
-                                'rgba(132, 99, 255, 1)',
-                                'rgba(54, 162, 235, 1)',  // for Total Immunization
-                                'rgba(255, 159, 64, 1)'   // for Total Medicine
+                                'rgba(54, 162, 235, 1)',
+                              
                             ],
                             borderWidth: 1
                         }]
                     };
-
+                
                     // Chart configuration
                     const config = {
                         type: 'bar', // Change to 'pie', 'line', or others as needed
@@ -161,10 +126,11 @@
                             }
                         }
                     };
-
+                
                     // Render chart
                     const dashboardChart = new Chart(ctx, config);
                 </script>
+                
 
             </section>
         </div>

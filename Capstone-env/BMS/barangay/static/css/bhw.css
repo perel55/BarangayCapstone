@@ -179,13 +179,12 @@ background: linear-gradient(#7BC9FF,#7EA1FF);
   transform: scale(1.05); 
 }
 
-
 #content {
   top: 5rem;
   margin-top: 5rem;
   width: 94%;
   margin-left: 5%; 
-  background-color: #ffff;
+  background-color: #eeecec;
   box-shadow: 0 0 10px rgba(134, 134, 134, 0.2);
   border-radius: 10px;
   z-index: 1;
@@ -201,13 +200,9 @@ table th, table td {
   padding: 0.5rem;
   
 }
-
-table th {
-  background-color: #f4f4f4;
-}
-
+  
 th {
-  background: linear-gradient(#7BC9FF,#7EA1FF);
+  background-color: #fefefe;
   text-align: left; 
 }
 
@@ -317,7 +312,7 @@ button {
 
 .box-container {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* Four columns */
+  grid-template-columns: repeat(3, 1fr); /* Four columns */
   gap: 20px;
   padding: 20px;
 }

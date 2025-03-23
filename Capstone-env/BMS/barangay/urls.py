@@ -21,7 +21,7 @@ urlpatterns = [
     re_path(r'^admin/resident/$', views.adminResident, name='adminResident'),
     re_path(r'^admin/addAdmin/$', views.addAdmin, name='addAdmin'),
     re_path(r'^adminregister$', views.adminregister, name='adminregister'),
-
+    re_path(r'^admindashboard$', views.admindashboard, name='admindashboard'),
 
     re_path('accounts/bhwlogout/', views.bhwlogout, name='bhwlogout'),
     re_path('accounts/adminlogout/', views.adminlogout, name='adminlogout'),
@@ -101,6 +101,11 @@ urlpatterns = [
     re_path(r'^residentHS/$', views.residentHS, name='residentHS'),
     re_path(r'^residentAS/$', views.residentAS, name='residentAS'),
     re_path(r'^residentPayment/$', views.residentPayment, name='residentPayment'),
+    re_path(r'^save_payment/$', views.save_payment, name='save_payment'),
+     path('approve_payment/<int:payment_id>/', views.approve_payment, name='approve_payment'),
+    path('decline_payment/<int:payment_id>/', views.decline_payment, name='decline_payment'),
+
+   
 
 
 

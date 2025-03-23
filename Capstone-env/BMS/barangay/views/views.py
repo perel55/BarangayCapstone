@@ -267,7 +267,9 @@ def adminEvent(request):
     return render(request, 'admin/adminEvent.html')
 
 def adminPayment(request):
-    return render(request, 'admin/adminPayment.html')
+    payments = Payment.objects.select_related('resident', 'service', 'request_id').all()
+    return render(request, 'admin/adminPayment.html', {'payments': payments})
+
 
 def adminResident(request):
     return render(request, 'admin/adminResident.html')

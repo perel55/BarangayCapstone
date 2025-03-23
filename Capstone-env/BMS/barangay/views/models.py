@@ -243,8 +243,8 @@ class ResidentImmunize(models.Model):
         return f"{self.vaccine_name} {self.vaccine_description} "
     
 class Household(models.Model):
-    name = models.CharField(max_length=255)  # Name of household
-    zone = models.CharField(max_length=255)  # Barangay zone
+    name = models.CharField(max_length=255)  
+    zone = models.CharField(max_length=255)  
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -263,12 +263,12 @@ class Payment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     resident = models.ForeignKey(Residents, on_delete=models.CASCADE, null=True)
     service = models.ForeignKey(Services, on_delete=models.CASCADE, null=True)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    request_id = models.ForeignKey(Request, on_delete=models.CASCADE, null=True)
     date_paid = models.DateField()
-    sender_name = models.CharField(max_length=100)
-    reference_number = models.CharField(max_length=100)
+    sender_name = models.CharField(max_length=100, null=True)
+    reference_number = models.CharField(max_length=100, null=True) 
     proof = models.ImageField(upload_to='images/', null=True)
     status = models.CharField(max_length=100, default="Pending")
 
     def __str__(self):
-        return f"{self.resident} - {self.service} - {self.amount} - {self.date_paid} - {self.payment_method} - {self.status}"
+        return f"{self.resident} - {self.service}  - {self.date_paid}  - {self.status}"

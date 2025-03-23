@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .views.models import Accounts, Residents, Bhw, Account_Type, Personnel, HealthService, Schedule, Services, Outbreaks, Request, Maintenance, CommunityNotice,Immunize, Secretary, RequestHistory, Household
-from .views.models import Accounts, Residents, Bhw, Account_Type, Personnel, HealthService, Schedule, Services, Outbreaks, Request, Maintenance, CommunityNotice
+from .views.models import Accounts, Residents, Bhw, Account_Type, Personnel, HealthService, Schedule, Services, Outbreaks, Request, Maintenance, CommunityNotice,Immunize, Secretary, RequestHistory, Household,Payment
 
 
 
@@ -21,6 +20,7 @@ admin.site.register(Immunize)
 admin.site.register(Secretary)
 admin.site.register(RequestHistory)
 admin.site.register(Household)
+admin.site.register(Payment)
 
 
 

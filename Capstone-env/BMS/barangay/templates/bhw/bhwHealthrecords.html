@@ -28,6 +28,7 @@
                             <tr> 
                                 <th>Full Name</th>
                                 <th>Service</th>
+                                <th>Service Description</th>
                                 <th>Purok</th>
                                 <th>Phone Number</th>
                             </tr>
@@ -37,6 +38,7 @@
                             <tr>
                                 <td>{{ schedule.user.first_name }} {{ schedule.user.last_name }}</td>
                                 <td>{{ schedule.bhwService.service_name }}</td>
+                                <td>{{ schedule.bhwService.service_description }}</td>
                                 <td>{{ schedule.resident.zone }}</td>
                                 <td>{{ schedule.resident.phone_number }}</td>
                             </tr>

@@ -42,7 +42,7 @@
                             <h2>{{ service.service_name }}</h2>
                             <p><strong>Requirements:</strong> {{ service.requirements }}</p>
                             <p>{{ service.service_description }}</p>
-                            <p><strong>Price:</strong> ${{ service.service_price }}</p>
+                            <p><strong>Price:</strong> ₱{{ service.service_price }}</p>
                         </div>
                         <div class="service-actions">
                             <a href="{% url 'update_service' service.service_id %}" class="btn update-btn">Update</a>

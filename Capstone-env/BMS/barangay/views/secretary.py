@@ -219,7 +219,7 @@ def secretary_update_service(request, service_id):
         service.save()
         return redirect('secretary_service_list')
 
-    return render(request, 'secretary/secretary_update_service.html', {'service': service})
+    return render(request, 'admin/update_service.html', {'service': service})
 
 
 def secretary_delete_service(request, service_id):

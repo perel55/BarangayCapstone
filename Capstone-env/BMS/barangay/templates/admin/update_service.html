@@ -2,17 +2,18 @@
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/adminServiceList.css' %}">
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
 {% endblock %}
 
 
 {% block content %}
 
-    {% include './adminheader.html' %} 
+ 
     <div class="content-container">
-        {% include 'admin/AdminNav.html' %}
+   
 
         <div class="main-contents">
-            <h1>Update Service: {{ service.service_name }}</h1>
+            <h1>Update Service</h1>
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div>
@@ -39,7 +40,7 @@
                         <img src="{{ service.image.url }}" alt="{{ service.service_name }}" width="200">
                     {% endif %}
                 </div>
-                <button type="submit">Update Service</button>
+                    <button type="submit">Update Service</button>
                 <a class="cancel"  href="{% url 'service_list' %}">Cancel</a>
             </form>
             

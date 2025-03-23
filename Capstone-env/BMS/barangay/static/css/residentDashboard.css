@@ -1,33 +1,27 @@
 /* Center the dashboard content */
-.dashboard-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    max-width: 1200px; /* Limit the width for larger screens */
-    margin: 0 auto; /* Center the content horizontally */
-  }
-  
-  /* Styles for the Dashboard */
-  .dashboard-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center; /* Center the row */
-    margin-bottom: 20px;
-    width: 100%;
-  }
-  
-  .dashboard-card {
-    background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    width: 600px; /* Reduced width to make the cards smaller */
-    box-sizing: border-box;
-    text-align: center; /* Center text within cards */
-  }
+
+.dashboard-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh; /* Adjust based on layout */
+  padding: 20px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columns */
+  gap: 20px;
+  width: 80%;
+  max-width: 1200px;
+}
+
+.dashboard-card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
   
   .dashboard-card h2 {
     font-size: 1.3rem; /* Slightly smaller font size */

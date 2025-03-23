@@ -3,6 +3,7 @@ from django.contrib import admin
 from .models import Household, Member, Residents, Schedule
 from django.shortcuts import render
 
+
 @admin.register(Household)
 class HouseholdAdmin(admin.ModelAdmin):
     list_display = ('name', 'zone', 'address', 'created_at')
@@ -14,5 +15,7 @@ class MemberAdmin(admin.ModelAdmin):
 @admin.register(Residents)
 class ResidentsAdmin(admin.ModelAdmin):
     list_display = ('auth_user', 'mname', 'zone', 'civil_status', 'phone_number')
+
+
 
 

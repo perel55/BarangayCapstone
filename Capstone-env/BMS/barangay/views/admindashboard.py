@@ -251,3 +251,32 @@ def adminRecord(request):
         'other_schedules':  other_schedules, 
         
     })
+
+
+
+
+def admindashboard(request):
+    # Fetch data counts
+    pending_residents_count = Residents.objects.filter(status='pending').count()
+    pending_requests_count = Request.objects.filter(status='pending').count()
+    active_outbreaks_count = Outbreaks.objects.filter(status='active').count()
+    total_residents_count = Residents.objects.count()
+
+    # Debugging: Print data to check if counts are correct
+    print("Dashboard Data:", {
+        "pending_residents_count": pending_residents_count,
+        "pending_requests_count": pending_requests_count,
+        "upcoming_notices_count": upcoming_notices_count,
+        "active_outbreaks_count": active_outbreaks_count,
+        "total_residents_count": total_residents_count,
+    })
+
+    return render(request, 'admin/admin.html', {
+        'pending_residents_count': pending_residents_count,
+        'pending_requests_count': pending_requests_count,
+        'upcoming_notices_count': upcoming_notices_count,
+        'active_outbreaks_count': active_outbreaks_count,
+        'total_residents_count': total_residents_count,
+        'show_modal': True,  # Ensure modal works if needed
+    })
+

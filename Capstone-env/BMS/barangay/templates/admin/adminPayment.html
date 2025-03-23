@@ -1,15 +1,63 @@
 {% load static %}
 {% block css %}
 <link rel="stylesheet" href="{% static './css/admin.css' %}">
+<link rel="stylesheet" href="{% static './css/adminPayment.css' %}">
+
 {% endblock %}
 
 
 {% block content %}
 
     <div class="adminContainer">
-        {% include 'admin/adminTopnav.html' %}
+       {% include 'admin/adminTopnav.html' %}
         <div class="MC-Bottom">
-        {% include './adminNav2.html' %}      
+      {% include './adminNav2.html' %}    
+
+   
+      <section id="content">
+        <table>
+            <thead>
+                <tr>  
+                    <th>First Name</th>  
+                    <th>Last Name</th>   
+                    <th>Service Name</th> 
+                    <th>Service Price</th> 
+                    <th>Date</th>
+                    <th>Sender Name</th>
+                    <th>Reference Number</th> 
+                    <th>Proof</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>    
+            <tbody>
+                {% for payment in payments %}  
+                <tr>    
+                    <td>{{ payment.user.first_name  }}</td>  
+                    <td>{{ payment.user.last_name }}</td>   
+                    <td>{{ request.service.service_name }}</td>  
+                    <td>{{ payment.service.service_price }}</td> 
+                    <td>{{ payment.date_paid }}</td>  
+                    <td>{{ payment.sender_name }}</td>  
+                    <td>{{ payment.reference_number }}</td>   
+                    <td>
+                        {% if payment.proof %} 
+                            <img src="{{ payment.proof.url }}" alt="Proof" style="max-width: 100px;">  
+                        {% else %}
+                            No Proof Available
+                        {% endif %}
+                    </td>
+                    <td>{{ payment.status }}</td>
+                    <td>
+                        <a href="{% url 'approve_payment' payment.id %}" class="approve-btn">Approve</a>
+                        <a href="{% url 'decline_payment' payment.id %}" class="decline-btn">Decline</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+    
         </div>
     </div>
 {% endblock %}
