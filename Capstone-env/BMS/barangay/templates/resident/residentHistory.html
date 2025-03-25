@@ -4,9 +4,13 @@
 <script type="module" src="{% static 'js/historyList.js' %}"></script>
 {% endblock %}
 
+
 <body>
     {% block content %}
     <div class="adminContainer">
+        {% include 'resident/residentTopnav.html' %}
+        <div class="MC-Bottom">
+            {% include 'resident/residentNav1.html' %}
         {% include 'resident/residentTopnav.html' %}
         <div class="MC-Bottom">
             {% include 'resident/residentNav1.html' %}

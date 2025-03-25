@@ -155,6 +155,9 @@ urlpatterns = [
     path('api/chart-data/', views.outbreak_chart_data, name='outbreak-chart-data'),
     path('resident-outbreaks/', views.resident_outbreaks_view, name='resident_outbreaks_view'),
 
+    path('api/chart-data/', views.outbreak_chart_data, name='outbreak-chart-data'),
+    path('resident-outbreaks/', views.resident_outbreaks_view, name='resident_outbreaks_view'),
+
     path('fetch-services/', views.fetch_services, name='fetch-services'),
 
     path('resident_services/', views.resident_services, name='resident_services'),

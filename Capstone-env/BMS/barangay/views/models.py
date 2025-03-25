@@ -155,7 +155,15 @@ class Outbreaks(models.Model):
     def __str__(self):
         return f"{self.outbreak_name} {self.purok} "
     
+    
 class Request(models.Model):
+    PENDING = 'Pending'
+    APPROVED = 'Approved'
+    STATUS_CHOICES = [
+        (PENDING, 'Pending'),
+        (APPROVED, 'Approved'),
+    ]
+
     PENDING = 'Pending'
     APPROVED = 'Approved'
     STATUS_CHOICES = [
@@ -165,6 +173,7 @@ class Request(models.Model):
 
     Resident_id = models.ForeignKey(Residents, on_delete=models.CASCADE, null=True)
     service_id = models.ForeignKey(Services, on_delete=models.CASCADE, null=True)
+    reason = models.CharField(max_length=255)
     reason = models.CharField(max_length=255)
     total_price = models.IntegerField(null=True)
     schedule_date = models.DateField(null=True)

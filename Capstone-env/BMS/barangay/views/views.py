@@ -471,11 +471,14 @@ def residentdashboard(request):
             resident.phone_number = request.POST.get('phone_number')
             resident.position = request.POST.get('position')
 
+
             if 'picture' in request.FILES:
                 resident.picture = request.FILES['picture']
 
+
             if 'id_image' in request.FILES:
                 resident.id_image = request.FILES['id_image']
+
 
             resident.is_profile_complete = True
             resident.save()

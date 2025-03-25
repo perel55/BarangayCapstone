@@ -33,9 +33,12 @@
     cursor: pointer;
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease, box-shadow 0.3s ease;
+<<<<<<< HEAD
     z-index: -1;
     margin-top: 2rem;
     margin-left: 5rem;
+=======
+>>>>>>> origin/erwin2
 }
 
 
