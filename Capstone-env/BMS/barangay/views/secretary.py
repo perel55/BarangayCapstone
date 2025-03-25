@@ -318,3 +318,28 @@ def edit_secretary_profile(request):
 
     birthdate_str = secretary.birthdate.strftime('%Y-%m-%d') if secretary.birthdate else ""
     return render(request, 'secretary/secEditProfile.html', {'secretary': secretary, 'birthdate_str': birthdate_str})
+
+
+# Secretary: Manage Clearance Requests
+@login_required
+def manage_clearances(request):
+    clearances = BarangayClearance.objects.all()
+    return render(request, 'secretary/manage_clearances.html', {'clearances': clearances})
+
+# Secretary: Approve/Reject Clearance
+@login_required
+def update_clearance_status(request, pk):
+    clearance = get_object_or_404(BarangayClearance, pk=pk)
+
+    if request.method == 'POST':
+        clearance.status = request.POST.get('status')
+        clearance.save()
+        return redirect('manage_clearances')
+
+    return render(request, 'secretary/update_clearance_status.html', {'clearance': clearance})
+
+# Secretary: Print Barangay Clearance
+@login_required
+def print_clearance(request, pk):
+    clearance = get_object_or_404(BarangayClearance, pk=pk)
+    return render(request, 'secretary/barangay_clearance_template.html', {'clearance': clearance})

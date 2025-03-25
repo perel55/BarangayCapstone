@@ -1,23 +1,23 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.utils.timezone import now
 # Create your models here.
 
 
     
 class Residents(models.Model):
-    auth_user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE) 
+    auth_user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE,  related_name="resident_profile") 
     mname = models.CharField(max_length=255)
     zone = models.CharField(max_length=255)
     civil_status = models.CharField(max_length=255)
     occupation = models.CharField(max_length=255)
     birthdate = models.DateField(max_length=255, null=True)
     phone_number = models.CharField(max_length=255)
-    picture = models.ImageField(upload_to = 'images/', null=True)
-    id_image = models.ImageField(upload_to = 'images/', null=True)
+    picture = models.ImageField(upload_to='images/', null=True)
+    id_image = models.ImageField(upload_to='images/', null=True)
     is_profile_complete = models.BooleanField(default=False)
     status = models.CharField(max_length=50, default="Pending")
-
 
     def __str__(self):
         return f"{self.auth_user}"
@@ -272,3 +272,52 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"{self.resident} - {self.service} - {self.amount} - {self.date_paid} - {self.payment_method} - {self.status}"
+    
+class BarangayClearance(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    ]
+
+    resident = models.ForeignKey(
+        Residents, 
+        on_delete=models.CASCADE, 
+        related_name="clearances",
+        null=True,  # Allow NULL values
+        blank=True  # Allow empty values in forms
+    )
+    full_name = models.CharField(max_length=255, blank=True)
+    age = models.IntegerField(blank=True, null=True)
+    civil_status = models.CharField(max_length=20, choices=[
+        ('single', 'Single'),
+        ('married', 'Married'),
+        ('widow', 'Widow')
+    ], blank=True)
+    native_of = models.CharField(max_length=255)
+    purok = models.CharField(max_length=255, blank=True)
+    purpose = models.TextField()
+    remarks = models.CharField(max_length=255, default="No Derogatory Record and is known of Good Moral Character")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    date_requested = models.DateTimeField(default=now)
+
+    def save(self, *args, **kwargs):
+        """Auto-fill resident details before saving"""
+        if self.resident:
+            self.full_name = f"{self.resident.auth_user.first_name} {self.resident.auth_user.last_name}"
+            self.age = self.calculate_age()
+            self.civil_status = self.resident.civil_status
+            self.purok = self.resident.zone  # Assuming 'zone' is the purok
+            
+        super().save(*args, **kwargs)
+
+    def calculate_age(self):
+        """Calculate age from birthdate"""
+        if self.resident.birthdate:
+            from datetime import date
+            today = date.today()
+            return today.year - self.resident.birthdate.year - ((today.month, today.day) < (self.resident.birthdate.month, self.resident.birthdate.day))
+        return None
+
+    def __str__(self):
+        return f"{self.full_name} - {self.status}"

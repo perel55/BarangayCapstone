@@ -209,9 +209,11 @@ urlpatterns = [
 
     path('resident-autocomplete/', views.resident_autocomplete, name='resident_autocomplete'),
 
-
-
-
+    path('request/', views.request_clearance, name='request_clearance'),
+    path('status/', views.clearance_status, name='clearance_status'),
+    path('manage/', views.manage_clearances, name='manage_clearances'),
+    path('update/<int:pk>/', views.update_clearance_status, name='update_clearance_status'),
+    path('print/<int:pk>/', views.print_clearance, name='print_clearance'),
 
   # ------------------ Admin -----------------------
     path('adminRecord/', views.adminRecord, name='adminRecord'),
