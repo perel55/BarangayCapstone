@@ -1,28 +1,126 @@
-<body>
-    {% load account %}
-    {% block content %}
- 
-    <div class="adminContainer">
-        <div class="ac-top">
-            <div class="ac-Left">
-                <img src="../../static/images/lala-logo.jpg" alt="">
-                <h3>Barangay Lala Proper</h3>
-            </div>
+{% load static %}
+{% load account %}
+{% block content %}
 
-            <div class="ac-middle">
-            
-            </div>
+<div class="adminContainer">
+    <div class="ac-top">
+        <div class="ac-Left">
+            <img src="{% static 'images/lala-logo.jpg' %}" alt="">
+            <h3>Barangay Lala Proper</h3>
+        </div>
 
-            <div class="ac-right">
-              <!-- <input type="" name="" id="HomeSearch" placeholder="Search"> --> 
-                <div class="Accounts">
-                   <a>{% user_display user %}</a>
+        <div class="ac-middle">
+        </div>
+
+        <div class="ac-right">
+            <div class="Accounts">
+                <div class="dropdown">
+                    <img src="{{ resident.picture.url }}" alt="Profile Picture" class="profile-img" id="profileDropdown">
+                    
+                    <div class="dropdown-content" id="dropdownMenu">
+                        <div class="profile-info">
+                            <img src="{{ resident.picture.url }}" alt="Profile Picture" class="dropdown-profile-img">
+                            <p>{{ user.first_name }} {{ resident.mname }} {{ user.last_name }}</p>
+                            <small>{{ resident.position }}</small>
+                        </div>
+                        <hr>
+                        <a href="{% url 'edit_profile' %}">Edit Profile</a>
+                        <a href="#">Setting & Privacy</a>
+                        <a href="#">Help & Support</a>
+                        <a href="{% url 'logout' %}" class="logout">Logout</a>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="MC-Bottom"> 
-        </div>
     </div>
-    {% endblock %}
+    <div class="MC-Bottom">
+    </div>
+</div>
 
-</body>
+{% endblock %}
+
+<style>
+/* Profile Picture Styling */
+.profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    border: solid 0.3px black;
+}
+
+/* Dropdown Styling */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #2c3e50;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* Profile Info Inside Dropdown */
+.profile-info {
+    text-align: center;
+    padding: 10px;
+    color: white;
+}
+
+.dropdown-profile-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-bottom: 5px;
+}
+
+/* Dropdown Links */
+.dropdown-content a {
+    color: white;
+    padding: 10px 15px;
+    display: block;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.dropdown-content a:hover {
+    background-color: #34495e;
+}
+
+.logout {
+    color: red;
+    font-weight: bold;
+}
+
+/* Show dropdown when active */
+.show {
+    display: block;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const profileDropdown = document.getElementById("profileDropdown");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+
+    profileDropdown.addEventListener("click", function(event) {
+        dropdownMenu.classList.toggle("show");
+        event.stopPropagation();
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function(event) {
+        if (!profileDropdown.contains(event.target) && !dropdownMenu.contains(event.target)) {
+            dropdownMenu.classList.remove("show");
+        }
+    });
+});
+</script>

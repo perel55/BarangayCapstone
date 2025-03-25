@@ -2,15 +2,40 @@
 {% load static %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/login.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 {% endblock %}
 
 <nav>
     <div class="navbar">
-        <div class="title"><p>Barangay Lala Proper</p></div>	
+        <div class="title"><p>Barangay Lala Proper </p></div>	
         <ul class="menu">
             <li><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="">Hotline Directory</a></li>
+            <li><a href="">Contact Us</a></li>
             <li><a href="{% url 'signup' %}">Signup</a></li>
             <li><a href="{% url 'login' %}">Signin</a></li>
+            <li><a href="https://www.facebook.com/profile.php?id=61553573922384" target="_blank">
+                <i class="fab fa-facebook" style="color: #1877F2; font-size: 25px; vertical-align: middle;"></i>
+            </a></li>
         </ul>
-    </div>    
+    </div>   
+     
+    <div class="container-nav-links">
+        <!-- Logo -->
+        <div class="logo">
+            <img src="{% static 'images/lala-logo.jpg' %}" alt="Barangay Lala Proper Logo">
+        </div>
+
+        <!-- Navigation Links -->
+        <ul class="nav-links">
+            <li><a href="{% url 'index' %}">KNOW LALA</a></li>
+            <li><a href="#">FOR RESIDENTS</a></li>
+            <li><a href="#">FOR BUSINESSES</a></li>
+            <li><a href="#">FOR VISITORS</a></li>
+            <li><a href="#">TRANSPARENCY</a></li>
+            <li><a href="#">NEWS</a></li>
+            <li><a href="#">EVENTS</a></li>
+        </ul>
+    </div>
 </nav>
+

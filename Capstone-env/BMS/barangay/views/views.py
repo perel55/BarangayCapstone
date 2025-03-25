@@ -445,13 +445,11 @@ from django.db.models import Count
 
 @login_required
 def residentdashboard(request):
-
     if not request.user.is_authenticated:
         logout(request)
         return redirect('login')
 
     resident = Residents.objects.filter(auth_user=request.user).first()
-
 
     user_first_name = request.user.first_name
     user_last_name = request.user.last_name
@@ -484,7 +482,7 @@ def residentdashboard(request):
             return redirect('residentdashboard')
 
         context = {
-            'resident': resident,
+            'resident': resident,  # Ensure resident is passed
             'show_modal': True,
             'user_first_name': user_first_name,
             'user_last_name': user_last_name,
@@ -494,19 +492,19 @@ def residentdashboard(request):
             'outbreaks_data': outbreaks_data,
             'popular_services': popular_services,
         }
-
-        return render(request, 'resident/userd.html', context)
-
-    context = {
-        'show_modal': False,
-        'recent_schedules': recent_schedules,
-        'upcoming_notices': upcoming_notices,
-        'recent_requests': recent_requests,
-        'outbreaks_data': outbreaks_data,
-        'popular_services': popular_services,
-    }
+    else:
+        context = {
+            'resident': resident,  # Ensure resident is passed here too
+            'show_modal': False,
+            'recent_schedules': recent_schedules,
+            'upcoming_notices': upcoming_notices,
+            'recent_requests': recent_requests,
+            'outbreaks_data': outbreaks_data,
+            'popular_services': popular_services,
+        }
 
     return render(request, 'resident/userd.html', context)
+
 
 
 

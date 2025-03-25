@@ -78,6 +78,11 @@ def calendar_view(request):
     return render(request, 'resident/ResidentCalendar.html', {'events': events})
 
 
+def resident_dashboard(request):
+    resident = Residents.objects.filter(auth_user=request.user).first()
+    return render(request, 'resident/residentTopnav.html', {'resident': resident})
+
+
 # API endpoint to fetch events (if you're using Ajax to load data)
 def get_events(request):
     # Fetch all requests for the logged-in resident
