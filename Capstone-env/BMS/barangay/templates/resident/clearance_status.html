@@ -1,0 +1,8 @@
+<h1>Your Clearance Requests</h1>
+<ul>
+    {% for clearance in clearances %}
+    <li>
+        {{ clearance.purpose }} - {{ clearance.status }}
+    </li>
+    {% endfor %}
+</ul>

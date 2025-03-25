@@ -13,7 +13,6 @@ from .models import Payment
 from django.views.decorators.csrf import csrf_exempt
 
 
-
 @login_required
 def edit_profile(request):
     # Fetch the resident profile for the logged-in user
@@ -378,3 +377,39 @@ def save_payment(request):
 
 
 
+
+
+from .models import BarangayClearance, Residents
+from .forms import BarangayClearanceForm
+from django.contrib import messages
+
+# Resident: Request Barangay Clearance
+@login_required
+def request_clearance(request):
+    resident = Residents.objects.filter(auth_user=request.user).first()
+    
+    if not resident:
+        messages.error(request, "You need to complete your profile before requesting clearance.")
+        return redirect('complete_profile') 
+
+    form = BarangayClearanceForm(request.POST or None)
+    
+    if form.is_valid():
+        clearance = form.save(commit=False)
+        clearance.resident = resident
+        clearance.save()
+        messages.success(request, "Barangay clearance request submitted successfully!")
+        return redirect('clearance_status')
+
+    return render(request, 'resident/request_clearance.html', {'form': form})
+
+# Resident: View Clearance Status
+@login_required
+def clearance_status(request):
+    resident = Residents.objects.filter(auth_user=request.user).first()
+    
+    if not resident:
+        return render(request, 'resident/error.html', {'message': 'You are not registered as a resident.'})
+
+    clearances = BarangayClearance.objects.filter(resident=resident)
+    return render(request, 'resident/clearance_status.html', {'clearances': clearances})

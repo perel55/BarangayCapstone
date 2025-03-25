@@ -5,6 +5,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+<<<<<<< HEAD
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -39,30 +40,71 @@
 }
 
 .requestTable h2 {
+=======
+}
+
+/* Content Container */
+.admin-certificates-main-content .content-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 2rem auto;
+    max-width: 1200px;
+}
+
+.admin-certificates-page .main-content {
+    flex-grow: 1;
+    margin-left: 20px;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Request Table Styling */
+.admin-certificates-page .requestTable h2 {
+>>>>>>> origin/erwin2
     font-size: 1.8rem;
     margin-bottom: 1rem;
     color: #333;
     text-align: center;
 }
 
+<<<<<<< HEAD
 table {
+=======
+.admin-certificates-page table {
+>>>>>>> origin/erwin2
     width: 100%;
     border-collapse: collapse;
     margin-top: 1rem;
 }
 
+<<<<<<< HEAD
 th, td {
     padding: 0.8rem;
+=======
+.admin-certificates-page th, .admin-certificates-page td {
+    padding: 1rem;
+>>>>>>> origin/erwin2
     text-align: left;
     border-bottom: 1px solid #ddd;
     font-size: 1rem;
 }
 
+<<<<<<< HEAD
 th {
+=======
+.admin-certificates-page th {
+>>>>>>> origin/erwin2
     background-color: #f1f1f1;
     color: #333;
 }
 
+<<<<<<< HEAD
 tr:hover {
     background-color: #f9f9f9;
 }
@@ -80,11 +122,36 @@ select {
 
 select:focus {
     border-color: #007bff;
+=======
+.admin-certificates-page tr:hover {
+    background-color: #f9f9f9;
+}
+
+.admin-certificates-page td {
+    background-color: #fff;
+}
+
+/* Select Dropdown Styling */
+.admin-certificates-page select {
+    padding: 0.6rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    width: 120px;
+    transition: all 0.3s ease;
+}
+
+.admin-certificates-page select:focus {
+    border-color: #007BFF;
+>>>>>>> origin/erwin2
     outline: none;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
 }
 
 /* Button Styling */
+<<<<<<< HEAD
 button[type="submit"] {
     padding: 0.5rem 1rem;
     font-size: 1rem;
@@ -97,10 +164,26 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
+=======
+.admin-certificates-page button[type="submit"] {
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 0.5rem;
+}
+
+.admin-certificates-page button[type="submit"]:hover {
+>>>>>>> origin/erwin2
     background-color: #0056b3;
     transform: translateY(-2px);
 }
 
+<<<<<<< HEAD
 /* Responsive Design */
 @media (max-width: 1024px) {
     .content-container {
@@ -132,10 +215,37 @@ button[type="submit"]:hover {
     }
 
     select, button[type="submit"] {
+=======
+/* Empty State Message */
+.admin-certificates-page td[colspan="9"] {
+    text-align: center;
+    font-style: italic;
+    color: #999;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .admin-certificates-page .content-container {
+        flex-direction: column;
+        padding: 1rem;
+        margin: 1rem;
+    }
+
+    .admin-certificates-page .main-content {
+        padding: 1.5rem;
+    }
+
+    .admin-certificates-page table {
+        font-size: 0.9rem;
+    }
+
+    .admin-certificates-page select, .admin-certificates-page button[type="submit"] {
+>>>>>>> origin/erwin2
         width: 100%;
         margin-top: 0.5rem;
     }
 }
+<<<<<<< HEAD
 
 @media (max-width: 480px) {
     th, td {
@@ -150,3 +260,5 @@ button[type="submit"]:hover {
         font-size: 0.9rem;
     }
 }
+=======
+>>>>>>> origin/erwin2

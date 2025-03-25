@@ -1,6 +1,6 @@
 # forms.py
 from django import forms
-from .models import Residents, Member, Household
+from .models import Residents, Member, Household, BarangayClearance
 
 class ResidentProfileForm(forms.ModelForm):
     class Meta:
@@ -41,3 +41,8 @@ class MemberForm(forms.ModelForm):
     class Meta:
         model = Member
         fields = ['resident', 'relationship_to_head', 'is_head_of_household']
+
+class BarangayClearanceForm(forms.ModelForm):
+    class Meta:
+        model = BarangayClearance
+        fields = ['purpose', 'native_of']

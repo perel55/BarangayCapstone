@@ -1,0 +1,122 @@
+/* General Styles */
+body {
+    font-family: 'Times New Roman', serif;
+    background: #f8f8f8;
+    padding: 20px;
+}
+
+.clearance-container {
+    width: 850px;
+    margin: auto;
+    padding: 40px;
+    background: white;
+    border: 15px solid black;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.header img {
+    width: 90px;
+    height: auto;
+    position: absolute;
+    top: 10px;
+}
+
+.left-logo { left: 20px; }
+.right-logo { right: 20px; }
+
+.header h1 {
+    font-size: 22px;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+.header p {
+    margin: 2px 0;
+    font-size: 16px;
+}
+
+/* Horizontal Line under Header */
+.header-separator {
+    border-top: 3px solid black;
+    margin: 10px 0 20px;
+}
+
+/* Title */
+.title {
+    font-size: 28px;
+    font-weight: bold;
+    text-decoration: underline;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Side Panel for Barangay Officials */
+.side-panel {
+    position: absolute;
+    left: 10px;
+    top: 180px;
+    width: 200px;
+    font-size: 14px;
+    font-style: italic;
+    border-right: 3px solid black;  /* Vertical Line */
+    padding-right: 10px;
+}
+
+/* Clearance Content */
+.content {
+    text-align: justify;
+    font-size: 18px;
+    margin-top: 20px;
+    line-height: 1.8;
+    padding-left: 250px; /* Adjusts text alignment to accommodate the side panel */
+}
+
+/* Remarks Section */
+.remarks {
+    margin-left: 30px;
+}
+
+.checkbox {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border: 2px solid black;
+    text-align: center;
+    line-height: 15px;
+    font-weight: bold;
+}
+
+/* Signature Section */
+.signature {
+    text-align: right;
+    margin-top: 50px;
+    font-weight: bold;
+}
+
+.underlined {
+    text-decoration: underline;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 40px;
+}
+
+/* Footer Signature */
+.footer-signature {
+    margin-top: 50px;
+    text-align: right;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.footer-signature p {
+    margin-bottom: 5px;
+}
