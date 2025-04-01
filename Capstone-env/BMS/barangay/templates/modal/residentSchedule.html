@@ -3,7 +3,7 @@
     <div id="Modal-Schedule-Overlay">
         <div id="MS-Container">
             <div class="MSC-Top">
-                <h3>Add Schedule</h3>
+                <h3>Add Schedules</h3>
             </div>
             <div class="MSC-Bottom">
                 <!-- Service Selection -->
@@ -11,8 +11,8 @@
                 <select id="service-id" name="service-id" required>
                     {% for service in services %}
                         <option value="{{ service.service_id }}"
-                                data-price="{{ service.total_price }}"
-                                {% if service.service_id == selected_service %}selected{% endif %}>
+                                data-price="{{ service.service_price }}"
+                                {% if service.service_id|stringformat:"s" == selected_service|stringformat:"s" %}selected{% endif %}>
                             {{ service.service_name }}
                         </option>
                     {% endfor %}
@@ -27,17 +27,15 @@
                 <input type="date" id="schedule-date" name="schedule-date" required>
 
                 <label for="schedule-start-time">Start Time</label>
-
-            <select id="schedule-start-time" name="schedule-start-time" required>
-                <option value="">Select a time</option>
-                <option value="08:00">8:00 am</option>
-                <option value="09:00">9:00 am</option>
-                <option value="11:00">11:00 am</option>
-                <option value="13:00">1:00 pm</option>
-                <option value="15:00">3:00 pm</option>
-                <option value="16:00">4:00 pm</option>
-            </select>
-
+                <select id="schedule-start-time" name="schedule-start-time" required>
+                    <option value="">Select a time</option>
+                    <option value="08:00">8:00 am</option>
+                    <option value="09:00">9:00 am</option>
+                    <option value="11:00">11:00 am</option>
+                    <option value="13:00">1:00 pm</option>
+                    <option value="15:00">3:00 pm</option>
+                    <option value="16:00">4:00 pm</option>
+                </select>
 
                 <!-- Reason for Appointment -->
                 <label for="reason">Reason</label>
@@ -67,7 +65,6 @@
         const serviceName = urlParams.get('service_name');
         const servicePrice = urlParams.get('service_price');
 
-        // Function to update the total price based on selected service
         function updateTotalPrice() {
             const selectedOption = serviceSelect.options[serviceSelect.selectedIndex];
             const price = selectedOption ? selectedOption.getAttribute('data-price') : 0;
@@ -76,11 +73,12 @@
 
         // Pre-fill form fields based on URL parameters
         if (serviceId && servicePrice) {
-            const serviceOption = serviceSelect.querySelector(`option[value="${serviceId}"]`);
+            let serviceOption = serviceSelect.querySelector(`option[value="${serviceId}"]`);
+
             if (serviceOption) {
                 serviceOption.selected = true;
             } else {
-                // Add the service dynamically if not already in the options
+                // Add the service dynamically if not in the options
                 const newOption = document.createElement('option');
                 newOption.value = serviceId;
                 newOption.textContent = serviceName || "Unnamed Service";
@@ -100,3 +98,4 @@
         updateTotalPrice();
     });
 </script>
+    

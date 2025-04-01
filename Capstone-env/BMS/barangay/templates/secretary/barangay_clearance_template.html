@@ -1,0 +1,123 @@
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static './css/clearance.css' %}">
+<style>
+    /* Toolbar Styles */
+    .toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f8f9fa;
+        padding: 10px 20px;
+        border-bottom: 2px solid #ddd;
+    }
+    .toolbar h2 {
+        margin: 0;
+        font-size: 18px;
+    }
+    .print-button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+    .print-button:hover {
+        background-color: #0056b3;
+    }
+
+    /* Hide toolbar when printing */
+    @media print {
+        .toolbar {
+            display: none !important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Toolbar (Will be hidden when printing) -->
+<div class="toolbar">
+    <h2>Barangay Clearance</h2>
+    <button class="print-button" onclick="window.print()">🖨️ Print</button>
+</div>
+
+<div class="clearance-container">
+    <!-- Header -->
+    <div class="header">
+        <img src="{% static 'images/lala-logo.jpg' %}" class="left-logo">
+        <img src="{% static 'images/Lala-mun.png' %}" class="right-logo">
+        <h1>Republic of the Philippines</h1>
+        <p>City of Iligan</p>
+        <p><strong>Barangay Lala Proper</strong></p>
+        <p>(063) 223-9126</p>
+        <p><em>Office of the Punong Barangay</em></p>
+    </div>
+
+    <!-- Horizontal Line Separator -->
+    <hr class="header-separator">
+
+    <p class="title">Barangay Clearance</p>
+
+    <!-- Side Panel for Barangay Officials -->
+    <div class="side-panel">
+        <p>SANGGUNIANG BARANGAY</p>
+        <br>
+        <p><strong>Barangay Chairman:</strong><br>HON. ANTONIO P. FLORES</p>
+        <br>
+        <p><strong>Barangay Kagawad:</strong><br>
+            Margaret D. Casas<br>
+            Alan M. Badelles<br>
+            Jerome R. Areola<br>
+            Robert V. Capangpangan<br>
+            Wilma P. Alsonado<br>
+            Ferlina C. Otasa<br>
+            Santos M. Binerba
+        </p>
+        <p><strong>SK Chairman:</strong> Jhon Dell D. Tabania</p>
+        <p><strong>Barangay Secretary:</strong> Rhienna Stephanie A. Catig</p>
+        <p><strong>Barangay Treasurer:</strong> Rachel Grace S. Villaver</p>
+        <br>
+        <br>
+        <br>
+        <br>
+        <style>.seal { text-align: center; } .side-panel { text-align: center; }</style>
+        <p class="seal">Seal Goes Here.</p>
+        <p class="seal">NOT VALID WITHOUT SEAL</p>
+    </div>
+
+    <!-- Clearance Content -->
+    <div class="content">
+        <p><strong>TO WHOM IT MAY CONCERN:</strong></p>
+        <p>This is to certify that Mr, Ms & Mrs <strong>{{ clearance.full_name }}</strong>,</p>
+        <p><strong>{{ clearance.age }}</strong> years old, <strong>{{ clearance.civil_status }}</strong>,</p>
+        <p>a native of <strong>{{ clearance.native_of }}</strong>, and residing at <strong>{{ clearance.purok }}</strong>, Barangay Ubaldo Laya, Iligan City.</p>
+        <p>This is to certify further that the above-mentioned name is known by this office having the following:</p>
+
+        <p class="remarks"><span class="checkbox">{% if clearance.remarks == "No Derogatory Record and is known of Good Moral Character" %}✓{% endif %}</span> No Derogatory Record and is known of Good Moral Character</p>
+        <p class="remarks"><span class="checkbox">{% if clearance.remarks == "Have Case Filed but settled" %}✓{% endif %}</span> Have Case Filed but settled</p>
+        <p class="remarks"><span class="checkbox">{% if clearance.remarks == "Have pending case filed" %}✓{% endif %}</span> Have pending case filed</p>
+
+        <br>
+        <p><strong>Purpose:</strong> {{ clearance.purpose }}</p>
+        <p><strong>Date Issued:</strong> {{ clearance.date_requested|date:"F d, Y" }}</p>
+        <br>
+
+        <!-- Resident Signature -->
+        <p class="underlined">{{ clearance.full_name }}</p>
+        <p class="text-center">Signature above Printed Name</p>
+    </div>
+
+    <!-- Barangay Captain Signature -->
+    <div class="signature">
+        <p>__________________________</p>
+        <p>Hon. Antonio P. Flores</p>
+        <p>Punong Barangay</p>
+    </div>
+</div>
+
+{% endblock %}

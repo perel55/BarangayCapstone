@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views import View
 from .models import Request, Services, Residents
+from .models import *
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
@@ -22,6 +23,7 @@ def residentSchedule(request):
     })
 
 
+@login_required
 def ScheduleView(request):
     services = Services.objects.all()
     selected_service = None
@@ -63,10 +65,48 @@ def ScheduleView(request):
         )
         new_request.save()
 
+        # Create a notification for the user
+        Notification.objects.create(
+            user=request.user,
+            message=f"Your schedule for {service.service_name} on {schedule_date} has been created successfully."
+        )
+
         messages.success(request, "Your schedule has been successfully created.")
         return redirect('residentPayment')
 
     return render(request, 'resident/ResidentCalendar.html', {'services': services, 'selected_service': selected_service})
+
+# ----------------- NOTIFICATION ------------------------
+
+@login_required
+def update_schedule_status(request, schedule_id, new_status):
+    schedule = get_object_or_404(Schedule, id=schedule_id)
+    
+    # Update the schedule status
+    schedule.status = new_status
+    schedule.save()
+
+    # Notify the user about the status update
+    Notification.objects.create(
+        user=schedule.user,
+        message=f"Your schedule has been {new_status.lower()}."
+    )
+
+    return redirect("schedule_list")  # Redirect to schedule list
+
+@login_required
+def get_notifications(request):
+    notifications = Notification.objects.filter(user=request.user, is_read=False).order_by("-timestamp")
+    
+    data = {
+        "notifications": [
+            {"id": n.id, "message": n.message, "timestamp": n.timestamp.strftime("%Y-%m-%d %H:%M")}
+            for n in notifications
+        ],
+        "count": notifications.count()  # Send unread notification count
+    }
+    
+    return JsonResponse(data)
 
 
 

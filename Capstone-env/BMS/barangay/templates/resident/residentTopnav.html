@@ -1,28 +1,337 @@
-<body>
-    {% load account %}
-    {% block content %}
- 
-    <div class="adminContainer">
-        <div class="ac-top">
-            <div class="ac-Left">
-                <img src="../../static/images/lala-logo.jpg" alt="">
-                <h3>Barangay Lala Proper</h3>
-            </div>
+{% load static %}
+{% load account %}
+{% block content %}
 
-            <div class="ac-middle">
+<div class="adminContainer">
+    <div class="ac-top">
+        <div class="ac-Left">
+            <img src="{% static 'images/lala-logo.jpg' %}" alt="">
+            <h3>Barangay Lala Proper</h3>
+        </div>
+
+        <div class="ac-middle">
+        </div>
+
+        <div class="ac-right">
+            <!-- Notification Bell -->
+            <div class="notification">
+                <span class="bell-icon" id="notificationBell">
+                    🔔
+                    <span class="notification-count" id="notificationCount" style="display: none;">0</span>
+                </span>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <p class="no-notifications">No new notifications</p>
+                </div>
+            </div>
             
-            </div>
 
-            <div class="ac-right">
-              <!-- <input type="" name="" id="HomeSearch" placeholder="Search"> --> 
-                <div class="Accounts">
-                   <a>{% user_display user %}</a>
+            <!-- Profile Dropdown -->
+            <div class="Accounts">
+                <div class="dropdown">
+                    <img src="{{ resident.get_picture_url }}" alt="Profile Picture" class="profile-img" id="profileDropdown">
+                    
+                    <div class="dropdown-content" id="dropdownMenu">
+                        <div class="profile-info">
+                            <img src="{{ resident.get_picture_url }}" alt="Profile Picture" class="profile-img" class="dropdown-profile-img">
+                            <p>{{ user.first_name }} {{ resident.mname }} {{ user.last_name }}</p>
+                            <small>{{ resident.position }}</small>
+                        </div>
+                        <hr>
+                        <a href="{% url 'edit_profile' %}">Edit Profile</a>
+                        <a href="#">Setting & Privacy</a>
+                        <a href="#">Help & Support</a>
+                        <a href="{% url 'logout' %}" class="logout">Logout</a>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="MC-Bottom"> 
-        </div>
     </div>
-    {% endblock %}
+    <div class="MC-Bottom">
+    </div>
+</div>
 
-</body>
+{% endblock %}
+
+<style>
+/* Profile Picture Styling */
+.profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    border: solid 0.3px black;
+}
+
+
+/* Notification Bell */
+.notification {
+    position: relative;
+    display: inline-block;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+.bell-icon {
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s;
+    display: inline-block;
+}
+
+.notification-count {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px 7px;
+    border-radius: 50%;
+    display: none;
+}
+
+/* Notification Dropdown */
+.notification-dropdown {
+    position: absolute;
+    right: 0;
+    top: 35px;
+    background-color: #2c3e50;
+    color: white;
+    min-width: 250px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 10;
+    text-align: left;
+    max-height: 300px;
+    overflow-y: auto;
+    opacity: 0;  /* Set opacity to 0 instead of display: none */
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+/* When hovered, show the dropdown */
+.notification:hover .notification-dropdown {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Optional: Ensure notifications appear when clicked as well */
+.notification-dropdown.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Style Individual Notification */
+.notification-item {
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* No Notifications Message */
+.no-notifications {
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+    color: #bdc3c7;
+}
+
+/* Wiggle Animation */
+@keyframes infiniteWiggle {
+    0% { transform: rotate(0); }
+    25% { transform: rotate(-10deg); }
+    50% { transform: rotate(10deg); }
+    75% { transform: rotate(-10deg); }
+    100% { transform: rotate(10deg); }
+}
+
+.bell-icon:hover {
+    color: #f39c12;
+    animation: infiniteWiggle 0.5s ease-in-out infinite;
+}
+
+/* Show dropdown when active */
+.show {
+    display: block;
+}
+
+
+/* Dropdown Styling */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #2c3e50;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* Profile Info Inside Dropdown */
+.profile-info {
+    text-align: center;
+    padding: 10px;
+    color: white;
+}
+
+.dropdown-profile-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-bottom: 5px;
+}
+
+/* Dropdown Links */
+.dropdown-content a {
+    color: white;
+    padding: 10px 15px;
+    display: block;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.dropdown-content a:hover {
+    background-color: #34495e;
+}
+
+.logout {
+    color: red;
+    font-weight: bold;
+}
+
+/* Show dropdown when active */
+.show {
+    display: block;
+}
+
+/* Notification Bell */
+.notification {
+    position: relative;
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.bell-icon {
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s;
+    display: inline-block;
+}
+
+/* Continuous Wiggle Animation */
+@keyframes infiniteWiggle {
+    0% { transform: rotate(0); }
+    25% { transform: rotate(-10deg); }
+    50% { transform: rotate(10deg); }
+    75% { transform: rotate(-10deg); }
+    100% { transform: rotate(10deg); }
+}
+
+/* Apply infinite animation when hovered */
+.bell-icon:hover {
+    color: #f39c12;
+    animation: infiniteWiggle 0.5s ease-in-out infinite;
+}
+
+
+
+</style>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function() {
+    const notificationBell = document.getElementById("notificationBell");
+    const notificationDropdown = document.getElementById("notificationDropdown");
+    const notificationCount = document.getElementById("notificationCount");
+
+    function fetchNotifications() {
+        fetch("/get-notifications/")  // URL to fetch notifications
+            .then(response => response.json())
+            .then(data => {
+                notificationDropdown.innerHTML = "";  // Clear previous content
+                
+                if (data.notifications.length === 0) {
+                    notificationDropdown.innerHTML = "<p class='no-notifications'>No new notifications</p>";
+                    notificationCount.style.display = "none"; // Hide the red circle
+                } else {
+                    data.notifications.forEach(notif => {
+                        const notifItem = document.createElement("div");
+                        notifItem.classList.add("notification-item");
+                        notifItem.textContent = notif.message;
+                        notificationDropdown.appendChild(notifItem);
+                    });
+
+                    // Update the notification count
+                    notificationCount.textContent = data.notifications.length;
+                    notificationCount.style.display = "inline";  // Show the red circle
+                }
+            });
+    }
+
+    // Toggle dropdown and fetch notifications when clicked
+    notificationBell.addEventListener("click", function(event) {
+        notificationDropdown.classList.toggle("show");
+        fetchNotifications();
+        event.stopPropagation();  // Prevent click from closing the dropdown
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function(event) {
+        if (!notificationBell.contains(event.target) && !notificationDropdown.contains(event.target)) {
+            notificationDropdown.classList.remove("show");
+        }
+    });
+
+    // Fetch notifications when the page loads
+    fetchNotifications();
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const profileDropdown = document.getElementById("profileDropdown");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+    const notificationBell = document.getElementById("notificationBell");
+    const notificationDropdown = document.getElementById("notificationDropdown");
+
+    // Profile Dropdown Toggle
+    profileDropdown.addEventListener("click", function(event) {
+        dropdownMenu.classList.toggle("show");
+        event.stopPropagation();
+    });
+
+    // Notification Dropdown Toggle
+    notificationBell.addEventListener("click", function(event) {
+        notificationDropdown.classList.toggle("show");
+        event.stopPropagation();
+    });
+
+    // Close dropdowns when clicking outside
+    document.addEventListener("click", function(event) {
+        if (!profileDropdown.contains(event.target) && !dropdownMenu.contains(event.target)) {
+            dropdownMenu.classList.remove("show");
+        }
+        if (!notificationBell.contains(event.target) && !notificationDropdown.contains(event.target)) {
+            notificationDropdown.classList.remove("show");
+        }
+    });
+});
+</script>

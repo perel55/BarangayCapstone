@@ -160,6 +160,9 @@ urlpatterns = [
     path('api/chart-data/', views.outbreak_chart_data, name='outbreak-chart-data'),
     path('resident-outbreaks/', views.resident_outbreaks_view, name='resident_outbreaks_view'),
 
+    path('api/chart-data/', views.outbreak_chart_data, name='outbreak-chart-data'),
+    path('resident-outbreaks/', views.resident_outbreaks_view, name='resident_outbreaks_view'),
+
     path('fetch-services/', views.fetch_services, name='fetch-services'),
 
     path('resident_services/', views.resident_services, name='resident_services'),
@@ -219,9 +222,19 @@ urlpatterns = [
 
 
 
+    path('request/', views.request_clearance, name='request_clearance'),
+    path('status/', views.clearance_status, name='clearance_status'),
+    path('manage/', views.manage_clearances, name='manage_clearances'),
+    path('update/<int:pk>/', views.update_clearance_status, name='update_clearance_status'),
+    path('print/<int:pk>/', views.print_clearance, name='print_clearance'),
 
   # ------------------ Admin -----------------------
     path('adminRecord/', views.adminRecord, name='adminRecord'),
+
+    path('notice/<int:notice_id>/', views.notice_detail, name='notice_detail'),
+
+
+    path("get-notifications/", views.get_notifications, name="get_notifications"),
 
 
 

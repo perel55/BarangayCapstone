@@ -187,7 +187,12 @@ def validatelogin(request):
 
 
 def index(request):
-    return render(request, 'index.html')
+    notices = CommunityNotice.objects.order_by('-notice_StartDate')[:5]  # Get latest 5 notices
+    return render(request, 'index.html', {'notices': notices})
+
+def notice_detail(request, notice_id):
+    notice = get_object_or_404(CommunityNotice, id=notice_id)
+    return render(request, 'notice_detail.html', {'notice': notice})
 
 from django.contrib.auth import logout as auth_logout
 
@@ -445,13 +450,11 @@ from django.db.models import Count
 
 @login_required
 def residentdashboard(request):
-
     if not request.user.is_authenticated:
         logout(request)
         return redirect('login')
 
     resident = Residents.objects.filter(auth_user=request.user).first()
-
 
     user_first_name = request.user.first_name
     user_last_name = request.user.last_name
@@ -473,18 +476,21 @@ def residentdashboard(request):
             resident.phone_number = request.POST.get('phone_number')
             resident.position = request.POST.get('position')
 
+
             if 'picture' in request.FILES:
                 resident.picture = request.FILES['picture']
 
+
             if 'id_image' in request.FILES:
                 resident.id_image = request.FILES['id_image']
+
 
             resident.is_profile_complete = True
             resident.save()
             return redirect('residentdashboard')
 
         context = {
-            'resident': resident,
+            'resident': resident,  # Ensure resident is passed
             'show_modal': True,
             'user_first_name': user_first_name,
             'user_last_name': user_last_name,
@@ -494,19 +500,19 @@ def residentdashboard(request):
             'outbreaks_data': outbreaks_data,
             'popular_services': popular_services,
         }
-
-        return render(request, 'resident/userd.html', context)
-
-    context = {
-        'show_modal': False,
-        'recent_schedules': recent_schedules,
-        'upcoming_notices': upcoming_notices,
-        'recent_requests': recent_requests,
-        'outbreaks_data': outbreaks_data,
-        'popular_services': popular_services,
-    }
+    else:
+        context = {
+            'resident': resident,  # Ensure resident is passed here too
+            'show_modal': False,
+            'recent_schedules': recent_schedules,
+            'upcoming_notices': upcoming_notices,
+            'recent_requests': recent_requests,
+            'outbreaks_data': outbreaks_data,
+            'popular_services': popular_services,
+        }
 
     return render(request, 'resident/userd.html', context)
+
 
 
 

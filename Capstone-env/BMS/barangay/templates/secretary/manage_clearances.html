@@ -1,0 +1,20 @@
+<h1>Manage Clearance Requests</h1>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Purpose</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+    {% for clearance in clearances %}
+    <tr>
+        <td>{{ clearance.full_name }}</td>
+        <td>{{ clearance.purpose }}</td>
+        <td>{{ clearance.status }}</td>
+        <td>
+            <a href="{% url 'update_clearance_status' clearance.pk %}">Update Status</a>
+            <a href="{% url 'print_clearance' clearance.pk %}">Print</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
