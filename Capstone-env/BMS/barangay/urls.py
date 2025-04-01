@@ -226,6 +226,11 @@ urlpatterns = [
   # ------------------ Admin -----------------------
     path('adminRecord/', views.adminRecord, name='adminRecord'),
 
+    path('notice/<int:notice_id>/', views.notice_detail, name='notice_detail'),
+
+
+    path("get-notifications/", views.get_notifications, name="get_notifications"),
+
 
 
 

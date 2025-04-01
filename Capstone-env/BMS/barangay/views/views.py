@@ -187,7 +187,12 @@ def validatelogin(request):
 
 
 def index(request):
-    return render(request, 'index.html')
+    notices = CommunityNotice.objects.order_by('-notice_StartDate')[:5]  # Get latest 5 notices
+    return render(request, 'index.html', {'notices': notices})
+
+def notice_detail(request, notice_id):
+    notice = get_object_or_404(CommunityNotice, id=notice_id)
+    return render(request, 'notice_detail.html', {'notice': notice})
 
 from django.contrib.auth import logout as auth_logout
 

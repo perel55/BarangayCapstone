@@ -2,18 +2,58 @@
 
 {% block css %}
 <link rel="stylesheet" href="{% static './css/clearance.css' %}">
+<style>
+    /* Toolbar Styles */
+    .toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f8f9fa;
+        padding: 10px 20px;
+        border-bottom: 2px solid #ddd;
+    }
+    .toolbar h2 {
+        margin: 0;
+        font-size: 18px;
+    }
+    .print-button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+    .print-button:hover {
+        background-color: #0056b3;
+    }
+
+    /* Hide toolbar when printing */
+    @media print {
+        .toolbar {
+            display: none !important;
+        }
+    }
+</style>
 {% endblock %}
 
 {% block content %}
 
+<!-- Toolbar (Will be hidden when printing) -->
+<div class="toolbar">
+    <h2>Barangay Clearance</h2>
+    <button class="print-button" onclick="window.print()">🖨️ Print</button>
+</div>
+
 <div class="clearance-container">
     <!-- Header -->
     <div class="header">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Ph_seal_national.png" class="left-logo">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Barangay_seal.svg/800px-Barangay_seal.svg.png" class="right-logo">
+        <img src="{% static 'images/lala-logo.jpg' %}" class="left-logo">
+        <img src="{% static 'images/Lala-mun.png' %}" class="right-logo">
         <h1>Republic of the Philippines</h1>
         <p>City of Iligan</p>
-        <p><strong>Barangay Ubaldo Laya</strong></p>
+        <p><strong>Barangay Lala Proper</strong></p>
         <p>(063) 223-9126</p>
         <p><em>Office of the Punong Barangay</em></p>
     </div>
@@ -45,7 +85,8 @@
         <br>
         <br>
         <br>
-        <style>.seal { text-align: center; } .side-panel { text-align: center; }</style><p class="seal">Seal Goes Here.</p>
+        <style>.seal { text-align: center; } .side-panel { text-align: center; }</style>
+        <p class="seal">Seal Goes Here.</p>
         <p class="seal">NOT VALID WITHOUT SEAL</p>
     </div>
 

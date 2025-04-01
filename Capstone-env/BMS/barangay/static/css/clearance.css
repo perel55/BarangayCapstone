@@ -13,6 +13,7 @@ body {
     border: 15px solid black;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
     position: relative;
+    margin-top: 20px;
 }
 
 /* Header */
@@ -22,15 +23,21 @@ body {
     margin-bottom: 15px;
 }
 
-.header img {
+.left-logo { 
+    left: 20px;
     width: 90px;
     height: auto;
     position: absolute;
     top: 10px;
 }
 
-.left-logo { left: 20px; }
-.right-logo { right: 20px; }
+.right-logo { 
+    right: 20px;
+    width: 115px;
+    height: 115px;
+    position: absolute;
+    top: 0;
+}
 
 .header h1 {
     font-size: 22px;
@@ -107,6 +114,7 @@ body {
     font-weight: bold;
     text-align: center;
     margin-top: 40px;
+    display: flex;
 }
 
 /* Footer Signature */

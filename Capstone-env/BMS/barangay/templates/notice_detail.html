@@ -1,0 +1,9 @@
+
+{% block content %}
+<div class="container">
+    <h2>{{ notice.notice_name }}</h2>
+    <img src="{{ notice.notice_image.url }}" alt="{{ notice.notice_name }}" class="event-image">
+    <p><strong>Date:</strong> {{ notice.notice_StartDate }} - {{ notice.notice_EndDate }}</p>
+    <p><strong>Details:</strong> {{ notice.notice_description }}</p>
+</div>
+{% endblock %}

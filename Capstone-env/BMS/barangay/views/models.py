@@ -21,6 +21,12 @@ class Residents(models.Model):
 
     def __str__(self):
         return f"{self.auth_user}"
+    
+    def get_picture_url(self):
+        """Returns the picture URL, or the default image if none exists."""
+        if self.picture and hasattr(self.picture, "url"):
+            return self.picture.url
+        return "/static/images/default-profile.jpg"
 
 
 class Personnel(models.Model):
@@ -330,3 +336,12 @@ class BarangayClearance(models.Model):
 
     def __str__(self):
         return f"{self.full_name} - {self.status}"
+    
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # User receiving the notification
+    message = models.TextField()  # Notification message
+    is_read = models.BooleanField(default=False)  # Check if notification is read
+    timestamp = models.DateTimeField(auto_now_add=True)  # Time of notification
+
+    def __str__(self):
+        return f"Notification for {self.user} - {self.message}"
