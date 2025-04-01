@@ -23,10 +23,10 @@ def approve_payment(request, payment_id):
     payment = get_object_or_404(Payment, id=payment_id)
     payment.status = "Completed"
     payment.save()
-    return redirect('adminPayment')  
+    return redirect('secretaryPayment')  
 
 def decline_payment(request, payment_id):
     payment = get_object_or_404(Payment, id=payment_id)
     payment.status = "Incomplete"
     payment.save()
-    return redirect('adminPayment')
+    return redirect('secretaryPayment')

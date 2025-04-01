@@ -9,9 +9,9 @@
 {% block content %}
 
     <div class="adminContainer">
-       {% include 'admin/adminTopnav.html' %}
+       {% include 'secretary/secNavbar.html' %}
         <div class="MC-Bottom">
-      {% include './adminNav2.html' %}    
+   
 
    
       <section id="content">
@@ -25,7 +25,7 @@
                     <th>Reference Number</th> 
                     <th>Proof</th>
                     <th>Status</th>
-
+                    <th>Action</th>
                 </tr>
             </thead>    
             <tbody>
@@ -44,6 +44,10 @@
                         {% endif %}
                     </td>
                     <td>{{ payment.status }}</td>
+                    <td>
+                        <a href="{% url 'approve_payment' payment.id %}" class="approve-btn">Approve</a>
+                        <a href="{% url 'decline_payment' payment.id %}" class="decline-btn">Decline</a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

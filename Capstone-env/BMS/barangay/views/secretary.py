@@ -318,3 +318,8 @@ def edit_secretary_profile(request):
 
     birthdate_str = secretary.birthdate.strftime('%Y-%m-%d') if secretary.birthdate else ""
     return render(request, 'secretary/secEditProfile.html', {'secretary': secretary, 'birthdate_str': birthdate_str})
+
+
+def secretaryPayment(request):
+    payments = Payment.objects.select_related('resident', 'service', 'request_id').all()
+    return render(request, 'secretary/payment.html', {'payments': payments})

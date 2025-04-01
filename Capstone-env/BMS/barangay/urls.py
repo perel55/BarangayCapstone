@@ -214,6 +214,8 @@ urlpatterns = [
 
     path('resident-autocomplete/', views.resident_autocomplete, name='resident_autocomplete'),
 
+    path('secretaryPayment/', views.secretaryPayment, name='secretaryPayment'),
+
 
 
 
