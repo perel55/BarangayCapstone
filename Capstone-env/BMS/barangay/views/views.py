@@ -271,6 +271,10 @@ def update_request_status(request, request_id):
 def adminEvent(request):
     return render(request, 'admin/adminEvent.html')
 
+def adminAddEvent(request):
+    notices = CommunityNotice.objects.all()  # Fetch all community notices
+    return render(request, 'admin/adminAddEvent.html', {'notices': notices})
+
 def adminPayment(request):
     payments = Payment.objects.select_related('resident', 'service', 'request_id').all()
     return render(request, 'admin/adminPayment.html', {'payments': payments})
@@ -288,23 +292,24 @@ def addAdmin(request):
 #-------------------BHW Secretary & Nurse-------------------
 
 @login_required
-def bhwServices(request): 
-    try:
-        resident = Residents.objects.get(auth_user=request.user)
-        if resident.status == "Verified":
-            bhwServices = HealthService.objects.all()
-        else:
-            bhwServices = HealthService.objects.none()
-    
-    except Residents.DoesNotExist:
+def bhwServices(request):
+    # Try to get the resident object for the logged-in user
+    resident = Residents.objects.filter(auth_user=request.user).first()
+
+    # Check if the resident exists and is verified
+    if resident and resident.status == "Verified":
+        bhwServices = HealthService.objects.all()
+    else:
         bhwServices = HealthService.objects.none()
 
-    # Load the template
-    template = loader.get_template('resident/residentHS.html')
+    # Load the template and pass the context (include resident profile data)
     context = {
         'bhwServices': bhwServices,
+        'resident': resident,  # Pass the resident object to the template
     }
-    return HttpResponse(template.render(context, request))
+
+    return render(request, 'resident/residentHS.html', context)
+
 
 
 

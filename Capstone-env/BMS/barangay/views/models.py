@@ -211,8 +211,8 @@ class CommunityNotice(models.Model):
     notice_EndDate = models.DateField(null=True)
     notice_StartTime = models.TimeField(null=True)
     notice_EndTime = models.TimeField(null=True)
-    notice_type = models.CharField(max_length=100)
-    notice_color = models.CharField(max_length=7, default='#007bff')
+    notice_type = models.CharField(max_length=100, null=True)
+    notice_color = models.CharField(max_length=7, default='#007bff', null=True)  # Default to blue
 
  
     

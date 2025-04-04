@@ -137,15 +137,28 @@ def get_services(request):
 def pending_approval(request):
     return render(request, 'resident/pending.html')
 
-
 def view_events(request):
     resident = Residents.objects.filter(auth_user=request.user).first()
     
-    # Check if the resident exists and is verified
+    # Redirect if resident is not verified
     if not resident or resident.status.lower() != 'verified':
-        return redirect('pending_approval')  # Replace with your "Pending Approval" view name or URL
-    
-    return render(request, 'resident/residentEvents.html')
+        return redirect('pending_approval')
+
+    notices = CommunityNotice.objects.all()
+
+    # Check if new images were uploaded and save them
+    if 'picture' in request.FILES:
+        resident.picture = request.FILES['picture']
+
+    if 'id_image' in request.FILES:
+        resident.id_image = request.FILES['id_image']
+
+    # Save the resident object after image update
+    resident.save()
+
+    # Pass notices and resident data to the template
+    return render(request, 'resident/residentEvents.html', {'notices': notices, 'resident': resident})
+
 
 
 def get_resident_notices(request):
@@ -295,20 +308,32 @@ def outbreak_chart_data(request):
 
 # ------------------------> SERVICE LIST <-----------------------
 
+@login_required
 def resident_services(request):
-    services = Services.objects.all()  # Query all services
-    return render(request, 'resident/residentServices.html', {'services': services})
+    # Fetch the resident object for the logged-in user
+    resident = Residents.objects.filter(auth_user=request.user).first()
 
+    # Fetch all available services
+    services = Services.objects.all()
+
+    # Pass both the services and resident objects to the template
+    return render(request, 'resident/residentServices.html', {
+        'services': services,
+        'resident': resident,  # Pass the resident object to the template
+    })
 
 @login_required
 def residentHealthRecords(request):
-    # Fetch all schedules for the logged-in user
-    schedules = Schedule.objects.filter(user=request.user, bhwService__service_type='immunnization')
+    # Fetch the resident object for the logged-in user
+    resident = Residents.objects.filter(auth_user=request.user).first()
+    
+  
+    schedules = Schedule.objects.filter(user=request.user, bhwService__service_type='immunization')
 
-    # Initialize list to store immunizations per schedule
+  
     immunizations = []
 
-    # Loop through each schedule and filter immunizations based on schedule.id
+   
     for schedule in schedules:
         pentavalent = Immunize.objects.filter(vaccine_name="Pentavalent Vaccine", schedule_id=schedule.id)
         opv = Immunize.objects.filter(vaccine_name="Oral Polio Vaccine (OPV)", schedule_id=schedule.id)
@@ -328,6 +353,7 @@ def residentHealthRecords(request):
 
     return render(request, 'resident/residentHealthRecords.html', {
         'immunizations': immunizations,
+        'resident': resident,  # Add the resident object to the context
     })
 
 def residentPayment(request):

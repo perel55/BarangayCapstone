@@ -230,6 +230,7 @@ urlpatterns = [
 
   # ------------------ Admin -----------------------
     path('adminRecord/', views.adminRecord, name='adminRecord'),
+    path('adminAddEvent/', views.adminAddEvent, name='adminAddEvent'),
 
     path('notice/<int:notice_id>/', views.notice_detail, name='notice_detail'),
 

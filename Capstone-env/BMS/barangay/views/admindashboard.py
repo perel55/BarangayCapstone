@@ -1,21 +1,10 @@
-from django.http import HttpResponse
-from django.template import loader
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-from django.contrib.auth import login, authenticate
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import login as auth_login
-from django.contrib import messages
 from .models import *
-from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import logout
 from django.shortcuts import redirect
-from django.views import View
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import LogoutView
 from django.http import JsonResponse
-from django.urls import reverse
 from django.db.models import Prefetch
 
 
@@ -133,9 +122,9 @@ def add_notice(request):
             notice_color=notice_color,
         )
 
-        return redirect('adminEvent')  # Redirect to the desired page
+        return redirect('adminAddEvent')  # Redirect to the desired page
 
-    return render(request, 'admin/adminEvent.html')  # Render form template
+  
 
 def get_notices(request):
     """API to fetch notices as events."""
@@ -185,7 +174,6 @@ def delete_notice(request, notice_id):
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 
-from django.contrib.auth.models import User
 
 def accounts_view(request):
      # Retrieve session data

@@ -1,62 +1,164 @@
 {% load static %}
 
-    {% block css %}
-    <link rel="stylesheet" href="{% static './css/residentHS.css' %}">
-    <link rel="stylesheet" href="{% static './css/residentSchedule.css' %}">
-    <script type="module" src="{% static 'js/residentNotices.js' %}"></script>
-    <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/common@6.1.15/main.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.15/main.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
-    {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/residentHS.css' %}">
+<link rel="stylesheet" href="{% static 'css/residentSchedule.css' %}">
+
+{% endblock %}
 
 
-    {% block content %}
+<body>
+{% block content %}
+    <div class="adminContainer">
+        {% include 'resident/residentTopnav.html' %}
 
-    {% include 'modal/residentNoticeInfo.html' %}
-
-    
-        <div class="MainContainer">
-            {% include 'resident/residentTopnav.html' %}
-
-            <div class="ac-middle">
+            <div class="MC-Bottom">
+                {% include './residentNav1.html' %}
                 
-            
-                <div class="MC-Bottom">
-                    {% include './residentNav1.html' %}
-                        <div id="Schedule-Content">
-                            <div class="SC-Top">
-                                <div class="SCT-Left">
-                                    <select id="monthSelect">
-                                        <option value="0">January</option>
-                                        <option value="1">February</option>
-                                        <option value="2">March</option>
-                                        <option value="3">April</option>
-                                        <option value="4">May</option>
-                                        <option value="5">June</option>
-                                        <option value="6">July</option>
-                                        <option value="7">August</option>
-                                        <option value="8">September</option>
-                                        <option value="9">October</option>
-                                        <option value="10">November</option>
-                                        <option value="11">December</option>
-                                    </select>
-
-                                    <select id="yearSelect"></select>
-                                    <div class="SC-CalendarView">
-                                        <button id="dayView">D</button>
-                                        <button id="weekView">W</button>
-                                        <button id="monthView">M</button>
+                <div class="news-slider-container">
+                    <div class="news-slider">
+                        {% for notice in notices %}
+                        <div class="news-item">
+                            <a href="" class="notice-link">
+                                <div class="event-card">
+                                    <div class="event-image-container">
+                                        <img src="{{ notice.notice_image.url }}" alt="{{ notice.notice_name }}" class="event-image">
+                                    </div>
+                                    <div class="event-content">
+                                        <h3 class="event-date">• Start {{ notice.notice_StartDate|date:"M d, Y" }} • End {{ notice.notice_EndDate|date:"M d, Y" }}</h3>
+                                        <h3 class="event-title">{{ notice.notice_name }}</h3>
+                                        <p class="event-description">{{ notice.notice_StartTime}}-{{ notice.notice_EndTime}}</p>
+                                        <p class="event-description">{{ notice.notice_description|truncatechars:100 }}</p>
+                                        <p class="event-description">{{ notice.notice_type}}</p>
                                     </div>
                                 </div>
-                                <div class="SCT-Right">
-                                    <button id="prevSchedule"><</button>
-                                    <button id="nextSchedule">></button>
-                                </div>
-                            </div>
-                            <div id="calendar"></div>
+                            </a>
                         </div>
+                        {% endfor %}
                     </div>
                 </div>
-        </div>
+            </div>
+    </div>
     {% endblock %}
+</body>
 
+<style>
+    /* Container for news slider */
+    .news-slider-container {
+        width: 40%; /* Adjust width to be a percentage of the page */
+        overflow: hidden;
+        position: relative;
+        padding: 20px 0;
+        margin: 3rem auto; /* Center the container horizontally with auto margins */
+    }
+
+    /* Individual news item style for one column */
+    .news-slider {
+        display: flex;
+        flex-direction: column; /* Arrange items vertically */
+        align-items: center; /* Ensure the items are aligned in the center */
+    }
+
+    .news-item {
+        width: 90%; /* Adjust width for single column */
+        margin: 10px 0; /* Space between items */
+        box-sizing: border-box;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+
+    /* News item hover effect */
+    .news-item:hover {
+        transform: scale(1.05);
+    }
+
+    /* Link style */
+    .notice-link {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    /* Event card styling */
+    .event-card {
+        background-color: #ede9e9;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    /* Event image container */
+    .event-image-container {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+    }
+
+    /* Event image styling */
+    .event-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    /* Event image hover effect */
+    .event-image-container:hover .event-image {
+        transform: scale(1.1);
+    }
+
+    /* Event content styling */
+    .event-content {
+        padding: 15px;
+        flex-grow: 1;
+    }
+
+    /* Event date styling */
+    .event-date {
+        font-size: 18px;
+        color: #000000;
+        margin-bottom: 10px;
+    }
+
+    /* Event title styling */
+    .event-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #000000;
+        margin-bottom: 10px;
+    }
+
+    /* Event description styling */
+    .event-description {
+        font-size: 14px;
+        color: #000000;
+        line-height: 1.6;
+        margin-bottom: 10px;
+    }
+
+    /* Responsive Design for smaller screens */
+    @media (max-width: 768px) {
+        .news-item {
+            width: 95%; /* Adjust width for smaller screens */
+            margin: 15px 0;
+        }
+
+        .news-slider-container {
+            width: 80%; /* Adjust width for smaller screens */
+        }
+    }
+
+    @media (max-width: 480px) {
+        .news-item {
+            width: 100%; /* Full width on very small screens */
+        }
+
+        .news-slider-container {
+            width: 90%; /* Adjust width for mobile */
+        }
+    }
+</style>

@@ -1,11 +1,12 @@
 {% load static %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/residentHR.css' %}">
-
+<script type="module" src="{% static 'js/historyList.js' %}"></script>
 {% endblock %}
 
 <body>
     {% block content %}
+    
     <div class="adminContainer">
         {% include 'resident/residentTopnav.html' %}
         <div class="MC-Bottom">

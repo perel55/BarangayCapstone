@@ -1,0 +1,115 @@
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <link rel="stylesheet" href="{% static 'css/adminAddEvent.css' %}">
+
+
+
+{% endblock %}
+
+
+{% block content %}
+
+   
+      
+        {% include 'admin/adminTopnav.html' %}
+        <div class="content-container">
+            {% include './adminNav2.html' %} 
+        
+            <div class="main-content">
+
+                <div class="add-service">
+                    <button class="Add-Service" onclick="openModal()">Add service</button>
+                </div>
+
+                <div class="notices-container">
+                    <h1 class="notices-title">Community Notices</h1>
+                    <ul class="notices-list">
+                        {% for notice in notices %}
+                        <li class="notices-item">
+                            <div class="notice-img-container">
+                                {% if notice.notice_image %}
+                                    <img src="{{ notice.notice_image.url }}" alt="{{ notice.notice_name }}" class="notice-img" />
+                                {% else %}
+                                    <div class="placeholder-img">N/A</div>
+                                {% endif %}
+                            </div>
+                            <div class="notice-info">
+                                <h2>{{ notice.notice_name }}</h2>
+                                <p><strong>Start Date:</strong> {{ notice.notice_StartDate|date:"M d, Y" }}</p>
+                                <p><strong>End Date:</strong> {{ notice.notice_EndDate|date:"M d, Y" }}</p>
+                                <p><strong>Time:</strong> {{ notice.notice_StartTime }} - {{ notice.notice_EndTime }}</p>
+                                <p><strong>Type:</strong> {{ notice.notice_type }}</p>
+                                <p>{{ notice.notice_description|truncatechars:100 }}</p>
+                            </div>
+                            <div class="notice-actions">
+                                <a onclick="openModal()" class="btn update-btn" >Update</a>
+                                <form action="" method="POST" onsubmit="confirmDelete(event);">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn delete-btn">Delete</button>
+                                </form>
+                            </div>
+                        </li>
+                        {% empty %}
+                        <li class="notices-item no-notices">No community notices available.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                
+            </div>
+
+            <div id="addEventModal" class="modal">
+                    <span class="close" onclick="closeModal()">&times;</span>
+                    {% include 'modal/adminAddEvent.html' %}
+            </div>
+
+            <div id="editEventModal" class="modal">
+                <span class="close" onclick="closeModal()">&times;</span>
+                {% include 'modal/adminEditEvent.html' %}
+        </div>
+           
+        </div>
+            
+        
+
+        <script>
+          // Function to open modal
+            function openModal() {
+                const modal = document.getElementById('addEventModal');
+                modal.style.display = "flex"; // Set to flex for proper centering
+            }
+
+            // Function to close modal
+            function closeModal() {
+                const modal = document.getElementById('addEventModal');
+                modal.style.display = "none";
+            }
+
+    
+            // Close modal when clicking outside of it
+            window.onclick = function(event) {
+                const modal = document.getElementById('cancel-sched');
+                if (event.target == modal) {
+                    closeModal();
+                }
+            }
+            
+            function openModal() {
+                const modal = document.getElementById('editEventModal');
+                modal.style.display = "flex"; // Set to flex for proper centering
+            }
+
+            function confirmDelete(event) {
+                const result = confirm("Are you sure you want to delete this service?");
+                if (!result) {
+                    event.preventDefault();
+                }
+            }
+        </script>
+
+
+    
+      
+
+{% endblock %}
